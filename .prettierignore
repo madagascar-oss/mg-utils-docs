@@ -1,0 +1,9 @@
+pnpm-lock.yaml
+dist/
+.astro/
+spec/
+ports/
+public/js/
+public/php/
+# MDX with code blocks inside JSX components is formatted by hand.
+src/content/**/*.mdx

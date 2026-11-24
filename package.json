@@ -1,0 +1,55 @@
+{
+  "name": "mg-utils-docs",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.30.1",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "lint": "prettier --check . && eslint . && astro check && knip",
+    "format": "prettier --write . && eslint --fix .",
+    "test:e2e": "playwright test",
+    "hooks": "lefthook install",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/react": "7.1.9",
+    "@astrojs/starlight": "^0.43.1",
+    "@astrojs/starlight-tailwind": "5.0.0",
+    "@fontsource-variable/inter": "5.3.0",
+    "@fontsource-variable/jetbrains-mono": "5.3.0",
+    "@tailwindcss/vite": "4.3.5",
+    "astro": "^7.4.13",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "sharp": "^0.35.5",
+    "tailwindcss": "4.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.65.1",
+    "@types/react": "19.3.1",
+    "@types/react-dom": "19.3.0",
+    "eslint": "10.15.0",
+    "eslint-plugin-astro": "3.2.1",
+    "knip": "6.48.0",
+    "lefthook": "2.2.2",
+    "prettier": "3.10.1",
+    "prettier-plugin-astro": "1.1.2",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.74.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lefthook",
+      "sharp"
+    ]
+  }
+}

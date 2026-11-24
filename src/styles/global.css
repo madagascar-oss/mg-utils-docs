@@ -1,0 +1,184 @@
+/* Starlight + Tailwind CSS v4. Layer order keeps Starlight's base styles below Tailwind utilities. */
+@layer base, starlight, theme, components, utilities;
+
+@import '@astrojs/starlight-tailwind';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, monospace;
+
+  /* Accent: green of the Malagasy flag, tuned for contrast in both themes. */
+  --color-accent-50: #ecfdf3;
+  --color-accent-100: #d1fae1;
+  --color-accent-200: #a6f2c6;
+  --color-accent-300: #6ee2a5;
+  --color-accent-400: #35c97f;
+  --color-accent-500: #12ad65;
+  --color-accent-600: #0b8c50;
+  --color-accent-700: #0b7043;
+  --color-accent-800: #0d5937;
+  --color-accent-900: #0c492f;
+  --color-accent-950: #032919;
+
+  /* Neutral grays (zinc). */
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f4f4f5;
+  --color-gray-200: #e4e4e7;
+  --color-gray-300: #d4d4d8;
+  --color-gray-400: #a1a1aa;
+  --color-gray-500: #71717a;
+  --color-gray-600: #52525b;
+  --color-gray-700: #3f3f46;
+  --color-gray-800: #27272a;
+  --color-gray-900: #18181b;
+  --color-gray-950: #09090b;
+
+  /* Red of the flag, for errors in examples and the playground. */
+  --color-error: #e5372f;
+}
+
+:root {
+  --sl-content-width: 48rem;
+  --sl-nav-height: 3.75rem;
+  --sl-text-h1: 2.25rem;
+  --mg-grid-line: color-mix(in srgb, var(--sl-color-gray-5) 70%, transparent);
+}
+
+/* Header: thin bottom border, translucent background (Tailwind docs style). */
+.page > .header {
+  border-bottom: 1px solid var(--mg-grid-line);
+  background-color: color-mix(in srgb, var(--sl-color-bg-nav) 85%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+/* Sidebar group headings: small, uppercase-free, strong; links quieter until active. */
+.sidebar-content .group-label .large {
+  font-size: var(--sl-text-sm);
+  font-weight: 600;
+  color: var(--sl-color-white);
+}
+
+.sidebar-content a[aria-current='page'] {
+  background: transparent;
+  color: var(--sl-color-accent-high);
+  font-weight: 600;
+  box-shadow: inset 2px 0 0 var(--sl-color-accent);
+}
+
+/* Main column framed by thin vertical grid lines on wide screens. */
+@media (min-width: 72rem) {
+  .main-pane > .content-panel:first-child,
+  .main-pane > .content-panel {
+    border-inline: 1px solid var(--mg-grid-line);
+  }
+}
+
+.content-panel + .content-panel {
+  border-top-color: var(--mg-grid-line);
+}
+
+/* Numbered steps: 01, 02 … in mono; text left, code right on wide screens. */
+.sl-markdown-content .sl-steps {
+  counter-reset: mg-step;
+  padding-inline-start: 0;
+  --bullet-size: 0;
+}
+
+.sl-markdown-content .sl-steps > li {
+  counter-increment: mg-step;
+  position: relative;
+  padding-inline-start: 0;
+  padding-block: 1.5rem;
+  border-top: 1px solid var(--mg-grid-line);
+}
+
+.sl-markdown-content .sl-steps > li::before {
+  content: counter(mg-step, decimal-leading-zero);
+  position: static;
+  display: block;
+  inset: auto;
+  width: auto;
+  height: auto;
+  margin-bottom: 0.25rem;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font-family: var(--font-mono);
+  font-size: var(--sl-text-sm);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--sl-color-accent-high);
+  text-align: start;
+  justify-self: start;
+}
+
+.sl-markdown-content .sl-steps > li > h3,
+.sl-markdown-content .sl-steps > li > .sl-heading-wrapper h3 {
+  margin-top: 0;
+  font-size: var(--sl-text-xl);
+  letter-spacing: -0.01em;
+}
+
+.sl-markdown-content .sl-steps > li::after {
+  display: none;
+}
+
+@media (min-width: 80rem) {
+  :root {
+    --sl-content-width: 60rem;
+  }
+
+  .sl-markdown-content .sl-steps > li {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    column-gap: 2rem;
+    align-items: start;
+  }
+
+  .sl-markdown-content .sl-steps > li > * {
+    grid-column: 1;
+    margin-top: 0;
+  }
+
+  .sl-markdown-content .sl-steps > li > * + * {
+    margin-top: 0.75rem;
+  }
+
+  .sl-markdown-content .sl-steps > li::before {
+    grid-column: 1;
+  }
+
+  .sl-markdown-content .sl-steps > li > .expressive-code {
+    grid-column: 2;
+    grid-row: 1 / span 20;
+    margin-top: 0;
+  }
+}
+
+/* Page head: kicker + large title + lead (see PageTitle.astro). */
+.mg-kicker {
+  margin-top: 1rem;
+  font-size: var(--sl-text-sm);
+  font-weight: 600;
+  color: var(--sl-color-accent-high);
+}
+
+.mg-lead {
+  margin-top: 0.75rem;
+  font-size: var(--sl-text-lg);
+  line-height: 1.6;
+  color: var(--sl-color-gray-2);
+}
+
+/* Show code as typed: no ligatures (PHP's -> must not become an arrow). */
+code,
+pre,
+.expressive-code {
+  font-variant-ligatures: none;
+  font-feature-settings:
+    'liga' 0,
+    'calt' 0;
+}

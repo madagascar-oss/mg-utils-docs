@@ -1,0 +1,102 @@
+---
+// Footer like tailwindcss.com: link columns + one copyright line. The edit link stays.
+import EditLink from '@astrojs/starlight/components/EditLink.astro';
+import { links } from '../config/site.ts';
+import { localePath, t, toLocale } from '../i18n/ui.ts';
+
+const locale = toLocale(Astro.locals.starlightRoute.locale);
+const columns = [
+  {
+    title: t(locale, 'footer.docs'),
+    items: [
+      {
+        label: t(locale, 'footer.installation'),
+        href: localePath(locale, '/docs/installation/using-npm/'),
+      },
+      { label: t(locale, 'footer.playground'), href: localePath(locale, '/play/') },
+    ],
+  },
+  {
+    title: t(locale, 'footer.packages'),
+    items: [
+      { label: 'npm · @madagascar-oss/*', href: links.npm },
+      { label: 'Packagist · madagascar-oss/mg-utils', href: links.packagist },
+    ],
+  },
+  {
+    title: t(locale, 'footer.community'),
+    items: [
+      { label: 'mg-utils-spec', href: links.spec },
+      { label: 'mg-utils-js', href: links.js },
+      { label: 'mg-utils-php', href: links.php },
+      { label: 'mg-utils-docs', href: links.docs },
+    ],
+  },
+];
+---
+
+<footer class="mg-footer">
+  <div class="mg-edit">
+    <EditLink />
+  </div>
+  <div class="mg-columns">
+    {columns.map((column) => (
+      <div>
+        <p class="mg-column-title">{column.title}</p>
+        <ul>
+          {column.items.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+  <p class="mg-copyright">
+    © {new Date().getFullYear()} Madagascar OSS contributors. {t(locale, 'footer.license')}
+  </p>
+</footer>
+
+<style>
+  .mg-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--mg-grid-line);
+    font-size: var(--sl-text-sm);
+  }
+
+  .mg-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .mg-column-title {
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  .mg-columns ul {
+    margin-top: 0.75rem;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .mg-columns a {
+    color: var(--sl-color-gray-3);
+    text-decoration: none;
+  }
+
+  .mg-columns a:hover {
+    color: var(--sl-color-white);
+  }
+
+  .mg-copyright {
+    margin-top: 2rem;
+    color: var(--sl-color-gray-3);
+  }
+</style>

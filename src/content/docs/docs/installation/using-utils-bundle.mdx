@@ -1,0 +1,53 @@
+---
+title: Every module in one package
+description: '@madagascar-oss/utils re-exports every module — words, phone, ariary and date — with one MgError class, so you install and import from one place.'
+kicker: Installation
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+import InstallMethods from '../../../../components/InstallMethods.astro';
+
+<InstallMethods current="using-utils-bundle" />
+
+## Installing the utils bundle
+
+Choose this when an app uses several modules. Bundlers keep only the functions you import, so unused modules do not reach your users.
+
+<Steps>
+
+1. ### Install the bundle
+
+   ```sh title="Terminal"
+   npm install @madagascar-oss/utils
+   ```
+
+2. ### Import from one place
+
+   ```ts title="invoice.ts"
+   import { ariaryToWords, formatAriary, formatDate, numberToWords } from '@madagascar-oss/utils';
+
+   formatAriary(1500); // 'Ar 1 500'
+   ariaryToWords(1500); // 'dimanjato sy arivo ariary'
+   formatDate('2026-11-23', 'full'); // 'Alatsinainy 23 Novambra 2026'
+   numberToWords(21); // 'iraika amby roapolo'
+   ```
+
+3. ### Catch errors from every module the same way
+
+   Every module throws the same `MgError`, so one `catch` covers them all.
+
+   ```ts title="invoice.ts"
+   import { MgError, parseAriary } from '@madagascar-oss/utils';
+
+   try {
+     parseAriary('1,500');
+   } catch (error) {
+     if (error instanceof MgError) console.log(error.code); // 'INVALID_FORMAT'
+   }
+   ```
+
+</Steps>
+
+<Aside type="tip" title="Are you stuck?">
+  Try every function live, in JavaScript and PHP, in the [playground](/mg-utils-docs/play/).
+</Aside>

@@ -1,0 +1,22 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Build / deps
+node_modules/
+dist/
+.astro/
+*.log
+test-results/
+playwright-report/
+# Generated from the port submodules at build time
+public/js/
+public/php/

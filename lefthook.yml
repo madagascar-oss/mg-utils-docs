@@ -1,0 +1,16 @@
+# Format staged files before each commit. Installed by `just setup`.
+pre-commit:
+  commands:
+    prettier:
+      glob: '*.{ts,js,mjs,astro,json,md,yaml,yml,css}'
+      run: pnpm exec prettier --ignore-unknown --write {staged_files}
+      stage_fixed: true
+    yamllint:
+      glob: '*.{yaml,yml}'
+      run: yamllint -c .yamllint.yaml {staged_files} || echo "yamllint not installed; CI will check YAML"
+commit-msg:
+  commands:
+    conventional:
+      run: >-
+        grep -Eq '^(feat|fix|docs|chore|refactor|test|perf|ci|build|revert)(\([a-z0-9-]+\))?!?: .+' {1}
+        || (echo "Commit title must follow Conventional Commits, e.g. docs(phone): add examples" && exit 1)

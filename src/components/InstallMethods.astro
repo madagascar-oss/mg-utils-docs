@@ -1,0 +1,68 @@
+---
+// Installation methods as separate pages, shown as a row of links (like tailwindcss.com/docs/installation).
+import { localePath, t, toLocale } from '../i18n/ui.ts';
+
+interface Props {
+  current: 'using-npm' | 'using-utils-bundle' | 'using-composer';
+}
+
+const locale = toLocale(Astro.locals.starlightRoute.locale);
+const methods = [
+  { slug: 'using-npm', label: 'Using npm', language: 'JavaScript' },
+  { slug: 'using-utils-bundle', label: 'All modules (utils)', language: 'JavaScript' },
+  { slug: 'using-composer', label: 'Using Composer', language: 'PHP' },
+] as const;
+---
+
+<nav class="mg-methods not-content" aria-label={t(locale, 'install.methods')}>
+  {methods.map((method) => (
+    <a
+      href={localePath(locale, `/docs/installation/${method.slug}/`)}
+      aria-current={method.slug === Astro.props.current ? 'page' : undefined}
+    >
+      <span class="mg-method-label">{method.label}</span>
+      <span class="mg-method-language">{method.language}</span>
+    </a>
+  ))}
+</nav>
+
+<style>
+  .mg-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0.5rem;
+    margin-block: 2rem;
+  }
+
+  .mg-methods a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    text-decoration: none;
+    color: var(--sl-color-gray-2);
+    transition: border-color 0.15s;
+  }
+
+  .mg-methods a:hover {
+    border-color: var(--sl-color-gray-3);
+  }
+
+  .mg-methods a[aria-current='page'] {
+    border-color: var(--sl-color-accent);
+    box-shadow: 0 0 0 1px var(--sl-color-accent);
+    color: var(--sl-color-white);
+  }
+
+  .mg-method-label {
+    font-weight: 600;
+    font-size: var(--sl-text-sm);
+  }
+
+  .mg-method-language {
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-3);
+  }
+</style>

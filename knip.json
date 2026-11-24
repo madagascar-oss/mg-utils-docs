@@ -1,0 +1,6 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["src/route-middleware.ts"],
+  "ignore": ["ports/**", "spec/**"],
+  "ignoreDependencies": ["@fontsource-variable/inter", "@fontsource-variable/jetbrains-mono"]
+}

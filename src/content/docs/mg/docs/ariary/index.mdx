@@ -1,0 +1,131 @@
+---
+title: Vola ariary
+description: Soraty ny vola amin’ny Ariary (MGA), vakio ny vola nosoratan’ny mpampiasa, soraty an-teny ary avadiho ny Iraimbilanja (FMG) taloha.
+kicker: Môdily
+---
+
+{/* Malagasy translation (draft, needs native review). Code blocks match the English page. */}
+import { Aside, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiTable from '../../../../../components/ApiTable.astro';
+import TryItBox from '../../../../../components/TryItBox.astro';
+
+## Andramo
+
+<TryItBox module="ariary" />
+
+## Fanondroana haingana
+
+<ApiTable module="ariary" />
+
+## Fanoratana
+
+Ariary feno ny vola, sarahina isaky ny arivo amin’ny elanelana tsy tapaka (na teboka). Tsy mpanasaraka arivo mihitsy ny faingo.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { formatAriary } from '@madagascar-oss/ariary';
+
+    formatAriary(1500); // 'Ar 1 500'
+    formatAriary(1500, { grouping: 'dot' }); // 'Ar 1.500'
+    formatAriary(1500, { symbolPosition: 'after' }); // '1 500 Ar'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Ariary\Ariary;
+    use Madagascar\MgUtils\Ariary\Grouping;
+    use Madagascar\MgUtils\Ariary\SymbolPosition;
+
+    Ariary::fromInt(1500)->format(); // 'Ar 1 500'
+    Ariary::fromInt(1500)->format(Grouping::Dot); // 'Ar 1.500'
+    Ariary::fromInt(1500)->format(position: SymbolPosition::After); // '1 500 Ar'
+    ```
+  </TabItem>
+</Tabs>
+
+<Aside>Elanelana tsy tapaka (U+00A0) ireo elanelana ao amin’ny valiny, ka tsy mizara ho andalana roa mihitsy ny vola iray.</Aside>
+
+## Famakiana ny vola nosoratan’ny mpampiasa
+
+Vakiana ho 1500 avokoa ny `Ar 1 500`, `1.500 Ar`, `MGA 1500` ary `1 500`. Lavina ny faingo, ny desimaly ary ny famantarana.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { parseAriary, safeParseAriary, tryParseAriary } from '@madagascar-oss/ariary';
+
+    parseAriary('1.500 Ar'); // 1500
+    parseAriary('MGA 1500'); // 1500
+
+    tryParseAriary('1,500'); // undefined
+    const result = safeParseAriary('1,500');
+    if (!result.success) result.error.code; // 'INVALID_FORMAT'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    Ariary::parse('1.500 Ar')->amount; // 1500
+    Ariary::parse('MGA 1500')->amount; // 1500
+
+    Ariary::tryParse('1,500'); // null
+    Ariary::safeParse('1,500')->error?->errorCode; // ErrorCode::InvalidFormat
+    ```
+  </TabItem>
+</Tabs>
+
+## Vola an-teny
+
+Ho an’ny rosia sy taratasim-bola: ny vola an-teny malagasy arahin’ny `ariary`.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { ariaryToWords } from '@madagascar-oss/ariary';
+
+    ariaryToWords(1500); // 'dimanjato sy arivo ariary'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    Ariary::fromInt(1500)->toWords(); // 'dimanjato sy arivo ariary'
+    ```
+  </TabItem>
+</Tabs>
+
+## Iraimbilanja taloha (FMG)
+
+5 FMG = 1 Ar. Lavina, fa tsy bodorina, ny FMG tsy azo zaraina amin’ny 5.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { ariaryToFmg, fmgToAriary, formatFmg } from '@madagascar-oss/ariary';
+
+    fmgToAriary(7500); // 1500
+    ariaryToFmg(1500); // 7500
+    formatFmg(7500); // 'Fmg 7 500'
+    fmgToAriary(7501); // throws MgError OUT_OF_RANGE
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    Ariary::fromFmg(7500)->amount; // 1500
+    Ariary::fromInt(1500)->toFmg(); // 7500
+    Ariary::formatFmg(7500); // 'Fmg 7 500'
+    Ariary::fromFmg(7501); // throws MgUtilsException, ErrorCode::OutOfRange
+    ```
+  </TabItem>
+</Tabs>
+
+## Hadisoana
+
+| Fampidirana                                                 | Kaody hadisoana       |
+| ----------------------------------------------------- | ---------------- |
+| Tsy isa feno, na safidy tsy objet | `INVALID_TYPE`   |
+| Soratra misy faingo, desimaly na famantarana                   | `INVALID_FORMAT` |
+| Ambanin’ny 0, mihoatra ny 999 999 999 999, na FMG tsy azo zaraina amin’ny 5 | `OUT_OF_RANGE` |
+
+## Fitsipika sy loharano
+
+<LinkCard title="Vola ariary: fitsipika sy loharano" description="Fanasarahana, marika, ny sanda FMG ary ny fanapahan-kevitra voarakitra." href="/mg-utils-docs/mg/docs/ariary/rules/" />

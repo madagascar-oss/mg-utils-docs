@@ -1,0 +1,92 @@
+---
+title: Dates
+description: Écrire les dates grégoriennes en malgache et obtenir les noms malgaches des mois et des jours, en cinq styles.
+kicker: Modules
+---
+
+{/* Traduction française. Les blocs de code sont identiques à la page anglaise. */}
+import { LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiTable from '../../../../../components/ApiTable.astro';
+import TryItBox from '../../../../../components/TryItBox.astro';
+
+## Essayer
+
+<TryItBox module="date" />
+
+## Référence rapide
+
+<ApiTable module="date" />
+
+## Formater une date
+
+| Style     | Résultat pour 2026-11-23           |
+| --------- | ------------------------------- |
+| `long`    | `23 Novambra 2026` (par défaut)    |
+| `full`    | `Alatsinainy 23 Novambra 2026`  |
+| `medium`  | `2026 Nov 23`                   |
+| `short`   | `2026-11-23`                    |
+| `numeric` | `23/11/2026`                    |
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { formatDate } from '@madagascar-oss/date';
+
+    formatDate('2026-11-23'); // '23 Novambra 2026'
+    formatDate('2026-11-23', 'full'); // 'Alatsinainy 23 Novambra 2026'
+    formatDate({ year: 1960, month: 6, day: 26 }, 'full'); // 'Alahady 26 Jona 1960'
+    formatDate(new Date(), 'numeric');
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Date\DateStyle;
+    use Madagascar\MgUtils\Date\MalagasyDate;
+
+    MalagasyDate::fromString('2026-11-23')->format(); // '23 Novambra 2026'
+    MalagasyDate::fromString('2026-11-23')->format(DateStyle::Full); // 'Alatsinainy 23 Novambra 2026'
+    MalagasyDate::fromParts(1960, 6, 26)->format(DateStyle::Full); // 'Alahady 26 Jona 1960'
+    MalagasyDate::fromDateTime(new DateTimeImmutable())->format(DateStyle::Numeric);
+    ```
+  </TabItem>
+</Tabs>
+
+## Noms des mois et des jours
+
+Les jours utilisent la numérotation ISO : lundi vaut 1, dimanche 7.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { getMonthName, getWeekdayName } from '@madagascar-oss/date';
+
+    getMonthName(6); // 'Jona'
+    getMonthName(6, 'abbreviated'); // 'Jon'
+    getWeekdayName(1); // 'Alatsinainy'
+    getWeekdayName(7, 'abbreviated'); // 'Alah'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Date\MalagasyDate;
+    use Madagascar\MgUtils\Date\NameWidth;
+
+    MalagasyDate::monthName(6); // 'Jona'
+    MalagasyDate::monthName(6, NameWidth::Abbreviated); // 'Jon'
+    MalagasyDate::weekdayName(1); // 'Alatsinainy'
+    MalagasyDate::weekdayName(7, NameWidth::Abbreviated); // 'Alah'
+    ```
+  </TabItem>
+</Tabs>
+
+## Erreurs
+
+| Entrée                                         | Code d’erreur       |
+| --------------------------------------------- | ---------------- |
+| Une date qui n’est ni une chaîne, ni une `Date`, ni `{ year, month, day }` ; un mois ou un jour qui n’est pas un entier | `INVALID_TYPE` |
+| Pas une date réelle (`2026-02-30`)       | `INVALID_FORMAT` |
+| Mois hors de 1–12, jour hors de 1–7       | `OUT_OF_RANGE`   |
+
+## Règles et sources
+
+<LinkCard title="Dates : règles et sources" description="Noms des mois et des jours, les cinq styles et les décisions consignées." href="/mg-utils-docs/fr/docs/date/rules/" />

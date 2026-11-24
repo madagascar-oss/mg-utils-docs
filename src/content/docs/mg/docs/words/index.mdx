@@ -1,0 +1,69 @@
+---
+title: Isa an-teny
+description: Soraty an-teny malagasy ny isa feno manomboka amin’ny 0 hatramin’ny 999 999 999 999, araka ny teny ofisialy — ny singa kely indrindra no voalohany.
+kicker: Môdily
+---
+
+{/* Malagasy translation (draft, needs native review). Code blocks match the English page. */}
+import { LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiTable from '../../../../../components/ApiTable.astro';
+import TryItBox from '../../../../../components/TryItBox.astro';
+
+## Andramo
+
+<TryItBox module="words" />
+
+## Fanondroana haingana
+
+<ApiTable module="words" />
+
+## Fampiasana fototra
+
+Ny teny malagasy dia mamaky isa manomboka amin’ny singa kely indrindra, ampifandraisina amin’ny `amby` sy `sy`.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { numberToWords } from '@madagascar-oss/words';
+
+    numberToWords(0); // 'aotra'
+    numberToWords(21); // 'iraika amby roapolo'
+    numberToWords(1960); // 'enimpolo amby sivinjato sy arivo'
+    numberToWords(1_000_000); // 'tapitrisa'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Words\NumberWords;
+
+    NumberWords::fromInt(0); // 'aotra'
+    NumberWords::fromInt(21); // 'iraika amby roapolo'
+    NumberWords::fromInt(1960); // 'enimpolo amby sivinjato sy arivo'
+    NumberWords::fromInt(1_000_000); // 'tapitrisa'
+    ```
+  </TabItem>
+</Tabs>
+
+## Hadisoana
+
+| Fampidirana                               | Kaody hadisoana     |
+| ----------------------------------- | -------------- |
+| Tsy isa feno (`1.5`, `'21'`)  | `INVALID_TYPE` |
+| Ambanin’ny 0 na mihoatra ny 999 999 999 999    | `OUT_OF_RANGE` |
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    numberToWords(-1); // throws MgError, error.code === 'OUT_OF_RANGE'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    NumberWords::fromInt(-1); // throws MgUtilsException, ->errorCode === ErrorCode::OutOfRange
+    ```
+  </TabItem>
+</Tabs>
+
+## Fitsipika sy loharano
+
+<LinkCard title="Isa an-teny: fitsipika sy loharano" description="Ny fananganana ny isa, ny loharano ofisialy ary ny tsy fitovian-kevitra voarakitra." href="/mg-utils-docs/mg/docs/words/rules/" />

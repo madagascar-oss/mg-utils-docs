@@ -150,3 +150,13 @@ pre,
     'liga' 0,
     'calt' 0;
 }
+
+/* Header theme and language selects: Starlight sizes them for English labels; give room for
+   Malagasy and French ("Ho azy", "Malagasy"). */
+.mg-actions starlight-theme-select label,
+.mg-actions starlight-lang-select label {
+  --sl-select-width: 6.5em !important;
+}
+.mg-actions starlight-lang-select label {
+  --sl-select-width: 7.5em !important;
+}

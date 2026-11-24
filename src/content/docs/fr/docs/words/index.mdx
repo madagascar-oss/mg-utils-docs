@@ -1,0 +1,69 @@
+---
+title: Nombres en lettres
+description: Écrire les nombres entiers de 0 à 999 999 999 999 en lettres malgaches, selon la langue officielle — de la plus petite unité à la plus grande.
+kicker: Modules
+---
+
+{/* Traduction française. Les blocs de code sont identiques à la page anglaise. */}
+import { LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiTable from '../../../../../components/ApiTable.astro';
+import TryItBox from '../../../../../components/TryItBox.astro';
+
+## Essayer
+
+<TryItBox module="words" />
+
+## Référence rapide
+
+<ApiTable module="words" />
+
+## Utilisation de base
+
+Le malgache lit les nombres de la plus petite unité à la plus grande, reliées par `amby` et `sy`.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { numberToWords } from '@madagascar-oss/words';
+
+    numberToWords(0); // 'aotra'
+    numberToWords(21); // 'iraika amby roapolo'
+    numberToWords(1960); // 'enimpolo amby sivinjato sy arivo'
+    numberToWords(1_000_000); // 'tapitrisa'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Words\NumberWords;
+
+    NumberWords::fromInt(0); // 'aotra'
+    NumberWords::fromInt(21); // 'iraika amby roapolo'
+    NumberWords::fromInt(1960); // 'enimpolo amby sivinjato sy arivo'
+    NumberWords::fromInt(1_000_000); // 'tapitrisa'
+    ```
+  </TabItem>
+</Tabs>
+
+## Erreurs
+
+| Entrée                               | Code d’erreur     |
+| ----------------------------------- | -------------- |
+| Pas un nombre entier (`1.5`, `'21'`)  | `INVALID_TYPE` |
+| Inférieur à 0 ou supérieur à 999 999 999 999    | `OUT_OF_RANGE` |
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    numberToWords(-1); // throws MgError, error.code === 'OUT_OF_RANGE'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    NumberWords::fromInt(-1); // throws MgUtilsException, ->errorCode === ErrorCode::OutOfRange
+    ```
+  </TabItem>
+</Tabs>
+
+## Règles et sources
+
+<LinkCard title="Nombres en lettres : règles et sources" description="Comment les nombres sont construits, les sources officielles et les désaccords consignés." href="/mg-utils-docs/fr/docs/words/rules/" />

@@ -1,0 +1,71 @@
+---
+// Full-screen playground (outside the Starlight layout), one page per locale:
+// /play/, /mg/play/, /fr/play/.
+import logo from '../../assets/logo.svg';
+import { localePath, t, type Locale, type UiKey } from '../../i18n/ui.ts';
+import Playground, { type PlaygroundText } from '../../playground/Playground.tsx';
+import '../../styles/play.css';
+
+export function getStaticPaths() {
+  return [{ params: { lang: undefined } }, { params: { lang: 'mg' } }, { params: { lang: 'fr' } }];
+}
+
+const locale: Locale =
+  Astro.params.lang === 'mg' || Astro.params.lang === 'fr' ? Astro.params.lang : 'en';
+const s = (key: UiKey) => t(locale, key);
+const text: PlaygroundText = {
+  title: s('play.title'),
+  run: s('play.run'),
+  share: s('play.share'),
+  copied: s('play.copied'),
+  reset: s('play.reset'),
+  output: s('play.output'),
+  empty: s('play.empty'),
+  loading: s('play.loading'),
+  ranIn: s('play.ranIn'),
+  noOutput: s('play.noOutput'),
+  docs: s('play.docs'),
+  modules: {
+    words: s('play.module.words'),
+    phone: s('play.module.phone'),
+    ariary: s('play.module.ariary'),
+    date: s('play.module.date'),
+  },
+};
+const description = 'Try every mg-utils function live, in JavaScript and PHP.';
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{text.title} | mg-utils</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+    <script is:inline>
+      // Same theme choice as the docs (Starlight stores it under "starlight-theme").
+      (() => {
+        let stored = 'auto';
+        try {
+          stored = localStorage.getItem('starlight-theme') || 'auto';
+        } catch {
+          // Storage can be blocked (private mode); fall back to the system preference.
+        }
+        const dark =
+          stored === 'dark' ||
+          (stored === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      })();
+    </script>
+  </head>
+  <body>
+    <Playground
+      client:load
+      text={text}
+      homeHref={localePath(locale, '/')}
+      docsHref={localePath(locale, '/docs/installation/using-npm/')}
+      logoSrc={logo.src}
+    />
+  </body>
+</html>

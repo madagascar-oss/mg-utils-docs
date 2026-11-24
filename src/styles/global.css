@@ -5,39 +5,7 @@
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
-@theme {
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, monospace;
-
-  /* Accent: green of the Malagasy flag, tuned for contrast in both themes. */
-  --color-accent-50: #ecfdf3;
-  --color-accent-100: #d1fae1;
-  --color-accent-200: #a6f2c6;
-  --color-accent-300: #6ee2a5;
-  --color-accent-400: #35c97f;
-  --color-accent-500: #12ad65;
-  --color-accent-600: #0b8c50;
-  --color-accent-700: #0b7043;
-  --color-accent-800: #0d5937;
-  --color-accent-900: #0c492f;
-  --color-accent-950: #032919;
-
-  /* Neutral grays (zinc). */
-  --color-gray-50: #fafafa;
-  --color-gray-100: #f4f4f5;
-  --color-gray-200: #e4e4e7;
-  --color-gray-300: #d4d4d8;
-  --color-gray-400: #a1a1aa;
-  --color-gray-500: #71717a;
-  --color-gray-600: #52525b;
-  --color-gray-700: #3f3f46;
-  --color-gray-800: #27272a;
-  --color-gray-900: #18181b;
-  --color-gray-950: #09090b;
-
-  /* Red of the flag, for errors in examples and the playground. */
-  --color-error: #e5372f;
-}
+@import './tokens.css';
 
 :root {
   --sl-content-width: 48rem;

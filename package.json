@@ -16,19 +16,27 @@
     "test:e2e": "playwright test",
     "hooks": "lefthook install",
     "astro": "astro",
-    "sync": "node scripts/sync-spec.ts"
+    "sync": "node scripts/sync-spec.ts && node scripts/bundle-js.ts"
   },
   "dependencies": {
     "@astrojs/react": "7.1.9",
     "@astrojs/starlight": "^0.43.1",
     "@astrojs/starlight-tailwind": "5.0.0",
+    "@codemirror/lang-javascript": "6.2.5",
+    "@codemirror/lang-php": "6.0.2",
+    "@codemirror/state": "6.7.6",
+    "@codemirror/theme-one-dark": "6.1.3",
+    "@codemirror/view": "6.43.15",
     "@fontsource-variable/inter": "5.3.0",
     "@fontsource-variable/jetbrains-mono": "5.3.0",
     "@tailwindcss/vite": "4.3.5",
     "astro": "^7.4.13",
+    "codemirror": "6.0.2",
+    "lz-string": "1.5.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "sharp": "^0.35.5",
+    "sucrase": "3.35.1",
     "tailwindcss": "4.3.5"
   },
   "devDependencies": {
@@ -37,6 +45,7 @@
     "@playwright/test": "1.65.1",
     "@types/react": "19.3.1",
     "@types/react-dom": "19.3.0",
+    "esbuild": "0.28.2",
     "eslint": "10.15.0",
     "eslint-plugin-astro": "3.2.1",
     "knip": "6.48.0",

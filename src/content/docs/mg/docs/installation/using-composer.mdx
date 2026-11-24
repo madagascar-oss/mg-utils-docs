@@ -1,0 +1,78 @@
+---
+title: Hanomboka amin’ny mg-utils ho an’ny PHP
+description: Fonosana Composer iray, madagascar-oss/mg-utils, misy ny môdily rehetra ho toy ny value object sy enum. PHP 8.3+, tsy mila fonosana hafa, valiny mitovy amin’ny fonosana JavaScript.
+kicker: Fametrahana
+---
+
+{/* Malagasy translation (draft, needs native review). Code blocks match the English page. */}
+import { Aside, Steps } from '@astrojs/starlight/components';
+import InstallMethods from '../../../../../components/InstallMethods.astro';
+
+<InstallMethods current="using-composer" />
+
+## Fametrahana amin’ny Composer
+
+<Steps>
+
+1. ### Takio ny fonosana
+
+   ```sh title="Terminal"
+   composer require madagascar-oss/mg-utils
+   ```
+
+2. ### Ampiasao ny môdily iray
+
+   Kilasy ao ambanin’ny `Madagascar\MgUtils` ny môdily tsirairay. Vakio ny laharana na ahoana na ahoana fomba nanoratana azy ary soraty indray.
+
+   ```php title="signup.php"
+   <?php
+
+   require __DIR__ . '/vendor/autoload.php';
+
+   use Madagascar\MgUtils\Phone\PhoneNumber;
+   use Madagascar\MgUtils\Phone\PhoneNumberFormat;
+
+   $phone = PhoneNumber::parse('034 12 345 67');
+   $phone->operator->displayName(); // 'Telma'
+   $phone->format(PhoneNumberFormat::International); // '+261 34 12 345 67'
+   ```
+
+3. ### Tantano ny fampidirana diso
+
+   Manipy `MgUtilsException` ny `parse()`. Mamerina ny kaody hadisoana tsy misy fanipazana ny `safeParse()`, mamerina `null` ny `tryParse()`.
+
+   ```php title="signup.php"
+   use Madagascar\MgUtils\ErrorCode;
+   use Madagascar\MgUtils\Phone\PhoneNumber;
+
+   $result = PhoneNumber::safeParse('035 12 345 67');
+   $result->success;           // false
+   $result->error?->errorCode; // ErrorCode::UnknownOperator
+
+   PhoneNumber::tryParse('not a number'); // null
+   ```
+
+4. ### Raiso mitovy ny hadisoan’ny môdily rehetra
+
+   Manipy `MgUtilsException` ny môdily rehetra; ny `errorCode` ao aminy dia ilay kaody mitovy amin’ny an’ny JavaScript.
+
+   ```php title="signup.php"
+   use Madagascar\MgUtils\MgUtilsException;
+
+   try {
+       PhoneNumber::parse($userInput);
+   } catch (MgUtilsException $exception) {
+       echo $exception->errorCode->value; // 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | …
+   }
+   ```
+
+</Steps>
+
+<Aside type="caution" title="Alohan’ny famoahana voalohany amin’ny Packagist">
+  Hiseho ao amin’ny Packagist ny fonosana rehefa misy ny famoahana voalohany. Mandra-pahatongan’izany,
+  apetraho avy amin’ny [mg-utils-php](https://github.com/madagascar-oss/mg-utils-php) amin’ny alalan’ny repository Composer `vcs`.
+</Aside>
+
+<Aside type="tip" title="Misy olana ve?">
+  Andramo mivantana ny asa rehetra, amin’ny JavaScript sy PHP, ao amin’ny [toerana fanandramana](/mg-utils-docs/mg/play/).
+</Aside>

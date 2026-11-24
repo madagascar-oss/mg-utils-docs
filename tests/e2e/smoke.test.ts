@@ -56,3 +56,24 @@ test('the language tab choice is shared across code blocks', async ({ page }) =>
   await page.getByRole('tab', { name: 'PHP' }).first().click();
   await expect(page.getByText('Ariary::fromInt(1500)->toWords()').first()).toBeVisible();
 });
+
+test('translated pages are written in their language', async ({ page }) => {
+  await page.goto('mg/docs/phone/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Laharan-telefaonina');
+  await expect(page.getByText('Ato amin’ity pejy ity').first()).toBeAttached();
+  await page.goto('fr/docs/installation/using-composer/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Bien démarrer avec mg-utils pour PHP',
+  );
+  await expect(page.getByRole('link', { name: /Avec Composer/ })).toHaveAttribute(
+    'aria-current',
+    'page',
+  );
+});
+
+test('untranslated pages fall back to English with a notice', async ({ page }) => {
+  await page.goto('fr/docs/phone/rules/');
+  await expect(
+    page.getByText('Ce contenu n’est pas encore disponible dans votre langue.'),
+  ).toBeVisible();
+});

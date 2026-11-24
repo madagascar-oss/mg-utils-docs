@@ -1,0 +1,77 @@
+---
+title: Bien démarrer avec mg-utils
+description: mg-utils fournit les nombres en lettres malgaches, les numéros de téléphone, les montants en ariary et les dates. N’installez que les modules utiles — chacun est un petit paquet sans dépendance, ESM + CommonJS + types.
+kicker: Installation
+---
+
+{/* Traduction française. Les blocs de code sont identiques à la page anglaise. */}
+import { Aside, Steps } from '@astrojs/starlight/components';
+import InstallMethods from '../../../../../components/InstallMethods.astro';
+
+<InstallMethods current="using-npm" />
+
+## Installer un module avec npm
+
+Chaque module est un paquet distinct : `@madagascar-oss/words`, `@madagascar-oss/phone`, `@madagascar-oss/ariary` et `@madagascar-oss/date`. Ils fonctionnent avec Node.js 22.18+, Deno, Bun et tous les navigateurs modernes.
+
+<Steps>
+
+1. ### Installer le paquet
+
+   Ajoutez le module voulu. Cet exemple utilise les numéros de téléphone.
+
+   ```sh title="Terminal"
+   npm install @madagascar-oss/phone
+   ```
+
+2. ### Importer une fonction
+
+   Chaque module exporte de simples fonctions. Lisez un numéro écrit de n’importe quelle façon courante et formatez-le.
+
+   ```ts title="signup.ts"
+   import { formatPhoneNumber, parsePhoneNumber } from '@madagascar-oss/phone';
+
+   const phone = parsePhoneNumber('034 12 345 67');
+   phone.operator; // 'telma'
+
+   formatPhoneNumber('0341234567', 'international'); // '+261 34 12 345 67'
+   ```
+
+3. ### Gérer les saisies invalides
+
+   Les fonctions `parse…` lèvent une `MgError`. Utilisez `safeParse…` pour obtenir le code d’erreur sans exception, ou `tryParse…` pour obtenir `undefined`.
+
+   ```ts title="signup.ts"
+   import { safeParsePhoneNumber, tryParsePhoneNumber } from '@madagascar-oss/phone';
+
+   const result = safeParsePhoneNumber('035 12 345 67');
+   if (!result.success) result.error.code; // 'UNKNOWN_OPERATOR'
+
+   tryParsePhoneNumber('not a number'); // undefined
+   ```
+
+4. ### Vérifier le résultat
+
+   Les codes d’erreur sont les mêmes dans tous les langages : un formulaire affiche le même message, que la vérification ait eu lieu dans le navigateur ou sur un serveur PHP.
+
+   ```ts title="signup.ts"
+   import { MgError, parsePhoneNumber } from '@madagascar-oss/phone';
+
+   try {
+     parsePhoneNumber(userInput);
+   } catch (error) {
+     if (error instanceof MgError) console.log(error.code); // 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | …
+   }
+   ```
+
+</Steps>
+
+<Aside type="caution" title="Avant la première publication sur npm">
+  Les paquets seront publiés sur npm lors de la première version. D’ici là, installez-les depuis
+  [mg-utils-js](https://github.com/madagascar-oss/mg-utils-js) ou essayez-les dans le
+  [bac à sable](/mg-utils-docs/fr/play/).
+</Aside>
+
+<Aside type="tip" title="Vous êtes bloqué ?">
+  Essayez chaque fonction en direct, en JavaScript et en PHP, dans le [bac à sable](/mg-utils-docs/fr/play/).
+</Aside>

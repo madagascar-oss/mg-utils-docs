@@ -64,7 +64,11 @@ export default defineConfig({
           },
         }),
         // /play/ is an Astro page, which the validator cannot see; its own e2e tests cover it.
-        starlightLinksValidator({ exclude: ['/mg-utils-docs/play/', '/play/'] }),
+        // Rules pages exist in English only; translated pages link to their English fallback.
+        starlightLinksValidator({
+          exclude: ['/mg-utils-docs/play/', '/mg-utils-docs/{mg,fr}/play/'],
+          errorOnFallbackPages: false,
+        }),
       ],
       sidebar,
       routeMiddleware: './src/route-middleware.ts',

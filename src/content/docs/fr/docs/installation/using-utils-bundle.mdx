@@ -1,0 +1,54 @@
+---
+title: Tous les modules dans un seul paquet
+description: '@madagascar-oss/utils réexporte tous les modules — words, phone, ariary et date — avec une seule classe MgError : une installation, un seul import.'
+kicker: Installation
+---
+
+{/* Traduction française. Les blocs de code sont identiques à la page anglaise. */}
+import { Aside, Steps } from '@astrojs/starlight/components';
+import InstallMethods from '../../../../../components/InstallMethods.astro';
+
+<InstallMethods current="using-utils-bundle" />
+
+## Installer le paquet utils
+
+Choisissez-le quand une application utilise plusieurs modules. Les bundlers ne gardent que les fonctions importées : les modules inutilisés n’atteignent pas vos utilisateurs.
+
+<Steps>
+
+1. ### Installer le paquet
+
+   ```sh title="Terminal"
+   npm install @madagascar-oss/utils
+   ```
+
+2. ### Importer depuis un seul endroit
+
+   ```ts title="invoice.ts"
+   import { ariaryToWords, formatAriary, formatDate, numberToWords } from '@madagascar-oss/utils';
+
+   formatAriary(1500); // 'Ar 1 500'
+   ariaryToWords(1500); // 'dimanjato sy arivo ariary'
+   formatDate('2026-11-23', 'full'); // 'Alatsinainy 23 Novambra 2026'
+   numberToWords(21); // 'iraika amby roapolo'
+   ```
+
+3. ### Intercepter les erreurs de tous les modules de la même façon
+
+   Tous les modules lèvent la même `MgError` : un seul `catch` suffit.
+
+   ```ts title="invoice.ts"
+   import { MgError, parseAriary } from '@madagascar-oss/utils';
+
+   try {
+     parseAriary('1,500');
+   } catch (error) {
+     if (error instanceof MgError) console.log(error.code); // 'INVALID_FORMAT'
+   }
+   ```
+
+</Steps>
+
+<Aside type="tip" title="Vous êtes bloqué ?">
+  Essayez chaque fonction en direct, en JavaScript et en PHP, dans le [bac à sable](/mg-utils-docs/fr/play/).
+</Aside>

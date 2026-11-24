@@ -36,20 +36,13 @@ test('a share link restores the code', async ({ page, context }) => {
 });
 
 test('shows the spec error code of an uncaught error', async ({ page }) => {
-  await page.goto('play/');
-  await page.locator('.cm-content').click();
-  await page.keyboard.press('ControlOrMeta+A');
-  await page.keyboard.type(
-    "import { parseAriary } from '@madagascar-oss/ariary';\nparseAriary('1,500');",
-  );
+  const code = "import { parseAriary } from '@madagascar-oss/ariary';\n\nparseAriary('1,500');\n";
+  await page.goto(playUrl('js', 'ariary', code));
   await expect(page.getByTestId('error')).toContainText('INVALID_FORMAT');
 });
 
 test('stops an infinite loop', async ({ page }) => {
-  await page.goto('play/');
-  await page.locator('.cm-content').click();
-  await page.keyboard.press('ControlOrMeta+A');
-  await page.keyboard.type('while (true) {}');
+  await page.goto(playUrl('js', 'words', 'while (true) {}\n'));
   await expect(page.getByTestId('error')).toContainText('Stopped after', { timeout: 10_000 });
 });
 

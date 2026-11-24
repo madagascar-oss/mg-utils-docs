@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 import starlightLinksValidator from 'starlight-links-validator';
 import starlightTypeDoc from 'starlight-typedoc';
 import { defineConfig } from 'astro/config';
+import { URL, fileURLToPath } from 'node:url';
 import { sidebar } from './src/config/sidebar.ts';
 
 // Served from GitHub Pages under /mg-utils-docs/. With a custom domain, drop `base`.
@@ -70,5 +71,28 @@ export default defineConfig({
     }),
     react(),
   ],
-  vite: { plugins: [tailwindcss()] },
+  vite: {
+    plugins: [tailwindcss()],
+    // php-wasm (playground PHP runner): ship only PHP 8.4. Every other version is ~40 MB of
+    // WebAssembly that the bundler would otherwise emit, so those imports point at a stub.
+    resolve: {
+      alias: [
+        ...['8-5', '8-3', '8-2', '8-1', '8-0', '7-4', '5-2'].map((version) => ({
+          find: `@php-wasm/web-${version}`,
+          replacement: fileURLToPath(
+            new URL('./src/playground/stubs/php-version.ts', import.meta.url),
+          ),
+        })),
+        {
+          find: /^.*(icu\.dat|intl\.so\?url)$/,
+          replacement: fileURLToPath(
+            new URL('./src/playground/stubs/empty-asset.ts', import.meta.url),
+          ),
+        },
+      ],
+    },
+    assetsInclude: [/\.dat$/, /\.so$/, /\.la$/],
+    optimizeDeps: { exclude: ['@php-wasm/web'] },
+    worker: { format: 'es' },
+  },
 });

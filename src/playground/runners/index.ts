@@ -1,10 +1,11 @@
 // Registry of runners. Adding a language = adding a runner here (and its starters).
 import type { LanguageId, Runner } from '../types.ts';
 import { createJsRunner } from './js.ts';
+import { createPhpRunner } from './php.ts';
 
 const factories: Record<LanguageId, (() => Runner) | undefined> = {
   js: createJsRunner,
-  php: undefined,
+  php: createPhpRunner,
 };
 
 const cache = new Map<LanguageId, Runner>();

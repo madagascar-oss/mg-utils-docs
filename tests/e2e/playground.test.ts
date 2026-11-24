@@ -1,4 +1,11 @@
 import { expect, test } from '@playwright/test';
+import lzString from 'lz-string';
+
+/** Opens the playground with the given code, the way a share link does. */
+function playUrl(language: 'js' | 'php', module: string, code: string): string {
+  const payload = JSON.stringify({ l: language, m: module, c: code });
+  return `play/#v1:${lzString.compressToEncodedURIComponent(payload)}`;
+}
 
 test('runs the JavaScript starter for every module', async ({ page }) => {
   const expected = {
@@ -61,4 +68,34 @@ test('a Try it widget updates and opens the playground', async ({ page }) => {
   await expect(result).toContainText('dimanjato sy arivo ariary');
   await page.getByRole('link', { name: /Open in the playground/ }).click();
   await expect(page.getByTestId('output')).toContainText('Ar 1 500');
+});
+
+test.describe('PHP', () => {
+  // The first PHP run downloads the runtime (~8 MB).
+  test.setTimeout(120_000);
+
+  test('prints the same results as JavaScript for every module', async ({ page }) => {
+    await page.goto('play/');
+    const output = page.getByTestId('output');
+    await expect(output).toContainText('iraika amby roapolo');
+    for (const module of ['words', 'phone', 'ariary', 'date']) {
+      await page.getByRole('radio', { name: 'JavaScript' }).click();
+      await page.selectOption('#play-module', module);
+      await expect(output).not.toContainText('Run the code');
+      await expect(page.getByText(/Ran in/)).toBeVisible();
+      const javascript = (await output.innerText()).trim();
+
+      await page.getByRole('radio', { name: 'PHP' }).click();
+      await expect
+        .poll(async () => (await output.innerText()).trim(), { timeout: 90_000 })
+        .toBe(javascript);
+    }
+  });
+
+  test('reports the spec error code of an uncaught exception', async ({ page }) => {
+    const code =
+      "<?php\n\nuse Madagascar\\MgUtils\\Ariary\\Ariary;\n\necho Ariary::parse('1,500')->amount;\n";
+    await page.goto(playUrl('php', 'ariary', code));
+    await expect(page.getByTestId('error')).toContainText('INVALID_FORMAT', { timeout: 90_000 });
+  });
 });

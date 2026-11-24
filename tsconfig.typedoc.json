@@ -12,7 +12,10 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": []
+    "types": [],
+    "paths": {
+      "@madagascar-oss/*": ["./ports/js/packages/*/src/index.ts"]
+    }
   },
   "include": [
     "ports/js/packages/words/src/**/*.ts",

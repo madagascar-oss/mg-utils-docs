@@ -26,7 +26,7 @@ interface Props {
   readonly text: PlaygroundText;
   readonly homeHref: string;
   readonly docsHref: string;
-  readonly logoSrc: string;
+  readonly logo: { readonly light: string; readonly dark: string };
 }
 
 const AUTO_RUN_DELAY_MS = 400;
@@ -56,7 +56,7 @@ function useDarkMode(): boolean {
   return dark;
 }
 
-export default function Playground({ text, homeHref, docsHref, logoSrc }: Props) {
+export default function Playground({ text, homeHref, docsHref, logo }: Props) {
   const [state, setState] = useState(initialState);
   const [result, setResult] = useState<RunResult | undefined>(undefined);
   const [busy, setBusy] = useState(false);
@@ -103,7 +103,7 @@ export default function Playground({ text, homeHref, docsHref, logoSrc }: Props)
     <div className="flex h-dvh flex-col bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100">
       <header className="flex flex-wrap items-center gap-3 border-b border-gray-200 px-4 py-2.5 dark:border-gray-800">
         <a href={homeHref} className="flex items-center gap-2 font-semibold">
-          <img src={logoSrc} alt="" width="28" height="28" />
+          <img src={dark ? logo.dark : logo.light} alt="" width="42" height="28" />
           <span>mg-utils</span>
         </a>
         <span className="text-sm text-gray-500 dark:text-gray-400">{text.title}</span>

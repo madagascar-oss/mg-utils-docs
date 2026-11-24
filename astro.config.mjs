@@ -18,8 +18,38 @@ export default defineConfig({
       title: 'mg-utils',
       description:
         'Malagasy number words, Madagascar phone numbers, Ariary amounts and dates — the same in every language.',
-      logo: { src: './src/assets/logo.svg' },
-      favicon: '/favicon.svg',
+      // Madagascar OSS brand kit: the ravinala mark, green on light, light green on dark.
+      logo: {
+        light: './src/assets/brand/mark-green.svg',
+        dark: './src/assets/brand/mark-light-green.svg',
+      },
+      favicon: '/brand/favicon-32.png',
+      head: [
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'icon',
+            type: 'image/png',
+            sizes: '192x192',
+            href: '/mg-utils-docs/brand/favicon-192.png',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: { rel: 'apple-touch-icon', href: '/mg-utils-docs/brand/favicon-180.png' },
+        },
+        { tag: 'meta', attrs: { name: 'theme-color', content: '#08432D' } },
+        {
+          tag: 'meta',
+          attrs: {
+            property: 'og:image',
+            content: 'https://madagascar-oss.github.io/mg-utils-docs/brand/social-banner.png',
+          },
+        },
+        { tag: 'meta', attrs: { property: 'og:image:width', content: '1280' } },
+        { tag: 'meta', attrs: { property: 'og:image:height', content: '640' } },
+        { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
+      ],
       defaultLocale: 'root',
       locales: {
         root: { label: 'English', lang: 'en' },

@@ -1,0 +1,131 @@
+---
+title: Montants en ariary
+description: Formater les montants en ariary (MGA), lire les montants saisis, les écrire en lettres et convertir les anciens francs malgaches (FMG).
+kicker: Modules
+---
+
+{/* Traduction française. Les blocs de code sont identiques à la page anglaise. */}
+import { Aside, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiTable from '../../../../../components/ApiTable.astro';
+import TryItBox from '../../../../../components/TryItBox.astro';
+
+## Essayer
+
+<TryItBox module="ariary" />
+
+## Référence rapide
+
+<ApiTable module="ariary" />
+
+## Formatage
+
+Les montants sont en ariary entiers, groupés par milliers avec une espace insécable (ou un point). La virgule n’est jamais un séparateur de milliers.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { formatAriary } from '@madagascar-oss/ariary';
+
+    formatAriary(1500); // 'Ar 1 500'
+    formatAriary(1500, { grouping: 'dot' }); // 'Ar 1.500'
+    formatAriary(1500, { symbolPosition: 'after' }); // '1 500 Ar'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Ariary\Ariary;
+    use Madagascar\MgUtils\Ariary\Grouping;
+    use Madagascar\MgUtils\Ariary\SymbolPosition;
+
+    Ariary::fromInt(1500)->format(); // 'Ar 1 500'
+    Ariary::fromInt(1500)->format(Grouping::Dot); // 'Ar 1.500'
+    Ariary::fromInt(1500)->format(position: SymbolPosition::After); // '1 500 Ar'
+    ```
+  </TabItem>
+</Tabs>
+
+<Aside>Les espaces du résultat sont insécables (U+00A0) : un montant n’est jamais coupé sur deux lignes.</Aside>
+
+## Lire les montants saisis
+
+`Ar 1 500`, `1.500 Ar`, `MGA 1500` et `1 500` valent tous 1500. Les virgules, décimales et signes sont refusés.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { parseAriary, safeParseAriary, tryParseAriary } from '@madagascar-oss/ariary';
+
+    parseAriary('1.500 Ar'); // 1500
+    parseAriary('MGA 1500'); // 1500
+
+    tryParseAriary('1,500'); // undefined
+    const result = safeParseAriary('1,500');
+    if (!result.success) result.error.code; // 'INVALID_FORMAT'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    Ariary::parse('1.500 Ar')->amount; // 1500
+    Ariary::parse('MGA 1500')->amount; // 1500
+
+    Ariary::tryParse('1,500'); // null
+    Ariary::safeParse('1,500')->error?->errorCode; // ErrorCode::InvalidFormat
+    ```
+  </TabItem>
+</Tabs>
+
+## Montants en lettres
+
+Pour les reçus et les chèques : le montant en lettres malgaches suivi de `ariary`.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { ariaryToWords } from '@madagascar-oss/ariary';
+
+    ariaryToWords(1500); // 'dimanjato sy arivo ariary'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    Ariary::fromInt(1500)->toWords(); // 'dimanjato sy arivo ariary'
+    ```
+  </TabItem>
+</Tabs>
+
+## Anciens francs malgaches (FMG)
+
+5 FMG = 1 Ar. Les montants en francs non divisibles par 5 sont refusés plutôt qu’arrondis.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { ariaryToFmg, fmgToAriary, formatFmg } from '@madagascar-oss/ariary';
+
+    fmgToAriary(7500); // 1500
+    ariaryToFmg(1500); // 7500
+    formatFmg(7500); // 'Fmg 7 500'
+    fmgToAriary(7501); // throws MgError OUT_OF_RANGE
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    Ariary::fromFmg(7500)->amount; // 1500
+    Ariary::fromInt(1500)->toFmg(); // 7500
+    Ariary::formatFmg(7500); // 'Fmg 7 500'
+    Ariary::fromFmg(7501); // throws MgUtilsException, ErrorCode::OutOfRange
+    ```
+  </TabItem>
+</Tabs>
+
+## Erreurs
+
+| Entrée                                                 | Code d’erreur       |
+| ----------------------------------------------------- | ---------------- |
+| Pas un nombre entier, ou options qui ne sont pas un objet | `INVALID_TYPE`   |
+| Texte avec virgules, décimales ou signes                   | `INVALID_FORMAT` |
+| Inférieur à 0, supérieur à 999 999 999 999, ou FMG non divisible par 5 | `OUT_OF_RANGE` |
+
+## Règles et sources
+
+<LinkCard title="Montants en ariary : règles et sources" description="Groupement, symboles, taux FMG et décisions consignées." href="/mg-utils-docs/fr/docs/ariary/rules/" />

@@ -1,0 +1,16 @@
+/* Playground page: full Tailwind, same tokens as the docs. */
+@import 'tailwindcss';
+@import './tokens.css';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+}

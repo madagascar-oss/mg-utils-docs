@@ -1,0 +1,134 @@
+---
+title: Numéros de téléphone
+description: Lire, vérifier et formater les numéros mobiles malgaches (+261) écrits de toutes les façons courantes, et connaître leur opérateur.
+kicker: Modules
+---
+
+{/* Traduction française. Les blocs de code sont identiques à la page anglaise. */}
+import { LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiTable from '../../../../../components/ApiTable.astro';
+import TryItBox from '../../../../../components/TryItBox.astro';
+
+## Essayer
+
+<TryItBox module="phone" />
+
+## Référence rapide
+
+<ApiTable module="phone" />
+
+## Utilisation de base
+
+Espaces, tirets, points, parenthèses, `+261`, `00261` et le `0` initial sont tous acceptés.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { parsePhoneNumber } from '@madagascar-oss/phone';
+
+    parsePhoneNumber('034 12 345 67');
+    // { e164: '+261341234567', nationalNumber: '341234567', operator: 'telma' }
+
+    parsePhoneNumber('+261 32 12 345 67').operator; // 'orange'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Phone\PhoneNumber;
+
+    $phone = PhoneNumber::parse('034 12 345 67');
+    $phone->e164;           // '+261341234567'
+    $phone->nationalNumber; // '341234567'
+    $phone->operator;       // Operator::Telma
+
+    PhoneNumber::parse('+261 32 12 345 67')->operator; // Operator::Orange
+    ```
+  </TabItem>
+</Tabs>
+
+## Formatage
+
+Trois formats : `e164` pour le stockage et les API, `international` pour l’étranger, `national` pour Madagascar.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { formatPhoneNumber } from '@madagascar-oss/phone';
+
+    formatPhoneNumber('034 12 345 67', 'e164'); // '+261341234567'
+    formatPhoneNumber('034 12 345 67', 'international'); // '+261 34 12 345 67'
+    formatPhoneNumber('+261341234567', 'national'); // '034 12 345 67'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Phone\PhoneNumber;
+    use Madagascar\MgUtils\Phone\PhoneNumberFormat;
+
+    $phone = PhoneNumber::parse('034 12 345 67');
+    $phone->format(PhoneNumberFormat::E164);          // '+261341234567'
+    $phone->format(PhoneNumberFormat::International); // '+261 34 12 345 67'
+    $phone->format(PhoneNumberFormat::National);      // '034 12 345 67'
+    ```
+  </TabItem>
+</Tabs>
+
+## Noms des opérateurs
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { OPERATOR_NAMES, parsePhoneNumber } from '@madagascar-oss/phone';
+
+    OPERATOR_NAMES[parsePhoneNumber('034 12 345 67').operator]; // 'Telma'
+    OPERATOR_NAMES.orange; // 'Orange Madagascar'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    PhoneNumber::parse('034 12 345 67')->operator->displayName(); // 'Telma'
+    Operator::Orange->displayName(); // 'Orange Madagascar'
+    ```
+  </TabItem>
+</Tabs>
+
+## Vérifier une saisie
+
+`isValid` ne lève jamais d’erreur. `safeParse` indique pourquoi un numéro est refusé, `tryParse` renvoie le numéro ou rien.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { isValidPhoneNumber, safeParsePhoneNumber, tryParsePhoneNumber } from '@madagascar-oss/phone';
+
+    isValidPhoneNumber('035 12 345 67'); // false
+
+    const result = safeParsePhoneNumber('035 12 345 67');
+    if (!result.success) result.error.code; // 'UNKNOWN_OPERATOR'
+
+    tryParsePhoneNumber('035 12 345 67'); // undefined
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    PhoneNumber::isValid('035 12 345 67'); // false
+
+    $result = PhoneNumber::safeParse('035 12 345 67');
+    $result->error?->errorCode; // ErrorCode::UnknownOperator
+
+    PhoneNumber::tryParse('035 12 345 67'); // null
+    ```
+  </TabItem>
+</Tabs>
+
+## Erreurs
+
+| Entrée                                              | Code d’erreur         |
+| -------------------------------------------------- | ------------------ |
+| Pas une chaîne                                       | `INVALID_TYPE`     |
+| Pas un numéro mobile malgache (longueur, lettres) | `INVALID_FORMAT` |
+| Préfixe non attribué à un opérateur (`035`)  | `UNKNOWN_OPERATOR` |
+
+## Règles et sources
+
+<LinkCard title="Numéros de téléphone : règles et sources" description="Écritures acceptées, préfixes des opérateurs et sources du régulateur." href="/mg-utils-docs/fr/docs/phone/rules/" />

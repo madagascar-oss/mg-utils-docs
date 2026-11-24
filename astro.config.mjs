@@ -2,7 +2,10 @@
 import react from '@astrojs/react';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
+import starlightLinksValidator from 'starlight-links-validator';
+import starlightTypeDoc from 'starlight-typedoc';
 import { defineConfig } from 'astro/config';
+import { URL, fileURLToPath } from 'node:url';
 import { sidebar } from './src/config/sidebar.ts';
 
 // Served from GitHub Pages under /mg-utils-docs/. With a custom domain, drop `base`.
@@ -42,10 +45,58 @@ export default defineConfig({
       },
       expressiveCode: { defaultProps: { wrap: true } },
       editLink: { baseUrl: 'https://github.com/madagascar-oss/mg-utils-docs/edit/dev/' },
+      plugins: [
+        // JS API reference generated from the TSDoc comments of the JS port (every export has one).
+        starlightTypeDoc({
+          entryPoints: ['words', 'phone', 'ariary', 'date'].map(
+            (module) => `./ports/js/packages/${module}/src/index.ts`,
+          ),
+          tsconfig: './tsconfig.typedoc.json',
+          output: 'docs/reference/js',
+          sidebar: { label: 'JavaScript API', collapsed: true },
+          typeDoc: {
+            excludeExternals: true,
+            // One page per package, every export on it, titled with the npm name.
+            router: 'module',
+            pageTitleTemplates: { module: '@madagascar-oss/{name}' },
+            disableSources: true,
+            plugin: ['./scripts/typedoc-module-names.mjs'],
+          },
+        }),
+        // /play/ is an Astro page, which the validator cannot see; its own e2e tests cover it.
+        // Rules pages exist in English only; translated pages link to their English fallback.
+        starlightLinksValidator({
+          exclude: ['/mg-utils-docs/play/', '/mg-utils-docs/{mg,fr}/play/'],
+          errorOnFallbackPages: false,
+        }),
+      ],
       sidebar,
       routeMiddleware: './src/route-middleware.ts',
     }),
     react(),
   ],
-  vite: { plugins: [tailwindcss()] },
+  vite: {
+    plugins: [tailwindcss()],
+    // php-wasm (playground PHP runner): ship only PHP 8.4. Every other version is ~40 MB of
+    // WebAssembly that the bundler would otherwise emit, so those imports point at a stub.
+    resolve: {
+      alias: [
+        ...['8-5', '8-3', '8-2', '8-1', '8-0', '7-4', '5-2'].map((version) => ({
+          find: `@php-wasm/web-${version}`,
+          replacement: fileURLToPath(
+            new URL('./src/playground/stubs/php-version.ts', import.meta.url),
+          ),
+        })),
+        {
+          find: /^.*(icu\.dat|intl\.so\?url)$/,
+          replacement: fileURLToPath(
+            new URL('./src/playground/stubs/empty-asset.ts', import.meta.url),
+          ),
+        },
+      ],
+    },
+    assetsInclude: [/\.dat$/, /\.so$/, /\.la$/],
+    optimizeDeps: { exclude: ['@php-wasm/web'] },
+    worker: { format: 'es' },
+  },
 });

@@ -1,0 +1,67 @@
+---
+title: PHP API
+description: Every public class and method of madagascar-oss/mg-utils, by module. All classes live under the Madagascar\MgUtils namespace.
+kicker: Reference
+---
+
+## Words
+
+| Method                              | Returns  | Throws                        |
+| ----------------------------------- | -------- | ----------------------------- |
+| `Words\NumberWords::fromInt(int $n)` | `string` | `OUT_OF_RANGE`                |
+
+## Phone
+
+| Method                                                    | Returns                         | Throws                               |
+| --------------------------------------------------------- | ------------------------------- | ------------------------------------ |
+| `Phone\PhoneNumber::parse(string $input)`                 | `PhoneNumber`                   | `INVALID_FORMAT`, `UNKNOWN_OPERATOR` |
+| `Phone\PhoneNumber::safeParse(mixed $input)`              | `SafeParseResult<PhoneNumber>`  | never                                |
+| `Phone\PhoneNumber::tryParse(string $input)`              | `?PhoneNumber`                  | never                                |
+| `Phone\PhoneNumber::isValid(mixed $input)`                | `bool`                          | never                                |
+| `$phone->format(PhoneNumberFormat $format)`               | `string`                        | never                                |
+| `$phone->e164`, `$phone->nationalNumber`, `$phone->operator` | `string`, `string`, `Operator` | —                                    |
+| `Phone\Operator::displayName()`                           | `string`                        | never                                |
+
+Enums: `PhoneNumberFormat` (`E164`, `International`, `National`), `Operator` (`Orange`, `Airtel`, `Telma`, `Blueline`).
+
+## Ariary
+
+| Method                                                                 | Returns                    | Throws                           |
+| ---------------------------------------------------------------------- | -------------------------- | -------------------------------- |
+| `Ariary\Ariary::fromInt(int $amount)`                                  | `Ariary`                   | `OUT_OF_RANGE`                   |
+| `Ariary\Ariary::parse(string $text)`                                   | `Ariary`                   | `INVALID_FORMAT`, `OUT_OF_RANGE` |
+| `Ariary\Ariary::safeParse(mixed $text)`                                | `SafeParseResult<Ariary>`  | never                            |
+| `Ariary\Ariary::tryParse(string $text)`                                | `?Ariary`                  | never                            |
+| `Ariary\Ariary::fromFmg(int $francs)`                                  | `Ariary`                   | `OUT_OF_RANGE`                   |
+| `Ariary\Ariary::formatFmg(int $francs, ?Grouping, SymbolPosition)`     | `string`                   | `OUT_OF_RANGE`                   |
+| `$amount->format(?Grouping $grouping, SymbolPosition $position)`       | `string`                   | never                            |
+| `$amount->toWords()`                                                   | `string`                   | never                            |
+| `$amount->toFmg()`                                                     | `int`                      | never                            |
+| `$amount->amount`                                                      | `int`                      | —                                |
+
+Enums: `Grouping` (`Space`, `Dot`), `SymbolPosition` (`Before`, `After`).
+
+## Date
+
+| Method                                                          | Returns        | Throws                         |
+| --------------------------------------------------------------- | -------------- | ------------------------------ |
+| `Date\MalagasyDate::fromString(string $text)`                   | `MalagasyDate` | `INVALID_FORMAT`, `OUT_OF_RANGE` |
+| `Date\MalagasyDate::fromParts(int $year, int $month, int $day)` | `MalagasyDate` | `OUT_OF_RANGE`                 |
+| `Date\MalagasyDate::fromDateTime(DateTimeInterface $date)`      | `MalagasyDate` | `OUT_OF_RANGE`                 |
+| `Date\MalagasyDate::monthName(int $month, NameWidth $width)`    | `string`       | `OUT_OF_RANGE`                 |
+| `Date\MalagasyDate::weekdayName(int $isoWeekday, NameWidth $width)` | `string`   | `OUT_OF_RANGE`                 |
+| `$date->format(?DateStyle $style)`                              | `string`       | never                          |
+| `$date->isoWeekday()`                                           | `int` (1–7)    | never                          |
+
+Enums: `DateStyle` (`Long`, `Full`, `Medium`, `Short`, `Numeric`), `NameWidth` (`Wide`, `Abbreviated`).
+
+## Shared
+
+| Class                       | Purpose                                                          |
+| --------------------------- | ---------------------------------------------------------------- |
+| `MgUtilsException`          | Thrown on bad input; `->errorCode` is an `ErrorCode`             |
+| `ErrorCode`                 | `InvalidType`, `OutOfRange`, `InvalidFormat`, `UnknownOperator`  |
+| `SafeParseResult`           | `->success`, `->data`, `->error` from every `safeParse()`        |
+| `Spec::VERSION`             | The spec version this package implements                         |
+
+Wrong argument types raise PHP's own `TypeError`; the spec reports them as `INVALID_TYPE`.

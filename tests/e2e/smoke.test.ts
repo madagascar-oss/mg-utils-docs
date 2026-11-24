@@ -32,6 +32,48 @@ test('header links to docs, playground and spec', async ({ page, isMobile }) => 
   const nav = page.getByRole('navigation', { name: 'Site' });
   await nav.getByRole('link', { name: 'Play' }).click();
   await expect(page).toHaveURL(/\/play\/$/);
+  await page.goBack();
   await nav.getByRole('link', { name: 'Spec' }).click();
   await expect(page).toHaveURL(/\/docs\/spec\/$/);
+});
+
+for (const module of ['words', 'phone', 'ariary', 'date']) {
+  test(`${module}: usage page, rules page and JS reference`, async ({ page }) => {
+    await page.goto(`docs/${module}/`);
+    await expect(page.locator('.mg-kicker')).toHaveText('Modules');
+    await expect(page.locator('table.mg-api tr').first()).toBeVisible();
+
+    await page.goto(`docs/${module}/rules/`);
+    await expect(page.getByRole('heading', { level: 2, name: 'Rules' })).toBeVisible();
+
+    await page.goto(`docs/reference/js/${module}/`);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(`@madagascar-oss/${module}`);
+  });
+}
+
+test('the language tab choice is shared across code blocks', async ({ page }) => {
+  await page.goto('docs/ariary/');
+  await page.getByRole('tab', { name: 'PHP' }).first().click();
+  await expect(page.getByText('Ariary::fromInt(1500)->toWords()').first()).toBeVisible();
+});
+
+test('translated pages are written in their language', async ({ page }) => {
+  await page.goto('mg/docs/phone/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Laharan-telefaonina');
+  await expect(page.getByText('Ato amin’ity pejy ity').first()).toBeAttached();
+  await page.goto('fr/docs/installation/using-composer/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Bien démarrer avec mg-utils pour PHP',
+  );
+  await expect(page.getByRole('link', { name: /Avec Composer/ })).toHaveAttribute(
+    'aria-current',
+    'page',
+  );
+});
+
+test('untranslated pages fall back to English with a notice', async ({ page }) => {
+  await page.goto('fr/docs/phone/rules/');
+  await expect(
+    page.getByText('Ce contenu n’est pas encore disponible dans votre langue.'),
+  ).toBeVisible();
 });

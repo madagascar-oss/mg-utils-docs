@@ -20,3 +20,7 @@ playwright-report/
 # Generated from the port submodules at build time
 public/js/
 public/php/
+# Generated from spec/ by scripts/sync-spec.ts
+src/generated/
+src/content/docs/docs/*/rules.md
+src/content/docs/docs/reference/js/

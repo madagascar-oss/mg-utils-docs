@@ -1,0 +1,92 @@
+---
+title: Parsing and errors
+description: Every mg-utils function rejects bad input with the same four error codes in every language. Parsers come in three forms, so you choose between exceptions, error codes and plain absence.
+kicker: Getting started
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Error codes
+
+| Code               | Meaning                                                        |
+| ------------------ | -------------------------------------------------------------- |
+| `INVALID_TYPE`     | The input has the wrong type, e.g. a number where text is expected |
+| `OUT_OF_RANGE`     | The value is outside what the module supports                  |
+| `INVALID_FORMAT`   | Text that cannot be read, e.g. `1,500` as an amount            |
+| `UNKNOWN_OPERATOR` | A mobile prefix not assigned to any Malagasy operator          |
+
+The codes are defined once in the spec, so a browser and a PHP server reject the same input with the same code.
+
+## Catching errors
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    Every package throws `MgError`. Check `error.code`.
+
+    ```ts
+    import { MgError, parseAriary } from '@madagascar-oss/ariary';
+
+    try {
+      parseAriary('1,500');
+    } catch (error) {
+      if (error instanceof MgError) error.code; // 'INVALID_FORMAT'
+    }
+    ```
+
+    `instanceof MgError` works across packages and across duplicated copies of a package.
+  </TabItem>
+  <TabItem label="PHP">
+    Every class throws `MgUtilsException` (an `InvalidArgumentException`). Check `errorCode`.
+
+    ```php
+    use Madagascar\MgUtils\Ariary\Ariary;
+    use Madagascar\MgUtils\ErrorCode;
+    use Madagascar\MgUtils\MgUtilsException;
+
+    try {
+        Ariary::parse('1,500');
+    } catch (MgUtilsException $exception) {
+        $exception->errorCode === ErrorCode::InvalidFormat; // true
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## Three ways to parse
+
+Functions that read text typed by users — phone numbers and Ariary amounts — come in three forms.
+
+| Form        | On bad input                     | Use it when                               |
+| ----------- | -------------------------------- | ----------------------------------------- |
+| `parse`     | throws                           | bad input is a bug in your code           |
+| `safeParse` | returns `{ success: false, error }` | you show the user why the input was rejected |
+| `tryParse`  | returns nothing (`undefined` / `null`) | you only need to know whether it worked |
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { parsePhoneNumber, safeParsePhoneNumber, tryParsePhoneNumber } from '@madagascar-oss/phone';
+
+    parsePhoneNumber('035 12 345 67'); // throws MgError UNKNOWN_OPERATOR
+
+    const result = safeParsePhoneNumber('035 12 345 67');
+    result.success; // false
+    if (!result.success) result.error.code; // 'UNKNOWN_OPERATOR'
+
+    tryParsePhoneNumber('035 12 345 67'); // undefined
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Phone\PhoneNumber;
+
+    PhoneNumber::parse('035 12 345 67'); // throws MgUtilsException UNKNOWN_OPERATOR
+
+    $result = PhoneNumber::safeParse('035 12 345 67');
+    $result->success;           // false
+    $result->error?->errorCode; // ErrorCode::UnknownOperator
+
+    PhoneNumber::tryParse('035 12 345 67'); // null
+    ```
+  </TabItem>
+</Tabs>

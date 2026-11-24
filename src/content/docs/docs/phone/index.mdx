@@ -1,0 +1,133 @@
+---
+title: Phone numbers
+description: Read, check and format Madagascar (+261) mobile numbers written in any common way, and know the operator of each one.
+kicker: Modules
+---
+
+import { LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiTable from '../../../../components/ApiTable.astro';
+import TryItBox from '../../../../components/TryItBox.astro';
+
+## Try it
+
+<TryItBox module="phone" />
+
+## Quick reference
+
+<ApiTable module="phone" />
+
+## Basic usage
+
+Spaces, dashes, dots, parentheses, `+261`, `00261` and the leading `0` are all accepted.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { parsePhoneNumber } from '@madagascar-oss/phone';
+
+    parsePhoneNumber('034 12 345 67');
+    // { e164: '+261341234567', nationalNumber: '341234567', operator: 'telma' }
+
+    parsePhoneNumber('+261 32 12 345 67').operator; // 'orange'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Phone\PhoneNumber;
+
+    $phone = PhoneNumber::parse('034 12 345 67');
+    $phone->e164;           // '+261341234567'
+    $phone->nationalNumber; // '341234567'
+    $phone->operator;       // Operator::Telma
+
+    PhoneNumber::parse('+261 32 12 345 67')->operator; // Operator::Orange
+    ```
+  </TabItem>
+</Tabs>
+
+## Formatting
+
+Three formats: `e164` for storage and APIs, `international` for people abroad, `national` for people in Madagascar.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { formatPhoneNumber } from '@madagascar-oss/phone';
+
+    formatPhoneNumber('034 12 345 67', 'e164'); // '+261341234567'
+    formatPhoneNumber('034 12 345 67', 'international'); // '+261 34 12 345 67'
+    formatPhoneNumber('+261341234567', 'national'); // '034 12 345 67'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Phone\PhoneNumber;
+    use Madagascar\MgUtils\Phone\PhoneNumberFormat;
+
+    $phone = PhoneNumber::parse('034 12 345 67');
+    $phone->format(PhoneNumberFormat::E164);          // '+261341234567'
+    $phone->format(PhoneNumberFormat::International); // '+261 34 12 345 67'
+    $phone->format(PhoneNumberFormat::National);      // '034 12 345 67'
+    ```
+  </TabItem>
+</Tabs>
+
+## Operator names
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { OPERATOR_NAMES, parsePhoneNumber } from '@madagascar-oss/phone';
+
+    OPERATOR_NAMES[parsePhoneNumber('034 12 345 67').operator]; // 'Telma'
+    OPERATOR_NAMES.orange; // 'Orange Madagascar'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    PhoneNumber::parse('034 12 345 67')->operator->displayName(); // 'Telma'
+    Operator::Orange->displayName(); // 'Orange Madagascar'
+    ```
+  </TabItem>
+</Tabs>
+
+## Checking user input
+
+`isValid` never throws. `safeParse` tells you why a number was rejected, `tryParse` gives you the number or nothing.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { isValidPhoneNumber, safeParsePhoneNumber, tryParsePhoneNumber } from '@madagascar-oss/phone';
+
+    isValidPhoneNumber('035 12 345 67'); // false
+
+    const result = safeParsePhoneNumber('035 12 345 67');
+    if (!result.success) result.error.code; // 'UNKNOWN_OPERATOR'
+
+    tryParsePhoneNumber('035 12 345 67'); // undefined
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    PhoneNumber::isValid('035 12 345 67'); // false
+
+    $result = PhoneNumber::safeParse('035 12 345 67');
+    $result->error?->errorCode; // ErrorCode::UnknownOperator
+
+    PhoneNumber::tryParse('035 12 345 67'); // null
+    ```
+  </TabItem>
+</Tabs>
+
+## Errors
+
+| Input                                              | Error code         |
+| -------------------------------------------------- | ------------------ |
+| Not a string                                       | `INVALID_TYPE`     |
+| Not a Malagasy mobile number (wrong length, letters) | `INVALID_FORMAT` |
+| Mobile prefix not assigned to an operator (`035`)  | `UNKNOWN_OPERATOR` |
+
+## Rules and sources
+
+<LinkCard title="Madagascar mobile phone numbers: rules and sources" description="Accepted spellings, operator prefixes and the regulator sources." href="/mg-utils-docs/docs/phone/rules/" />

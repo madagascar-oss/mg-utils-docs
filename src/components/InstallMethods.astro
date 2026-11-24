@@ -7,10 +7,15 @@ interface Props {
 }
 
 const locale = toLocale(Astro.locals.starlightRoute.locale);
+const labels = {
+  en: { npm: 'Using npm', utils: 'All modules (utils)', composer: 'Using Composer' },
+  mg: { npm: 'Amin’ny npm', utils: 'Môdily rehetra (utils)', composer: 'Amin’ny Composer' },
+  fr: { npm: 'Avec npm', utils: 'Tous les modules (utils)', composer: 'Avec Composer' },
+}[locale];
 const methods = [
-  { slug: 'using-npm', label: 'Using npm', language: 'JavaScript' },
-  { slug: 'using-utils-bundle', label: 'All modules (utils)', language: 'JavaScript' },
-  { slug: 'using-composer', label: 'Using Composer', language: 'PHP' },
+  { slug: 'using-npm', label: labels.npm, language: 'JavaScript' },
+  { slug: 'using-utils-bundle', label: labels.utils, language: 'JavaScript' },
+  { slug: 'using-composer', label: labels.composer, language: 'PHP' },
 ] as const;
 ---
 

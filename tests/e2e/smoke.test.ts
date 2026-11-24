@@ -32,6 +32,7 @@ test('header links to docs, playground and spec', async ({ page, isMobile }) => 
   const nav = page.getByRole('navigation', { name: 'Site' });
   await nav.getByRole('link', { name: 'Play' }).click();
   await expect(page).toHaveURL(/\/play\/$/);
+  await page.goBack();
   await nav.getByRole('link', { name: 'Spec' }).click();
   await expect(page).toHaveURL(/\/docs\/spec\/$/);
 });

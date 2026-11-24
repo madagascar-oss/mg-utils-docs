@@ -1,0 +1,24 @@
+---
+// Embeds the Try it widget in a docs page, with labels and the playground link for the page's locale.
+import TryIt from './TryIt.tsx';
+import { localePath, toLocale } from '../i18n/ui.ts';
+import type { ModuleId } from '../playground/types.ts';
+
+interface Props {
+  module: ModuleId;
+}
+
+const locale = toLocale(Astro.locals.starlightRoute.locale);
+const labels = {
+  en: { input: 'Input', result: 'Result', open: 'Open in the playground' },
+  mg: { input: 'Fampidirana', result: 'Valiny', open: 'Sokafy ao amin’ny toerana fanandramana' },
+  fr: { input: 'Entrée', result: 'Résultat', open: 'Ouvrir dans le bac à sable' },
+}[locale];
+---
+
+<TryIt
+  client:visible
+  module={Astro.props.module}
+  playHref={localePath(locale, '/play/')}
+  labels={labels}
+/>

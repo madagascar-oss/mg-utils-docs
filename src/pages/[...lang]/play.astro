@@ -1,7 +1,8 @@
 ---
 // Full-screen playground (outside the Starlight layout), one page per locale:
 // /play/, /mg/play/, /fr/play/.
-import logo from '../../assets/logo.svg';
+import logoDark from '../../assets/brand/mark-light-green.svg';
+import logoLight from '../../assets/brand/mark-green.svg';
 import { localePath, t, type Locale, type UiKey } from '../../i18n/ui.ts';
 import Playground, { type PlaygroundText } from '../../playground/Playground.tsx';
 import '../../styles/play.css';
@@ -42,7 +43,9 @@ const description = 'Try every mg-utils function live, in JavaScript and PHP.';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{text.title} | mg-utils</title>
     <meta name="description" content={description} />
-    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}brand/favicon-32.png`} type="image/png" />
+    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}brand/favicon-180.png`} />
+    <meta name="theme-color" content="#08432D" />
     <script is:inline>
       // Same theme choice as the docs (Starlight stores it under "starlight-theme").
       (() => {
@@ -65,7 +68,7 @@ const description = 'Try every mg-utils function live, in JavaScript and PHP.';
       text={text}
       homeHref={localePath(locale, '/')}
       docsHref={localePath(locale, '/docs/installation/using-npm/')}
-      logoSrc={logo.src}
+      logo={{ light: logoLight.src, dark: logoDark.src }}
     />
   </body>
 </html>

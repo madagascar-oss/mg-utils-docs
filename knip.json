@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": ["src/route-middleware.ts"],
+  "entry": ["src/route-middleware.ts", "scripts/sync-spec.ts", "scripts/typedoc-module-names.mjs"],
   "ignore": ["ports/**", "spec/**"],
   "ignoreDependencies": ["@fontsource-variable/inter", "@fontsource-variable/jetbrains-mono"]
 }

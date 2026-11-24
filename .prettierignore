@@ -7,3 +7,7 @@ public/js/
 public/php/
 # MDX with code blocks inside JSX components is formatted by hand.
 src/content/**/*.mdx
+# Generated from spec/ and ports/js by scripts/sync-spec.ts and starlight-typedoc
+src/generated/
+src/content/docs/docs/*/rules.md
+src/content/docs/docs/reference/js/

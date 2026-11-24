@@ -1,0 +1,30 @@
+---
+title: Versioning
+description: The spec and the packages follow Semantic Versioning separately. Every package states the spec version it implements, and all JavaScript packages share one version number.
+kicker: Getting started
+---
+
+## What a version number tells you
+
+- **Spec version** — the behaviour: data, rules and test vectors. Each package README says `Implements spec x.y.z`, and its CI fails if that claim does not match the vectors it passed.
+- **Package version** — the code you install. All `@madagascar-oss/*` packages share one version: `words` 0.3.0 always goes with `utils` 0.3.0.
+
+| Change                               | Spec  | Package |
+| ------------------------------------ | ----- | ------- |
+| Typo or wrong value fixed in data    | patch | patch   |
+| New data (operator, prefix, word)    | minor | minor   |
+| New helper function                  | minor | minor   |
+| Output changes for an existing input | major | major   |
+| Function renamed or removed          | —     | major   |
+| Minimum language version raised      | —     | major   |
+
+Before 1.0.0, a major change bumps the minor version instead.
+
+## Supported runtimes
+
+| Language   | Supported versions                               |
+| ---------- | ------------------------------------------------ |
+| JavaScript | Node.js 22.18+, current Deno and Bun, modern browsers |
+| PHP        | 8.3, 8.4, 8.5                                    |
+
+Dropping a runtime version is a major release.

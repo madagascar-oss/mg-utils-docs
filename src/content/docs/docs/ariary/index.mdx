@@ -1,0 +1,125 @@
+---
+title: Ariary amounts
+description: Format amounts in Malagasy Ariary (MGA), read amounts typed by users, write them in words and convert old Malagasy francs (FMG).
+kicker: Modules
+---
+
+import { Aside, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import ApiTable from '../../../../components/ApiTable.astro';
+
+## Quick reference
+
+<ApiTable module="ariary" />
+
+## Formatting
+
+Amounts are whole ariary, grouped by thousands with a no-break space (or a dot). A comma is never a thousands separator.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { formatAriary } from '@madagascar-oss/ariary';
+
+    formatAriary(1500); // 'Ar 1 500'
+    formatAriary(1500, { grouping: 'dot' }); // 'Ar 1.500'
+    formatAriary(1500, { symbolPosition: 'after' }); // '1 500 Ar'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Ariary\Ariary;
+    use Madagascar\MgUtils\Ariary\Grouping;
+    use Madagascar\MgUtils\Ariary\SymbolPosition;
+
+    Ariary::fromInt(1500)->format(); // 'Ar 1 500'
+    Ariary::fromInt(1500)->format(Grouping::Dot); // 'Ar 1.500'
+    Ariary::fromInt(1500)->format(position: SymbolPosition::After); // '1 500 Ar'
+    ```
+  </TabItem>
+</Tabs>
+
+<Aside>The spaces in the output are no-break spaces (U+00A0), so an amount never wraps across two lines.</Aside>
+
+## Reading amounts typed by users
+
+`Ar 1 500`, `1.500 Ar`, `MGA 1500` and `1 500` all read as 1500. Commas, decimals and signs are rejected.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { parseAriary, safeParseAriary, tryParseAriary } from '@madagascar-oss/ariary';
+
+    parseAriary('1.500 Ar'); // 1500
+    parseAriary('MGA 1500'); // 1500
+
+    tryParseAriary('1,500'); // undefined
+    const result = safeParseAriary('1,500');
+    if (!result.success) result.error.code; // 'INVALID_FORMAT'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    Ariary::parse('1.500 Ar')->amount; // 1500
+    Ariary::parse('MGA 1500')->amount; // 1500
+
+    Ariary::tryParse('1,500'); // null
+    Ariary::safeParse('1,500')->error?->errorCode; // ErrorCode::InvalidFormat
+    ```
+  </TabItem>
+</Tabs>
+
+## Amounts in words
+
+For receipts and cheques: the amount in Malagasy words followed by `ariary`.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { ariaryToWords } from '@madagascar-oss/ariary';
+
+    ariaryToWords(1500); // 'dimanjato sy arivo ariary'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    Ariary::fromInt(1500)->toWords(); // 'dimanjato sy arivo ariary'
+    ```
+  </TabItem>
+</Tabs>
+
+## Old Malagasy francs (FMG)
+
+5 FMG = 1 Ar. Francs that do not divide by 5 are rejected rather than rounded.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { ariaryToFmg, fmgToAriary, formatFmg } from '@madagascar-oss/ariary';
+
+    fmgToAriary(7500); // 1500
+    ariaryToFmg(1500); // 7500
+    formatFmg(7500); // 'Fmg 7 500'
+    fmgToAriary(7501); // throws MgError OUT_OF_RANGE
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    Ariary::fromFmg(7500)->amount; // 1500
+    Ariary::fromInt(1500)->toFmg(); // 7500
+    Ariary::formatFmg(7500); // 'Fmg 7 500'
+    Ariary::fromFmg(7501); // throws MgUtilsException, ErrorCode::OutOfRange
+    ```
+  </TabItem>
+</Tabs>
+
+## Errors
+
+| Input                                                 | Error code       |
+| ----------------------------------------------------- | ---------------- |
+| Not a whole number, or options that are not an object | `INVALID_TYPE`   |
+| Text with commas, decimals or signs                   | `INVALID_FORMAT` |
+| Below 0, above 999 999 999 999, or FMG not divisible by 5 | `OUT_OF_RANGE` |
+
+## Rules and sources
+
+<LinkCard title="Malagasy Ariary amounts: rules and sources" description="Grouping, symbols, the FMG rate and recorded decisions." href="/mg-utils-docs/docs/ariary/rules/" />

@@ -7,15 +7,16 @@
     "node": ">=22.18.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "pnpm sync && astro dev",
+    "build": "pnpm sync && astro build",
     "preview": "astro preview",
-    "check": "astro check",
-    "lint": "prettier --check . && eslint . && astro check && knip",
+    "check": "pnpm sync && astro check",
+    "lint": "pnpm sync && prettier --check . && eslint . && astro check && knip",
     "format": "prettier --write . && eslint --fix .",
     "test:e2e": "playwright test",
     "hooks": "lefthook install",
-    "astro": "astro"
+    "astro": "astro",
+    "sync": "node scripts/sync-spec.ts"
   },
   "dependencies": {
     "@astrojs/react": "7.1.9",
@@ -42,6 +43,10 @@
     "lefthook": "2.2.2",
     "prettier": "3.10.1",
     "prettier-plugin-astro": "1.1.2",
+    "starlight-links-validator": "0.27.0",
+    "starlight-typedoc": "0.23.3",
+    "typedoc": "0.28.20",
+    "typedoc-plugin-markdown": "4.14.1",
     "typescript": "6.0.3",
     "typescript-eslint": "8.74.0"
   },

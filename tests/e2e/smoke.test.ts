@@ -35,3 +35,23 @@ test('header links to docs, playground and spec', async ({ page, isMobile }) => 
   await nav.getByRole('link', { name: 'Spec' }).click();
   await expect(page).toHaveURL(/\/docs\/spec\/$/);
 });
+
+for (const module of ['words', 'phone', 'ariary', 'date']) {
+  test(`${module}: usage page, rules page and JS reference`, async ({ page }) => {
+    await page.goto(`docs/${module}/`);
+    await expect(page.locator('.mg-kicker')).toHaveText('Modules');
+    await expect(page.locator('table.mg-api tr').first()).toBeVisible();
+
+    await page.goto(`docs/${module}/rules/`);
+    await expect(page.getByRole('heading', { level: 2, name: 'Rules' })).toBeVisible();
+
+    await page.goto(`docs/reference/js/${module}/`);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(`@madagascar-oss/${module}`);
+  });
+}
+
+test('the language tab choice is shared across code blocks', async ({ page }) => {
+  await page.goto('docs/ariary/');
+  await page.getByRole('tab', { name: 'PHP' }).first().click();
+  await expect(page.getByText('Ariary::fromInt(1500)->toWords()').first()).toBeVisible();
+});

@@ -1,0 +1,73 @@
+---
+// A module's Public API table from the spec, as two-column tables in synced JavaScript | PHP tabs.
+import { TabItem, Tabs } from '@astrojs/starlight/components';
+import ariary from '../generated/api/ariary.json';
+import date from '../generated/api/date.json';
+import phone from '../generated/api/phone.json';
+import words from '../generated/api/words.json';
+
+interface Props {
+  module: 'words' | 'phone' | 'ariary' | 'date';
+}
+
+const rowsByModule = { words, phone, ariary, date };
+const rows = rowsByModule[Astro.props.module];
+
+/** Spec cells are short Markdown: escape HTML, then turn `code` spans into <code>. */
+function inline(markdown: string): string {
+  const escaped = markdown.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+  return escaped.replace(/`([^`]+)`/g, '<code>$1</code>');
+}
+
+const languages = [
+  { label: 'JavaScript', key: 'js' },
+  { label: 'PHP', key: 'php' },
+] as const;
+---
+
+<Tabs syncKey="language">
+  {languages.map((language) => (
+    <TabItem label={language.label}>
+      <table class="mg-api">
+        <tbody>
+          {rows.map((row) => (
+            <tr>
+              <td class="mg-api-call" set:html={inline(row[language.key])} />
+              <td class="mg-api-does" set:html={inline(row.does)} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </TabItem>
+  ))}
+</Tabs>
+
+<style>
+  .mg-api {
+    display: table;
+    width: 100%;
+    font-size: var(--sl-text-sm);
+  }
+
+  .mg-api td {
+    vertical-align: top;
+    padding-block: 0.6rem;
+    border-bottom: 1px solid var(--mg-grid-line);
+  }
+
+  .mg-api-call {
+    width: 55%;
+    padding-inline-end: 1rem;
+  }
+
+  .mg-api-call :global(code) {
+    color: var(--sl-color-accent-high);
+    background: transparent;
+    padding: 0;
+    white-space: normal;
+  }
+
+  .mg-api-does {
+    color: var(--sl-color-gray-2);
+  }
+</style>

@@ -1,19 +1,32 @@
-// Highlight a sidebar link for every page under its section, not only for its exact URL:
-// "Installation" stays current on /docs/installation/using-composer/ (like tailwindcss.com/docs).
+// Adjusts Starlight route data before each page renders.
 import { defineRouteMiddleware } from '@astrojs/starlight/route-data';
 import type { StarlightRouteData } from '@astrojs/starlight/route-data';
 
 type Entry = StarlightRouteData['sidebar'][number];
 
-const SECTION = /\/docs\/installation\//;
+const INSTALLATION = /\/docs\/installation\//;
+const JS_REFERENCE = /\/docs\/reference\/js\/(\w+)\/$/;
 
-function markSection(entries: Entry[], path: string): void {
+/** Keep "Installation" current on every installation method page (like tailwindcss.com/docs). */
+function markInstallation(entries: Entry[], path: string): void {
   for (const entry of entries) {
-    if (entry.type === 'group') markSection(entry.entries, path);
-    else if (SECTION.test(entry.href) && SECTION.test(path)) entry.isCurrent = true;
+    if (entry.type === 'group') markInstallation(entry.entries, path);
+    else if (INSTALLATION.test(entry.href) && INSTALLATION.test(path)) entry.isCurrent = true;
   }
 }
 
 export const onRequest = defineRouteMiddleware((context) => {
-  markSection(context.locals.starlightRoute.sidebar, context.url.pathname);
+  const route = context.locals.starlightRoute;
+  const path = context.url.pathname;
+  markInstallation(route.sidebar, path);
+
+  // Generated JS reference pages are titled after the folder ("phone"); show the npm name.
+  const module = JS_REFERENCE.exec(path)?.[1];
+  if (module !== undefined) {
+    const title = `@madagascar-oss/${module}`;
+    route.entry.data.title = title;
+    for (const tag of route.head) {
+      if (tag.tag === 'title') tag.content = tag.content?.replace(module, title);
+    }
+  }
 });

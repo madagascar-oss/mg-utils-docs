@@ -1,0 +1,23 @@
+{
+  "$comment": "TypeDoc input: only the JS port's package sources, so the build needs none of the port's dev dependencies.",
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": []
+  },
+  "include": [
+    "ports/js/packages/words/src/**/*.ts",
+    "ports/js/packages/phone/src/**/*.ts",
+    "ports/js/packages/ariary/src/**/*.ts",
+    "ports/js/packages/date/src/**/*.ts"
+  ]
+}

@@ -2,6 +2,8 @@
 import react from '@astrojs/react';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
+import starlightLinksValidator from 'starlight-links-validator';
+import starlightTypeDoc from 'starlight-typedoc';
 import { defineConfig } from 'astro/config';
 import { sidebar } from './src/config/sidebar.ts';
 
@@ -42,6 +44,27 @@ export default defineConfig({
       },
       expressiveCode: { defaultProps: { wrap: true } },
       editLink: { baseUrl: 'https://github.com/madagascar-oss/mg-utils-docs/edit/dev/' },
+      plugins: [
+        // JS API reference generated from the TSDoc comments of the JS port (every export has one).
+        starlightTypeDoc({
+          entryPoints: ['words', 'phone', 'ariary', 'date'].map(
+            (module) => `./ports/js/packages/${module}/src/index.ts`,
+          ),
+          tsconfig: './tsconfig.typedoc.json',
+          output: 'docs/reference/js',
+          sidebar: { label: 'JavaScript API', collapsed: true },
+          typeDoc: {
+            excludeExternals: true,
+            // One page per package, every export on it, titled with the npm name.
+            router: 'module',
+            pageTitleTemplates: { module: '@madagascar-oss/{name}' },
+            disableSources: true,
+            plugin: ['./scripts/typedoc-module-names.mjs'],
+          },
+        }),
+        // /play/ is an Astro page, which the validator cannot see; its own e2e tests cover it.
+        starlightLinksValidator({ exclude: ['/mg-utils-docs/play/', '/play/'] }),
+      ],
       sidebar,
       routeMiddleware: './src/route-middleware.ts',
     }),

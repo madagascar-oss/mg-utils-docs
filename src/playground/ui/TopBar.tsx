@@ -28,7 +28,7 @@ export default function TopBar(props: Props) {
 
       <div className="ml-auto flex flex-wrap items-center gap-2">
         <label className="sr-only" htmlFor="play-module">
-          Module
+          {text.moduleLabel}
         </label>
         <select
           id="play-module"
@@ -47,7 +47,7 @@ export default function TopBar(props: Props) {
 
         <div
           role="radiogroup"
-          aria-label="Language"
+          aria-label={text.language}
           className="flex rounded-lg border border-gray-300 p-0.5 dark:border-gray-700"
         >
           {LANGUAGES.map((candidate) => (

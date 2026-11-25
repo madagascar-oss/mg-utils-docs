@@ -1,0 +1,30 @@
+// French UI strings (draft, pending native review).
+import type { UiKey } from './en.ts';
+
+export const fr: Record<UiKey, string> = {
+  'nav.docs': 'Docs',
+  'nav.play': 'Essayer',
+  'nav.spec': 'Spécification',
+  'footer.docs': 'Documentation',
+  'footer.packages': 'Paquets',
+  'footer.community': 'Communauté',
+  'footer.installation': 'Installation',
+  'footer.playground': 'Bac à sable',
+  'footer.license': 'Publié sous licence MIT.',
+  'install.methods': 'Méthodes d’installation',
+  'play.title': 'Bac à sable',
+  'play.run': 'Exécuter',
+  'play.share': 'Partager',
+  'play.copied': 'Lien copié',
+  'play.reset': 'Réinitialiser',
+  'play.output': 'Sortie',
+  'play.empty': 'Exécutez le code pour voir sa sortie ici.',
+  'play.loading': 'Chargement de l’environnement…',
+  'play.ranIn': 'Exécuté en {ms} ms',
+  'play.noOutput': 'Aucune sortie. Utilisez console.log (JavaScript) ou echo (PHP).',
+  'play.module.words': 'Nombres en lettres',
+  'play.module.phone': 'Numéros de téléphone',
+  'play.module.ariary': 'Montants en ariary',
+  'play.module.date': 'Dates',
+  'play.docs': 'Docs',
+};

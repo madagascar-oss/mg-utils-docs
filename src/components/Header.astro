@@ -36,7 +36,7 @@ const isActive = (match: string) =>
   <div class="mg-search print:hidden">
     <Search />
   </div>
-  <nav class="mg-nav sl-hidden md:sl-flex print:hidden" aria-label="Site">
+  <nav class="mg-nav sl-hidden md:sl-flex print:hidden" aria-label={t(locale, 'a11y.siteNav')}>
     {nav.map((item) => (
       <a href={item.href} aria-current={isActive(item.match) ? 'page' : undefined}>
         {item.label}

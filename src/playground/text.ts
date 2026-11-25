@@ -13,5 +13,8 @@ export interface PlaygroundText {
   readonly ranIn: string;
   readonly noOutput: string;
   readonly docs: string;
+  readonly code: string;
+  readonly language: string;
+  readonly moduleLabel: string;
   readonly modules: Record<ModuleId, string>;
 }

@@ -27,4 +27,10 @@ export const fr: Record<UiKey, string> = {
   'play.module.ariary': 'Montants en ariary',
   'play.module.date': 'Dates',
   'play.docs': 'Docs',
+  'a11y.siteNav': 'Site',
+  'a11y.org': 'Madagascar OSS sur GitHub',
+  'play.code': 'Code',
+  'play.language': 'Langage',
+  'play.moduleLabel': 'Module',
+  'try.option': 'Option',
 };

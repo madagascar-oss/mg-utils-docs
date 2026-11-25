@@ -1,6 +1,8 @@
 ---
 // Footer like tailwindcss.com: link columns + one copyright line. The edit link stays.
 import EditLink from '@astrojs/starlight/components/EditLink.astro';
+import wideDark from '../assets/brand/wide-dark-transparent.svg';
+import wideLight from '../assets/brand/wide-light.svg';
 import { links } from '../config/site.ts';
 import { localePath, t, toLocale } from '../i18n/ui.ts';
 
@@ -40,6 +42,22 @@ const columns = [
     <EditLink />
   </div>
   <div class="mg-columns">
+    <a class="mg-org" href={links.github} aria-label="Madagascar OSS on GitHub">
+      <img
+        class="light:sl-hidden"
+        src={wideDark.src}
+        alt="Madagascar OSS"
+        width="186"
+        height="40"
+      />
+      <img
+        class="dark:sl-hidden"
+        src={wideLight.src}
+        alt="Madagascar OSS"
+        width="186"
+        height="40"
+      />
+    </a>
     {columns.map((column) => (
       <div>
         <p class="mg-column-title">{column.title}</p>
@@ -71,6 +89,11 @@ const columns = [
     grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
     gap: 2rem;
     margin-top: 1.5rem;
+  }
+
+  .mg-org img {
+    width: 11.5rem;
+    height: auto;
   }
 
   .mg-column-title {

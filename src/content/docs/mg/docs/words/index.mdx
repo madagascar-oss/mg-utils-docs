@@ -19,7 +19,7 @@ import TryItBox from '../../../../../components/TryItBox.astro';
 
 ## Fampiasana fototra
 
-Ny teny malagasy dia mamaky isa manomboka amin’ny singa kely indrindra, ampifandraisina amin’ny `amby` sy `sy`.
+Ny teny malagasy dia mamaky isa manomboka amin’ny singa kely indrindra. Ampifandraisina amin’ny 10 amin’ny `ambin'ny`, amin’ny 20–90 sy 100 amin’ny `amby`, ary amin’ny 200–900 sy ny vondrona lehibe kokoa amin’ny `sy`.
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
@@ -28,7 +28,8 @@ Ny teny malagasy dia mamaky isa manomboka amin’ny singa kely indrindra, ampifa
 
     numberToWords(0); // 'aotra'
     numberToWords(21); // 'iraika amby roapolo'
-    numberToWords(1960); // 'enimpolo amby sivinjato sy arivo'
+    numberToWords(205); // 'dimy sy roanjato'
+    numberToWords(1960); // 'enimpolo sy sivinjato sy arivo'
     numberToWords(1_000_000); // 'tapitrisa'
     ```
   </TabItem>
@@ -38,7 +39,8 @@ Ny teny malagasy dia mamaky isa manomboka amin’ny singa kely indrindra, ampifa
 
     NumberWords::fromInt(0); // 'aotra'
     NumberWords::fromInt(21); // 'iraika amby roapolo'
-    NumberWords::fromInt(1960); // 'enimpolo amby sivinjato sy arivo'
+    NumberWords::fromInt(205); // 'dimy sy roanjato'
+    NumberWords::fromInt(1960); // 'enimpolo sy sivinjato sy arivo'
     NumberWords::fromInt(1_000_000); // 'tapitrisa'
     ```
   </TabItem>

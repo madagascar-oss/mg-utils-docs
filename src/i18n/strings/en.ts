@@ -1,0 +1,30 @@
+// English UI strings. Every key here must exist in the other languages.
+export const en = {
+  'nav.docs': 'Docs',
+  'nav.play': 'Play',
+  'nav.spec': 'Spec',
+  'footer.docs': 'Documentation',
+  'footer.packages': 'Packages',
+  'footer.community': 'Community',
+  'footer.installation': 'Installation',
+  'footer.playground': 'Playground',
+  'footer.license': 'Released under the MIT License.',
+  'install.methods': 'Installation methods',
+  'play.title': 'Playground',
+  'play.run': 'Run',
+  'play.share': 'Share',
+  'play.copied': 'Link copied',
+  'play.reset': 'Reset',
+  'play.output': 'Output',
+  'play.empty': 'Run the code to see its output here.',
+  'play.loading': 'Loading the runtime…',
+  'play.ranIn': 'Ran in {ms} ms',
+  'play.noOutput': 'No output. Use console.log (JavaScript) or echo (PHP).',
+  'play.module.words': 'Number words',
+  'play.module.phone': 'Phone numbers',
+  'play.module.ariary': 'Ariary amounts',
+  'play.module.date': 'Dates',
+  'play.docs': 'Docs',
+} as const;
+
+export type UiKey = keyof typeof en;

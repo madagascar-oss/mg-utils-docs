@@ -1,5 +1,9 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": ["src/route-middleware.ts", "scripts/typedoc-module-names.mjs"],
+  "entry": [
+    "scripts/typedoc-module-names.mjs",
+    "src/playground/stubs/*.ts",
+    "src/route-middleware.ts"
+  ],
   "ignore": ["ports/**", "spec/**"]
 }

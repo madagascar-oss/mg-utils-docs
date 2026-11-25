@@ -12,12 +12,7 @@ import { words } from './words.ts';
 interface Props {
   readonly module: ModuleId;
   readonly playHref: string;
-  readonly labels: {
-    readonly input: string;
-    readonly option: string;
-    readonly result: string;
-    readonly open: string;
-  };
+  readonly labels: { readonly input: string; readonly result: string; readonly open: string };
 }
 
 const MODULES: Record<ModuleId, TryModule> = { words, phone, ariary, date };
@@ -49,7 +44,7 @@ export default function TryIt({ module, playHref, labels }: Props) {
         </label>
         {definition.options.length > 0 && (
           <select
-            aria-label={labels.option}
+            aria-label="Option"
             className={fieldClass}
             value={option}
             onChange={(event) => {

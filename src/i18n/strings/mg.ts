@@ -27,10 +27,4 @@ export const mg: Record<UiKey, string> = {
   'play.module.ariary': 'Vola ariary',
   'play.module.date': 'Daty',
   'play.docs': 'Torolalana',
-  'a11y.siteNav': 'Tranonkala',
-  'a11y.org': 'Madagascar OSS ao amin’ny GitHub',
-  'play.code': 'Kaody',
-  'play.language': 'Fiteny',
-  'play.moduleLabel': 'Môdily',
-  'try.option': 'Safidy',
 };

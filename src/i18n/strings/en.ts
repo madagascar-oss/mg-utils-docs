@@ -25,12 +25,6 @@ export const en = {
   'play.module.ariary': 'Ariary amounts',
   'play.module.date': 'Dates',
   'play.docs': 'Docs',
-  'a11y.siteNav': 'Site',
-  'a11y.org': 'Madagascar OSS on GitHub',
-  'play.code': 'Code',
-  'play.language': 'Language',
-  'play.moduleLabel': 'Module',
-  'try.option': 'Option',
 } as const;
 
 export type UiKey = keyof typeof en;

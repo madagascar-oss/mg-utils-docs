@@ -16,7 +16,7 @@ kicker: Reference
 | --------------------------------------------------------- | ------------------------------- | ------------------------------------ |
 | `Phone\PhoneNumber::parse(string $input)`                 | `PhoneNumber`                   | `INVALID_FORMAT`, `UNKNOWN_OPERATOR` |
 | `Phone\PhoneNumber::safeParse(mixed $input)`              | `SafeParseResult<PhoneNumber>`  | never                                |
-| `Phone\PhoneNumber::tryParse(mixed $input)`              | `?PhoneNumber`                  | never                                |
+| `Phone\PhoneNumber::tryParse(string $input)`              | `?PhoneNumber`                  | never                                |
 | `Phone\PhoneNumber::isValid(mixed $input)`                | `bool`                          | never                                |
 | `$phone->format(PhoneNumberFormat $format)`               | `string`                        | never                                |
 | `$phone->e164`, `$phone->nationalNumber`, `$phone->operator` | `string`, `string`, `Operator` | —                                    |
@@ -31,15 +31,15 @@ Enums: `PhoneNumberFormat` (`E164`, `International`, `National`), `Operator` (`O
 | `Ariary\Ariary::fromInt(int $amount)`                                  | `Ariary`                   | `OUT_OF_RANGE`                   |
 | `Ariary\Ariary::parse(string $text)`                                   | `Ariary`                   | `INVALID_FORMAT`, `OUT_OF_RANGE` |
 | `Ariary\Ariary::safeParse(mixed $text)`                                | `SafeParseResult<Ariary>`  | never                            |
-| `Ariary\Ariary::tryParse(mixed $text)`                                | `?Ariary`                  | never                            |
+| `Ariary\Ariary::tryParse(string $text)`                                | `?Ariary`                  | never                            |
 | `Ariary\Ariary::fromFmg(int $francs)`                                  | `Ariary`                   | `OUT_OF_RANGE`                   |
-| `Ariary\Ariary::formatFmg(int $francs, Grouping, SymbolPosition)`     | `string`                   | `OUT_OF_RANGE`                   |
-| `$amount->format(Grouping $grouping, SymbolPosition $position)`       | `string`                   | never                            |
+| `Ariary\Ariary::formatFmg(int $francs, ?Grouping, SymbolPosition)`     | `string`                   | `OUT_OF_RANGE`                   |
+| `$amount->format(?Grouping $grouping, SymbolPosition $position)`       | `string`                   | never                            |
 | `$amount->toWords()`                                                   | `string`                   | never                            |
 | `$amount->toFmg()`                                                     | `int`                      | never                            |
 | `$amount->amount`                                                      | `int`                      | —                                |
 
-Enums: `Grouping` (`Space`, `Dot`; `Grouping::DEFAULT` is `Space`), `SymbolPosition` (`Before`, `After`).
+Enums: `Grouping` (`Space`, `Dot`), `SymbolPosition` (`Before`, `After`).
 
 ## Date
 
@@ -50,10 +50,10 @@ Enums: `Grouping` (`Space`, `Dot`; `Grouping::DEFAULT` is `Space`), `SymbolPosit
 | `Date\MalagasyDate::fromDateTime(DateTimeInterface $date)`      | `MalagasyDate` | `OUT_OF_RANGE`                 |
 | `Date\MalagasyDate::monthName(int $month, NameWidth $width)`    | `string`       | `OUT_OF_RANGE`                 |
 | `Date\MalagasyDate::weekdayName(int $isoWeekday, NameWidth $width)` | `string`   | `OUT_OF_RANGE`                 |
-| `$date->format(DateStyle $style)`                              | `string`       | never                          |
+| `$date->format(?DateStyle $style)`                              | `string`       | never                          |
 | `$date->isoWeekday()`                                           | `int` (1–7)    | never                          |
 
-Enums: `DateStyle` (`Long`, `Full`, `Medium`, `Short`, `Numeric`; `DateStyle::DEFAULT` is `Long`), `NameWidth` (`Wide`, `Abbreviated`).
+Enums: `DateStyle` (`Long`, `Full`, `Medium`, `Short`, `Numeric`), `NameWidth` (`Wide`, `Abbreviated`).
 
 ## Shared
 

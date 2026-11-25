@@ -10,14 +10,9 @@ interface Props {
 
 const locale = toLocale(Astro.locals.starlightRoute.locale);
 const labels = {
-  en: { input: 'Input', option: 'Option', result: 'Result', open: 'Open in the playground' },
-  mg: {
-    input: 'Fampidirana',
-    option: 'Safidy',
-    result: 'Valiny',
-    open: 'Sokafy ao amin’ny toerana fanandramana',
-  },
-  fr: { input: 'Entrée', option: 'Option', result: 'Résultat', open: 'Ouvrir dans le bac à sable' },
+  en: { input: 'Input', result: 'Result', open: 'Open in the playground' },
+  mg: { input: 'Fampidirana', result: 'Valiny', open: 'Sokafy ao amin’ny toerana fanandramana' },
+  fr: { input: 'Entrée', result: 'Résultat', open: 'Ouvrir dans le bac à sable' },
 }[locale];
 ---
 

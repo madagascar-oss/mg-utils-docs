@@ -4,7 +4,8 @@
 import logoDark from '../../assets/brand/mark-light-green.svg';
 import logoLight from '../../assets/brand/mark-green.svg';
 import { localePath, t, type Locale, type UiKey } from '../../i18n/ui.ts';
-import Playground, { type PlaygroundText } from '../../playground/Playground.tsx';
+import Playground from '../../playground/Playground.tsx';
+import type { PlaygroundText } from '../../playground/text.ts';
 import '../../styles/play.css';
 
 export function getStaticPaths() {
@@ -26,6 +27,9 @@ const text: PlaygroundText = {
   ranIn: s('play.ranIn'),
   noOutput: s('play.noOutput'),
   docs: s('play.docs'),
+  code: s('play.code'),
+  language: s('play.language'),
+  moduleLabel: s('play.moduleLabel'),
   modules: {
     words: s('play.module.words'),
     phone: s('play.module.phone'),

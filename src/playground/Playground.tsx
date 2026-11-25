@@ -79,7 +79,7 @@ export default function Playground({ text, homeHref, docsHref, logo }: Props) {
       />
       <main className="grid min-h-0 flex-1 grid-rows-2 md:grid-cols-2 md:grid-rows-1">
         <section
-          aria-label="Code"
+          aria-label={text.code}
           className="min-h-0 border-b border-gray-200 md:border-r md:border-b-0 dark:border-gray-800"
         >
           <Editor

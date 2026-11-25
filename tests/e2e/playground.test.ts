@@ -52,6 +52,12 @@ test('the playground UI is translated', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
 });
 
+test('accessible names follow the page language', async ({ page }) => {
+  await page.goto('mg/play/');
+  await expect(page.getByRole('radiogroup', { name: 'Fiteny' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Kaody' })).toBeVisible();
+});
+
 test('a Try it widget updates and opens the playground', async ({ page }) => {
   await page.goto('docs/ariary/');
   const result = page.getByTestId('try-result');

@@ -1,5 +1,7 @@
 // JavaScript and TypeScript runner: strips types with sucrase, points @mdgascar/* imports
 // at the bundled port (public/js/mdg-utils.js), and runs the result in a module Web Worker.
+// Each run gets a fresh worker, terminated when the run ends: timers, globals and console
+// overrides from one run can never leak into the next.
 import {
   RUN_TIMEOUT_MS,
   type LogLine,
@@ -32,8 +34,6 @@ function newWorker(): Worker {
 }
 
 export function createJsRunner(): Runner {
-  let worker = newWorker();
-
   return {
     id: 'js',
     label: 'JavaScript',
@@ -49,10 +49,11 @@ export function createJsRunner(): Runner {
         return { logs, error: { message: `SyntaxError: ${message}` }, durationMs: 0 };
       }
 
+      const worker = newWorker();
       return new Promise((resolve) => {
         const finish = (error?: RunError) => {
           clearTimeout(timer);
-          worker.removeEventListener('message', onMessage);
+          worker.terminate();
           resolve({ logs, durationMs: performance.now() - started, ...(error ? { error } : {}) });
         };
         const onMessage = (
@@ -68,8 +69,6 @@ export function createJsRunner(): Runner {
           if (data.type === 'done') finish(data.error);
         };
         const timer = setTimeout(() => {
-          worker.terminate();
-          worker = newWorker();
           finish({ message: `Stopped after ${String(RUN_TIMEOUT_MS / 1000)} s (infinite loop?).` });
         }, RUN_TIMEOUT_MS);
         worker.addEventListener('message', onMessage);

@@ -1,6 +1,7 @@
 // The /play app, laid out like play.tailwindcss.com: a top bar, the editor on the left and
 // the output on the right (stacked on small screens). Runs automatically as you type.
-import { useEffect, useState } from 'react';
+// Code from a share link is someone else's code: it waits for an explicit Run first.
+import { useEffect, useRef, useState } from 'react';
 import Editor from './Editor.tsx';
 import { useDarkMode } from './hooks/useDarkMode.ts';
 import { useRunner } from './hooks/useRunner.ts';
@@ -22,10 +23,14 @@ interface Props {
 const AUTO_RUN_DELAY_MS = 400;
 const COPIED_NOTICE_MS = 2000;
 
-/** A shared link wins; otherwise the JavaScript starter for number words. */
+/** The code in a share link, if the page was opened from one and its language can run here. */
+function sharedSnapshot(): Snapshot | undefined {
+  const shared = fromHash(location.hash);
+  return shared && isAvailable(shared.language) ? shared : undefined;
+}
+
+/** What the server renders: the JavaScript starter for number words. */
 function initialState(): Snapshot {
-  const shared = typeof location === 'undefined' ? undefined : fromHash(location.hash);
-  if (shared && isAvailable(shared.language)) return shared;
   return { language: 'js', module: 'words', code: starter('js', 'words') };
 }
 
@@ -34,33 +39,52 @@ export default function Playground({ text, homeHref, docsHref, logo }: Props) {
   const [copied, setCopied] = useState(false);
   const dark = useDarkMode();
   const { result, busy, run, clear } = useRunner();
+  // Off for shared code until the visitor presses Run; on for our own starters.
+  const autoRun = useRef(true);
+
+  // A share link is applied after hydration: the prerendered HTML always shows the starter, and
+  // React does not patch a <select> value that differs at hydration.
+  useEffect(() => {
+    const shared = sharedSnapshot();
+    if (shared === undefined) return;
+    autoRun.current = false;
+    setState(shared);
+  }, []);
 
   useEffect(() => {
+    history.replaceState(null, '', toHash(state));
+    if (!autoRun.current) return undefined;
     const timer = setTimeout(() => {
       void run(state.language, state.code);
     }, AUTO_RUN_DELAY_MS);
-    history.replaceState(null, '', toHash(state));
     return () => {
       clearTimeout(timer);
     };
   }, [state, run]);
 
   const choose = (language: LanguageId, module: ModuleId) => {
+    autoRun.current = true;
     clear();
     setState({ language, module, code: starter(language, module) });
   };
 
   const runNow = () => {
+    autoRun.current = true;
     void run(state.language, state.code);
   };
 
   const share = () => {
-    void navigator.clipboard.writeText(location.href).then(() => {
-      setCopied(true);
-      setTimeout(() => {
-        setCopied(false);
-      }, COPIED_NOTICE_MS);
-    });
+    navigator.clipboard.writeText(location.href).then(
+      () => {
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+        }, COPIED_NOTICE_MS);
+      },
+      () => {
+        // Clipboard blocked (permissions, insecure context): the link stays in the address bar.
+      },
+    );
   };
 
   return (

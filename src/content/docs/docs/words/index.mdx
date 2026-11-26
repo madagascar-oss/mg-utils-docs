@@ -33,9 +33,9 @@ Malagasy reads numbers from the smallest part up. The smaller part joins 10 with
     numberToWords(348); // 'valo amby efapolo sy telonjato'
     numberToWords(1960); // 'enimpolo sy sivinjato sy arivo'
     numberToWords(2026); // 'enina amby roapolo sy roa arivo'
-    numberToWords(10_000); // 'iray alina'
-    numberToWords(280_000); // 'valo alina sy roa hetsy'
-    numberToWords(1_000_000); // 'iray tapitrisa'
+    numberToWords(10000); // 'iray alina'
+    numberToWords(280000); // 'valo alina sy roa hetsy'
+    numberToWords(1000000); // 'iray tapitrisa'
     ```
   </TabItem>
   <TabItem label="PHP">
@@ -50,38 +50,28 @@ Malagasy reads numbers from the smallest part up. The smaller part joins 10 with
     NumberWords::fromInt(348); // 'valo amby efapolo sy telonjato'
     NumberWords::fromInt(1960); // 'enimpolo sy sivinjato sy arivo'
     NumberWords::fromInt(2026); // 'enina amby roapolo sy roa arivo'
-    NumberWords::fromInt(10_000); // 'iray alina'
-    NumberWords::fromInt(280_000); // 'valo alina sy roa hetsy'
-    NumberWords::fromInt(1_000_000); // 'iray tapitrisa'
+    NumberWords::fromInt(10000); // 'iray alina'
+    NumberWords::fromInt(280000); // 'valo alina sy roa hetsy'
+    NumberWords::fromInt(1000000); // 'iray tapitrisa'
     ```
   </TabItem>
 </Tabs>
 
 ## Large numbers
 
-There is no upper limit in the rules: `lavitrisa` (10⁹), the largest group word, takes a count of any size, written with the same rules. So 10¹² is `arivo lavitrisa` (a thousand lavitrisa). Each language stops only where its numbers stop being exact: `Number.MAX_SAFE_INTEGER` in JavaScript, `PHP_INT_MAX` in PHP.
+There is no upper limit in the rules: `lavitrisa` (10⁹), the largest group word, takes a count of any size, written with the same rules. Each language stops only where its numbers stop being exact: `Number.MAX_SAFE_INTEGER` in JavaScript, `PHP_INT_MAX` in PHP.
 
-<TryItBox module="words" input="1999999999999" examples={['1000000000', '1000000000000', '1999999999999', '1000000000000000', '9007199254740991']} />
+<TryItBox module="words" input="1000000000" examples={['1000000', '1000000000', '2000000000']} />
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    numberToWords(1_000_000_000); // 'iray lavitrisa'
-    numberToWords(1_000_000_000_000); // 'arivo lavitrisa'
-    numberToWords(1_000_000_000_000_000); // 'iray tapitrisa lavitrisa'
-    numberToWords(1_999_999_999_999);
-    // 'sivy amby sivifolo sy sivinjato sy sivy arivo sy sivy alina sy sivy hetsy
-    //  sy sivy amby sivifolo sy sivinjato tapitrisa
-    //  sy sivy amby sivifolo sy sivinjato sy arivo lavitrisa'
-    numberToWords(Number.MAX_SAFE_INTEGER); // the largest exact number
+    numberToWords(1000000000); // 'iray lavitrisa'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
-    NumberWords::fromInt(1_000_000_000); // 'iray lavitrisa'
-    NumberWords::fromInt(1_000_000_000_000); // 'arivo lavitrisa'
-    NumberWords::fromInt(1_000_000_000_000_000); // 'iray tapitrisa lavitrisa'
-    NumberWords::fromInt(PHP_INT_MAX); // up to 9 223 372 036 854 775 807
+    NumberWords::fromInt(1000000000); // 'iray lavitrisa'
     ```
   </TabItem>
 </Tabs>

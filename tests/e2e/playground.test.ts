@@ -32,18 +32,42 @@ test('a share link restores the code', async ({ page, context }) => {
   const shared = await context.newPage();
   await shared.goto(page.url());
   await expect(shared.locator('#play-module')).toHaveValue('date');
+  await shared.getByRole('button', { name: 'Run' }).click();
   await expect(shared.getByTestId('output')).toContainText('Jona');
+});
+
+test('code from a share link waits for Run', async ({ page }) => {
+  await page.goto(playUrl('js', 'words', "console.log('from a link');\n"));
+  await expect(page.getByTestId('output')).toContainText('Run the code');
+  await page.waitForTimeout(1500);
+  await expect(page.getByTestId('output')).not.toContainText('from a link');
+  await page.getByRole('button', { name: 'Run' }).click();
+  await expect(page.getByTestId('output')).toContainText('from a link');
+});
+
+test('a run does not see timers left by the previous run', async ({ page }) => {
+  await page.goto(
+    playUrl('js', 'words', "setTimeout(() => console.log('late'), 800);\nconsole.log('first');\n"),
+  );
+  await page.getByRole('button', { name: 'Run' }).click();
+  await expect(page.getByTestId('output')).toContainText('first');
+  await page.getByRole('button', { name: 'Run' }).click();
+  await expect(page.getByTestId('output')).toContainText('first');
+  await page.waitForTimeout(1500);
+  await expect(page.getByTestId('output')).not.toContainText('late');
 });
 
 test('shows the spec error code of an uncaught error', async ({ page }) => {
   // A dot is not a decimal point by default, so '1.5' is rejected.
   const code = "import { parseAriary } from '@mdgascar/ariary';\n\nparseAriary('1.5');\n";
   await page.goto(playUrl('js', 'ariary', code));
+  await page.getByRole('button', { name: 'Run' }).click();
   await expect(page.getByTestId('error')).toContainText('INVALID_FORMAT');
 });
 
 test('stops an infinite loop', async ({ page }) => {
   await page.goto(playUrl('js', 'words', 'while (true) {}\n'));
+  await page.getByRole('button', { name: 'Run' }).click();
   await expect(page.getByTestId('error')).toContainText('Stopped after', { timeout: 10_000 });
 });
 
@@ -72,6 +96,7 @@ test('a Try it widget updates and opens the playground', async ({ page }) => {
     .getByRole('link', { name: /Open in the playground/ })
     .first()
     .click();
+  await page.getByRole('button', { name: 'Run' }).click();
   await expect(page.getByTestId('output')).toContainText('Ar 1 500');
 });
 
@@ -101,6 +126,7 @@ test.describe('PHP', () => {
     const code =
       "<?php\n\nuse Mdgascar\\MdgUtils\\Ariary\\Ariary;\n\necho Ariary::parse('1.5')->amount;\n";
     await page.goto(playUrl('php', 'ariary', code));
+    await page.getByRole('button', { name: 'Run' }).click();
     await expect(page.getByTestId('error')).toContainText('INVALID_FORMAT', { timeout: 90_000 });
   });
 });

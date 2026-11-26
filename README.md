@@ -7,12 +7,12 @@ language.
 **Live site:** <https://mdgascar.github.io/mdg-utils-docs/>
 
 Built with [Astro](https://astro.build) and [Starlight](https://starlight.astro.build), styled with
-Tailwind CSS, in English, Malagasy and French.
+Tailwind CSS, in English and French.
 
 ## Repository layout
 
 ```text
-src/content/docs/   pages: English at the root, mg/ and fr/ for translations
+src/content/docs/   pages: English at the root, fr/ for French
 src/components/     Header, PageTitle and Footer overrides, page components
 src/config/         sidebar, site facts
 src/i18n/           UI strings outside Starlight's own

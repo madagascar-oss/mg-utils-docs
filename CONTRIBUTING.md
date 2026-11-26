@@ -8,10 +8,10 @@ apply too.
 
 - **Behaviour, data and function names** are decided in
   [mdg-utils-spec](https://github.com/mdgascar/mdg-utils-spec). This site explains them.
-- **Pages** live in `src/content/docs/`: English at the root, `mg/` and `fr/` for translations.
+- **Pages** live in `src/content/docs/`: English at the root, `fr/` for French.
   A page missing in a language falls back to English with a notice, so English comes first.
-- **Translations** of Malagasy and French text are welcome from native speakers; drafts are
-  marked in the tracking issue.
+- **French translations** are welcome from native speakers; drafts are marked in the
+  tracking issue.
 
 ## Branches and releases
 

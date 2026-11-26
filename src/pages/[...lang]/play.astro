@@ -1,6 +1,6 @@
 ---
 // Full-screen playground (outside the Starlight layout), one page per locale:
-// /play/, /mg/play/, /fr/play/.
+// /play/ and /fr/play/.
 import logoDark from '../../assets/brand/mark-dark.svg';
 import logoLight from '../../assets/brand/mark-light.svg';
 import { localePath, t, type Locale, type UiKey } from '../../i18n/ui.ts';
@@ -9,11 +9,10 @@ import type { PlaygroundText } from '../../playground/text.ts';
 import '../../styles/play.css';
 
 export function getStaticPaths() {
-  return [{ params: { lang: undefined } }, { params: { lang: 'mg' } }, { params: { lang: 'fr' } }];
+  return [{ params: { lang: undefined } }, { params: { lang: 'fr' } }];
 }
 
-const locale: Locale =
-  Astro.params.lang === 'mg' || Astro.params.lang === 'fr' ? Astro.params.lang : 'en';
+const locale: Locale = Astro.params.lang === 'fr' ? 'fr' : 'en';
 const s = (key: UiKey) => t(locale, key);
 const text: PlaygroundText = {
   title: s('play.title'),

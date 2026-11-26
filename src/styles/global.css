@@ -158,11 +158,25 @@ pre,
 }
 
 /* Header theme and language selects: Starlight sizes them for English labels; give room for
-   Malagasy and French ("Ho azy", "Malagasy"). */
+   French ("Automatique", "Français"). */
 .mg-actions starlight-theme-select label,
 .mg-actions starlight-lang-select label {
   --sl-select-width: 6.5em !important;
 }
 .mg-actions starlight-lang-select label {
   --sl-select-width: 7.5em !important;
+}
+
+/* Landing (splash template): wide container, no extra frame. */
+.content-panel:has(.mg-landing) .sl-container {
+  max-width: 80rem;
+}
+
+/* The landing renders its own headline, so Starlight's title panel above it stays empty: hide it. */
+.content-panel:has(> .sl-container:empty) {
+  display: none;
+}
+
+.content-panel:has(.mg-landing) {
+  border-top: 0;
 }

@@ -1,0 +1,675 @@
+---
+// Landing page like tailwindcss.com: headline, install, then an editor that types real calls while
+// a preview fills in with what they return. The page renders complete without JavaScript (and with
+// reduced motion); the script only replays it as typing.
+import { localePath, t, type Locale, type UiKey } from '../../i18n/ui.ts';
+import { code, fields, modules, operatorName, type FieldId, type Line } from './demo.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const s = (key: UiKey) => t(locale, key);
+const NPM_INSTALL = 'npm i @mdgascar/utils';
+const COMPOSER_INSTALL = 'composer require mdgascar/mdg-utils';
+const DEFAULT_LANGUAGE = 'js';
+const rows: { id: FieldId; label: UiKey }[] = [
+  { id: 'words', label: 'home.field.words' },
+  { id: 'phone', label: 'home.field.phone' },
+  { id: 'date', label: 'home.field.date' },
+];
+const moduleLabel = {
+  words: s('play.module.words'),
+  phone: s('play.module.phone'),
+  ariary: s('play.module.ariary'),
+  date: s('play.module.date'),
+};
+const lineText = (line: Line) => line.tokens.map((token) => token.text).join('');
+---
+
+<div class="not-content mg-landing">
+  <section class="mg-hero">
+    <h1 id="_top">{s('home.title')}</h1>
+    <p class="mg-hero-lead">{s('home.lead')}</p>
+    <div class="mg-hero-actions">
+      <a class="mg-btn mg-btn-primary" href={localePath(locale, '/docs/installation/using-npm/')}>
+        {s('home.start')}
+      </a>
+      <a class="mg-btn" href={localePath(locale, '/play/')}>
+        {s('home.play')}
+      </a>
+    </div>
+    <div class="mg-install">
+      {[NPM_INSTALL, COMPOSER_INSTALL].map((command) => (
+        <div class="mg-install-pill">
+          <span aria-hidden="true">$</span>
+          <code>{command}</code>
+          <button
+            type="button"
+            data-copy={command}
+            data-label={s('home.copy')}
+            data-done={s('home.copied')}
+          >
+            {s('home.copy')}
+          </button>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mg-demo" aria-label={s('home.demo')} data-demo data-code={JSON.stringify(code)}>
+    <div class="mg-editor">
+      <div class="mg-editor-bar">
+        <span class="mg-dots" aria-hidden="true">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+        <div role="tablist" aria-label={s('play.language')}>
+          {(['js', 'php'] as const).map((language) => (
+            <button
+              type="button"
+              role="tab"
+              data-language={language}
+              aria-selected={language === DEFAULT_LANGUAGE ? 'true' : 'false'}
+            >
+              {code[language].file}
+            </button>
+          ))}
+        </div>
+        <button type="button" class="mg-replay" data-replay>
+          {s('home.replay')}
+        </button>
+      </div>
+      <pre class="mg-code" data-lines><code>{
+        code[DEFAULT_LANGUAGE].lines.map((line) => (
+          <span class="mg-line">
+            {line.tokens.map((token) => <span class={`tk-${token.kind}`}>{token.text}</span>)}
+            {lineText(line) === '' && ' '}
+          </span>
+        ))
+      }</code></pre>
+    </div>
+
+    <div class="mg-preview">
+      <p class="mg-preview-label">{s('home.preview')}</p>
+      <div class="mg-receipt">
+        <p class="mg-receipt-title">
+          <span class="mg-check" aria-hidden="true">
+            ✓
+          </span>
+          {s('home.receipt')}
+        </p>
+        <p class="mg-amount" data-field="amount">
+          {fields.amount}
+        </p>
+        <dl>
+          {rows.map((row) => (
+            <div data-field={row.id}>
+              <dt>{s(row.label)}</dt>
+              <dd>
+                {fields[row.id]}
+                {row.id === 'phone' && <span class="mg-badge">{operatorName}</span>}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="mg-modules" aria-labelledby="mg-modules-title">
+    <h2 id="mg-modules-title">{s('home.modules')}</h2>
+    <div class="mg-module-grid">
+      {modules.map((module) => (
+        <a class="mg-module" href={localePath(locale, `/docs/${module.id}/`)}>
+          <span class="mg-module-name">{moduleLabel[module.id]}</span>
+          <code class="mg-module-call">{module.call}</code>
+          <span class="mg-module-result">{module.result}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</div>
+
+<script>
+  import type { CodeLanguage, Line } from './demo.ts';
+
+  const CHAR_MS = 24;
+  const LINE_PAUSE_MS = 320;
+  const FLASH_MS = 900;
+  const COPIED_MS = 1500;
+  const EMPTY = 'is-empty';
+  const TYPING = 'is-typing';
+  const FILLED = 'is-filled';
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  function renderLine(line: Line, visible: number): HTMLElement {
+    const row = document.createElement('span');
+    row.className = 'mg-line';
+    let left = visible;
+    for (const token of line.tokens) {
+      if (left <= 0) break;
+      const span = document.createElement('span');
+      span.className = `tk-${token.kind}`;
+      span.textContent = token.text.slice(0, left);
+      left -= token.text.length;
+      row.append(span);
+    }
+    if (row.childNodes.length === 0) row.append(' ');
+    return row;
+  }
+
+  const lengthOf = (line: Line) => line.tokens.reduce((sum, token) => sum + token.text.length, 0);
+
+  function setUpDemo(demo: HTMLElement, target: HTMLElement): void {
+    const sources = JSON.parse(demo.dataset.code ?? '{}') as Record<
+      CodeLanguage,
+      { file: string; lines: Line[] }
+    >;
+    const tabs = [...demo.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const outputs = [...demo.querySelectorAll<HTMLElement>('[data-field]')];
+    let language: CodeLanguage = 'js';
+    let run = 0;
+
+    const showAll = () => {
+      target.replaceChildren(...sources[language].lines.map((line) => renderLine(line, Infinity)));
+      target.classList.remove(TYPING);
+      for (const output of outputs) output.classList.remove(EMPTY, FILLED);
+    };
+
+    async function play(): Promise<void> {
+      const id = ++run;
+      const lines = sources[language].lines;
+      if (reducedMotion) return showAll();
+      target.replaceChildren();
+      target.classList.add(TYPING);
+      for (const output of outputs) output.classList.add(EMPTY);
+      for (const line of lines) {
+        if (id !== run) return;
+        if (!line.field) {
+          target.append(renderLine(line, Infinity));
+          continue;
+        }
+        const total = lengthOf(line);
+        let row = renderLine(line, 0);
+        target.append(row);
+        for (let typed = 1; typed <= total; typed += 1) {
+          await sleep(CHAR_MS);
+          if (id !== run) return;
+          const next = renderLine(line, typed);
+          row.replaceWith(next);
+          row = next;
+        }
+        for (const output of outputs.filter((o) => o.dataset.field === line.field)) {
+          output.classList.remove(EMPTY);
+          output.classList.add(FILLED);
+          setTimeout(() => output.classList.remove(FILLED), FLASH_MS);
+        }
+        await sleep(LINE_PAUSE_MS);
+      }
+      target.classList.remove(TYPING);
+    }
+
+    for (const tab of tabs) {
+      tab.addEventListener('click', () => {
+        language = tab.dataset.language as CodeLanguage;
+        for (const other of tabs) other.setAttribute('aria-selected', String(other === tab));
+        void play();
+      });
+    }
+    demo.querySelector('[data-replay]')?.addEventListener('click', () => void play());
+
+    if (!reducedMotion) {
+      const observer = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          void play();
+        }
+      });
+      observer.observe(demo);
+    }
+  }
+
+  for (const demo of document.querySelectorAll<HTMLElement>('[data-demo]')) {
+    const target = demo.querySelector<HTMLElement>('[data-lines] code');
+    if (target) setUpDemo(demo, target);
+  }
+
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-copy]')) {
+    button.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(button.dataset.copy ?? '');
+      button.textContent = button.dataset.done ?? '';
+      setTimeout(() => (button.textContent = button.dataset.label ?? ''), COPIED_MS);
+    });
+  }
+</script>
+
+<style>
+  .mg-landing {
+    --mg-editor-bg: #0d1117;
+    --mg-editor-line: #30363d;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-bottom: 4rem;
+  }
+
+  /* Hero */
+  .mg-hero {
+    padding-block: 3rem 2.5rem;
+  }
+
+  .mg-hero h1 {
+    max-width: 18ch;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    color: var(--sl-color-white);
+  }
+
+  .mg-hero-lead {
+    max-width: 42rem;
+    margin-top: 1.5rem;
+    font-size: var(--sl-text-xl);
+    line-height: 1.6;
+    color: var(--sl-color-gray-2);
+  }
+
+  .mg-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .mg-btn {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.55rem 1.1rem;
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--sl-color-white);
+    box-shadow: inset 0 0 0 1px var(--sl-color-gray-5);
+  }
+
+  .mg-btn:hover {
+    background: var(--sl-color-gray-6);
+  }
+
+  .mg-btn-primary,
+  .mg-btn-primary:hover {
+    background: var(--sl-color-white);
+    color: var(--sl-color-black);
+    box-shadow: none;
+  }
+
+  .mg-btn-primary:hover {
+    opacity: 0.85;
+  }
+
+  .mg-install {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .mg-install-pill {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 999px;
+    padding: 0.35rem 0.4rem 0.35rem 0.9rem;
+    font-family: var(--font-mono);
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-2);
+    background: var(--sl-color-gray-7, var(--sl-color-gray-6));
+    box-shadow: inset 0 0 0 1px var(--sl-color-gray-5);
+  }
+
+  .mg-install-pill code {
+    overflow-wrap: anywhere;
+    color: var(--sl-color-white);
+    background: none;
+    padding: 0;
+  }
+
+  .mg-install-pill button {
+    border: 0;
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+    font: inherit;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--sl-color-gray-2);
+    background: var(--sl-color-gray-6);
+  }
+
+  .mg-install-pill button:hover {
+    color: var(--sl-color-white);
+  }
+
+  /* Demo: editor + preview */
+  .mg-demo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 64rem) {
+    .mg-demo {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      align-items: stretch;
+    }
+  }
+
+  .mg-editor {
+    border-radius: 1rem;
+    overflow: hidden;
+    background: var(--mg-editor-bg);
+    box-shadow:
+      0 0 0 1px var(--mg-editor-line),
+      0 24px 48px -16px rgb(0 0 0 / 0.45);
+  }
+
+  .mg-editor-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--mg-editor-line);
+  }
+
+  .mg-dots {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .mg-dots i {
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 50%;
+    background: #30363d;
+  }
+
+  .mg-editor-bar [role='tablist'] {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .mg-editor-bar button {
+    border: 0;
+    border-radius: 0.4rem;
+    padding: 0.25rem 0.6rem;
+    font-family: var(--font-mono);
+    font-size: var(--sl-text-xs);
+    cursor: pointer;
+    color: #8b949e;
+    background: none;
+  }
+
+  .mg-editor-bar button:hover,
+  .mg-editor-bar [aria-selected='true'] {
+    color: #e6edf3;
+    background: #21262d;
+  }
+
+  .mg-replay {
+    margin-inline-start: auto;
+    font-family: var(--font-sans) !important;
+  }
+
+  .mg-code {
+    max-width: 100%;
+    margin: 0;
+    padding: 1.25rem 1.25rem 1.5rem;
+    min-height: 19rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.75;
+    color: #e6edf3;
+    background: none;
+  }
+
+  .mg-code code {
+    background: none;
+    padding: 0;
+    white-space: pre;
+  }
+
+  .mg-code :global(.mg-line) {
+    display: block;
+  }
+
+  .mg-code :global(code.is-typing > .mg-line:last-child)::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    margin-inline-start: 1px;
+    vertical-align: text-bottom;
+    background: var(--color-accent-400);
+    animation: mg-blink 1s steps(1) infinite;
+  }
+
+  @keyframes mg-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .mg-code :global(.tk-keyword) {
+    color: #ff7b72;
+  }
+  .mg-code :global(.tk-string) {
+    color: #a5d6ff;
+  }
+  .mg-code :global(.tk-number) {
+    color: #79c0ff;
+  }
+  .mg-code :global(.tk-fn) {
+    color: #d2a8ff;
+  }
+  .mg-code :global(.tk-type) {
+    color: #ffa657;
+  }
+  .mg-code :global(.tk-var) {
+    color: #ffa198;
+  }
+  .mg-code :global(.tk-punct) {
+    color: #8b949e;
+  }
+
+  .mg-preview {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    padding: 1rem;
+    background:
+      radial-gradient(circle at 1px 1px, var(--sl-color-gray-5) 1px, transparent 0) 0 0 / 16px 16px,
+      var(--sl-color-gray-7, var(--sl-color-gray-6));
+    box-shadow: inset 0 0 0 1px var(--sl-color-gray-5);
+  }
+
+  .mg-preview-label {
+    font-size: var(--sl-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--sl-color-gray-3);
+  }
+
+  .mg-receipt {
+    margin: auto 0;
+    border-radius: 0.9rem;
+    padding: 1.5rem;
+    background: var(--sl-color-bg);
+    box-shadow:
+      0 0 0 1px var(--sl-color-gray-5),
+      0 12px 32px -12px rgb(0 0 0 / 0.25);
+  }
+
+  .mg-receipt-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+    color: var(--sl-color-gray-2);
+  }
+
+  .mg-check {
+    display: inline-grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    color: #fff;
+    background: var(--color-accent-600);
+  }
+
+  .mg-amount {
+    margin-top: 0.75rem;
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--sl-color-white);
+  }
+
+  .mg-receipt dl {
+    margin-top: 1rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+  }
+
+  .mg-receipt dl > div {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding-block: 0.65rem;
+    border-bottom: 1px solid var(--sl-color-gray-6);
+    font-size: var(--sl-text-sm);
+  }
+
+  .mg-receipt dt {
+    color: var(--sl-color-gray-3);
+  }
+
+  .mg-receipt dd {
+    margin: 0;
+    color: var(--sl-color-white);
+  }
+
+  .mg-badge {
+    margin-inline-start: 0.5rem;
+    border-radius: 999px;
+    padding: 0.05rem 0.5rem;
+    font-size: var(--sl-text-xs);
+    font-weight: 600;
+    color: var(--sl-color-accent-high);
+    background: var(--sl-color-accent-low);
+  }
+
+  [data-field] {
+    transition:
+      opacity 0.3s ease,
+      background-color 0.6s ease;
+  }
+
+  [data-field].is-empty {
+    opacity: 0.12;
+  }
+
+  [data-field].is-filled {
+    background-color: color-mix(in srgb, var(--color-accent-500) 18%, transparent);
+  }
+
+  /* Modules */
+  .mg-modules {
+    margin-top: 4rem;
+  }
+
+  .mg-modules h2 {
+    font-size: var(--sl-text-2xl);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--sl-color-white);
+  }
+
+  .mg-module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+    margin-top: 1.25rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+    border-left: 1px solid var(--sl-color-gray-5);
+  }
+
+  .mg-module {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem;
+    border-right: 1px solid var(--sl-color-gray-5);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    text-decoration: none;
+  }
+
+  .mg-module:hover {
+    background: var(--sl-color-gray-7, var(--sl-color-gray-6));
+  }
+
+  .mg-module-name {
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  .mg-module-call {
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-2);
+    background: none;
+    padding: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .mg-module-result {
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-accent-high);
+  }
+
+  .mg-module-result::before {
+    content: '→ ';
+    color: var(--sl-color-gray-3);
+  }
+
+  @media (max-width: 40rem) {
+    .mg-code {
+      min-height: 0;
+      font-size: 0.75rem;
+    }
+
+    .mg-dots {
+      display: none;
+    }
+
+    .mg-receipt dl > div {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-field] {
+      transition: none;
+    }
+  }
+</style>

@@ -31,6 +31,22 @@ export const en = {
   'play.language': 'Language',
   'play.moduleLabel': 'Module',
   'try.option': 'Option',
+  'home.title': 'Malagasy data, right in one call.',
+  'home.lead':
+    'Number words, +261 phone numbers, Ariary amounts and dates for JavaScript and PHP. Zero dependencies, and the same result in every language.',
+  'home.start': 'Get started',
+  'home.play': 'Playground',
+  'home.copy': 'Copy',
+  'home.copied': 'Copied',
+  'home.preview': 'Preview',
+  'home.receipt': 'Payment received',
+  'home.field.amount': 'Amount',
+  'home.field.words': 'In words',
+  'home.field.phone': 'From',
+  'home.field.date': 'Date',
+  'home.replay': 'Replay',
+  'home.modules': 'Modules',
+  'home.demo': 'Code typed live, with its result',
 } as const;
 
 export type UiKey = keyof typeof en;

@@ -29,7 +29,6 @@ export default defineConfig({
       defaultLocale: 'root',
       locales: {
         root: { label: 'English', lang: 'en' },
-        mg: { label: 'Malagasy', lang: 'mg' },
         fr: { label: 'Français', lang: 'fr' },
       },
       social: [
@@ -56,7 +55,7 @@ export default defineConfig({
         // /play/ is an Astro page, which the validator cannot see; its own e2e tests cover it.
         // Rules pages exist in English only; translated pages link to their English fallback.
         starlightLinksValidator({
-          exclude: ['/mdg-utils-docs/play/', '/mdg-utils-docs/{mg,fr}/play/'],
+          exclude: ['/mdg-utils-docs/play/', '/mdg-utils-docs/fr/play/'],
           errorOnFallbackPages: false,
         }),
       ],

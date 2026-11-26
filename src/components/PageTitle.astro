@@ -23,11 +23,16 @@ const label = kicker ?? groupOfCurrent(route.sidebar);
 const showHead = template !== 'splash';
 ---
 
-{showHead && label && <p class="mg-kicker">{label}</p>}
-<h1 id={PAGE_TITLE_ID} class:list={{ 'mg-title': showHead }}>
-  {title}
-</h1>
-{showHead && description && <p class="mg-lead">{description}</p>}
+{/* Splash pages (the landing) render their own headline. */}
+{showHead && (
+  <>
+    {label && <p class="mg-kicker">{label}</p>}
+    <h1 id={PAGE_TITLE_ID} class="mg-title">
+      {title}
+    </h1>
+    {description && <p class="mg-lead">{description}</p>}
+  </>
+)}
 
 <style>
   h1 {

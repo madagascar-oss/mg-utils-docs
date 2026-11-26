@@ -19,10 +19,10 @@ export default defineConfig({
       title: 'mdg-utils',
       description:
         'Malagasy number words, Madagascar phone numbers, Ariary amounts and dates — the same in every language.',
-      // Mdgascar brand kit: the ravinala mark, green on light, light green on dark.
+      // Mdgascar brand kit: the MG diamond, ink frame on light, white frame on dark.
       logo: {
-        light: './src/assets/brand/mark-green.svg',
-        dark: './src/assets/brand/mark-light-green.svg',
+        light: './src/assets/brand/mark-light.svg',
+        dark: './src/assets/brand/mark-dark.svg',
       },
       favicon: '/brand/favicon-32.png',
       head,

@@ -2,7 +2,7 @@
 import type { StarlightUserConfig } from '@astrojs/starlight/types';
 
 const SITE = 'https://mdgascar.github.io/mdg-utils-docs';
-const BRAND_COLOR = '#08432D';
+const BRAND_COLOR = '#11141A'; // ink behind the MG logo
 
 export const head: NonNullable<StarlightUserConfig['head']> = [
   {

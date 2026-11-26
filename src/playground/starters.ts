@@ -6,8 +6,7 @@ const js: Record<ModuleId, string> = {
 
 console.log(numberToWords(21));
 console.log(numberToWords(2026));
-console.log(numberToWords(1_000_000));
-console.log(numberToWords(1_000_000_000_000));
+console.log(numberToWords(1000000));
 console.log(numberToWords(3.14));
 `,
   phone: `import {
@@ -49,8 +48,7 @@ use Mdgascar\\MdgUtils\\Words\\NumberWords;
 
 echo NumberWords::fromInt(21), "\\n";
 echo NumberWords::fromInt(2026), "\\n";
-echo NumberWords::fromInt(1_000_000), "\\n";
-echo NumberWords::fromInt(1_000_000_000_000), "\\n";
+echo NumberWords::fromInt(1000000), "\\n";
 echo NumberWords::fromFloat(3.14), "\\n";
 `,
   phone: `<?php

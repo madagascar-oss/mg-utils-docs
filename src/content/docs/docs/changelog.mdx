@@ -8,7 +8,13 @@ Each entry is a spec version: the rules, data and test vectors every package imp
 
 **Breaking** marks an output that changes for an input that worked before.
 
-## 0.5.0 (Unreleased)
+## 0.6.0 (Unreleased)
+
+- `phone`: New prefix `035` for Airtel Madagascar, on sale since 22 June 2026: `035 12 345 67` → operator `airtel` instead of `UNKNOWN_OPERATOR`.
+- `phone`: **Breaking**: Telma is now Yas Madagascar (since 26 November 2024). The operator id `telma` is now `yas`, named `Yas Madagascar`; PHP `Operator::Telma` is now `Operator::Yas`.
+- `phone`: `036`, announced by Yas without a published source yet, stays `UNKNOWN_OPERATOR` and is listed under Waiting for a source.
+
+## 0.5.0 (2026-11-26)
 
 - `words`: **Breaking**: spells numbers of any size. `lavitrisa` takes a count of any size, so 10¹² is `arivo lavitrisa` instead of `OUT_OF_RANGE`. Each language stops at its largest exact number.
 - `words`: Decimals, read with `faingo`: `3.14` → `telo faingo efatra ambin'ny folo`, `0.008` → `aotra faingo aotra aotra valo`. PHP adds `NumberWords::fromFloat()`.

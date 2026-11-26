@@ -31,6 +31,11 @@ export const sidebar: Sidebar = [
         translations: { mg: 'Kinova', fr: 'Versions' },
         link: '/docs/versioning/',
       },
+      {
+        label: 'Changelog',
+        translations: { mg: 'Tantaran’ny fiovana', fr: 'Journal des modifications' },
+        link: '/docs/changelog/',
+      },
     ],
   },
   {

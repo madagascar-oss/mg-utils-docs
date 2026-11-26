@@ -1,17 +1,17 @@
 ---
 title: Nombres en lettres
-description: Écrire les nombres entiers de 0 à 999 999 999 999 en lettres malgaches, selon la langue officielle — de la plus petite unité à la plus grande.
+description: Écrire tout nombre en lettres malgaches, entier ou décimal, selon la langue officielle, de la plus petite unité à la plus grande.
 kicker: Modules
 ---
 
 {/* Traduction française. Les blocs de code sont identiques à la page anglaise. */}
-import { LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import { Aside, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
 import ApiTable from '../../../../../components/ApiTable.astro';
 import TryItBox from '../../../../../components/TryItBox.astro';
 
 ## Essayer
 
-<TryItBox module="words" />
+<TryItBox module="words" examples={['0', '11', '21', '101', '205', '1960', '2026', '280000']} />
 
 ## Référence rapide
 
@@ -27,10 +27,15 @@ Le malgache lit les nombres de la plus petite unité à la plus grande. La parti
     import { numberToWords } from '@madagascar-oss/words';
 
     numberToWords(0); // 'aotra'
+    numberToWords(11); // "iraika ambin'ny folo"
     numberToWords(21); // 'iraika amby roapolo'
+    numberToWords(101); // 'iraika amby zato'
     numberToWords(205); // 'dimy sy roanjato'
+    numberToWords(348); // 'valo amby efapolo sy telonjato'
     numberToWords(1960); // 'enimpolo sy sivinjato sy arivo'
+    numberToWords(2026); // 'enina amby roapolo sy roa arivo'
     numberToWords(10_000); // 'iray alina'
+    numberToWords(280_000); // 'valo alina sy roa hetsy'
     numberToWords(1_000_000); // 'iray tapitrisa'
     ```
   </TabItem>
@@ -39,34 +44,113 @@ Le malgache lit les nombres de la plus petite unité à la plus grande. La parti
     use Madagascar\MgUtils\Words\NumberWords;
 
     NumberWords::fromInt(0); // 'aotra'
+    NumberWords::fromInt(11); // "iraika ambin'ny folo"
     NumberWords::fromInt(21); // 'iraika amby roapolo'
+    NumberWords::fromInt(101); // 'iraika amby zato'
     NumberWords::fromInt(205); // 'dimy sy roanjato'
+    NumberWords::fromInt(348); // 'valo amby efapolo sy telonjato'
     NumberWords::fromInt(1960); // 'enimpolo sy sivinjato sy arivo'
+    NumberWords::fromInt(2026); // 'enina amby roapolo sy roa arivo'
     NumberWords::fromInt(10_000); // 'iray alina'
+    NumberWords::fromInt(280_000); // 'valo alina sy roa hetsy'
     NumberWords::fromInt(1_000_000); // 'iray tapitrisa'
     ```
   </TabItem>
 </Tabs>
 
+## Grands nombres
+
+Les règles n’ont pas de limite haute : `lavitrisa` (10⁹), le plus grand mot de groupe, prend un multiplicateur de toute taille, écrit avec les mêmes règles. Ainsi 10¹² se dit `arivo lavitrisa` (mille lavitrisa). Chaque langage s’arrête seulement là où ses nombres cessent d’être exacts : `Number.MAX_SAFE_INTEGER` en JavaScript, `PHP_INT_MAX` en PHP.
+
+<TryItBox module="words" input="1999999999999" examples={['1000000000', '1000000000000', '1999999999999', '1000000000000000', '9007199254740991']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    numberToWords(1_000_000_000); // 'iray lavitrisa'
+    numberToWords(1_000_000_000_000); // 'arivo lavitrisa'
+    numberToWords(1_000_000_000_000_000); // 'iray tapitrisa lavitrisa'
+    numberToWords(1_999_999_999_999);
+    // 'sivy amby sivifolo sy sivinjato sy sivy arivo sy sivy alina sy sivy hetsy
+    //  sy sivy amby sivifolo sy sivinjato tapitrisa
+    //  sy sivy amby sivifolo sy sivinjato sy arivo lavitrisa'
+    numberToWords(Number.MAX_SAFE_INTEGER); // the largest exact number
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    NumberWords::fromInt(1_000_000_000); // 'iray lavitrisa'
+    NumberWords::fromInt(1_000_000_000_000); // 'arivo lavitrisa'
+    NumberWords::fromInt(1_000_000_000_000_000); // 'iray tapitrisa lavitrisa'
+    NumberWords::fromInt(PHP_INT_MAX); // up to 9 223 372 036 854 775 807
+    ```
+  </TabItem>
+</Tabs>
+
+## Décimales
+
+La partie entière vient d’abord, puis `faingo` (la virgule), puis les chiffres après la virgule lus comme un nombre entier. Chaque zéro juste après la virgule se dit `aotra`.
+
+<TryItBox module="words" input="3.14" examples={['3.14', '18.3', '0.5', '1.05', '0.008', '12.75', '1234.5678']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    numberToWords(3.14); // "telo faingo efatra ambin'ny folo"
+    numberToWords(18.3); // "valo ambin'ny folo faingo telo"
+    numberToWords(0.5); // 'aotra faingo dimy'
+    numberToWords(1.05); // 'iray faingo aotra dimy'
+    numberToWords(0.008); // 'aotra faingo aotra aotra valo'
+    numberToWords(12.75); // "roa ambin'ny folo faingo dimy amby fitopolo"
+    numberToWords(1.0); // 'iray' (a whole number has no faingo)
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    NumberWords::fromFloat(3.14); // "telo faingo efatra ambin'ny folo"
+    NumberWords::fromFloat(18.3); // "valo ambin'ny folo faingo telo"
+    NumberWords::fromFloat(0.5); // 'aotra faingo dimy'
+    NumberWords::fromFloat(1.05); // 'iray faingo aotra dimy'
+    NumberWords::fromFloat(0.008); // 'aotra faingo aotra aotra valo'
+    NumberWords::fromFloat(12.75); // "roa ambin'ny folo faingo dimy amby fitopolo"
+    NumberWords::fromFloat(1.0); // 'iray' (a whole number has no faingo)
+    ```
+  </TabItem>
+</Tabs>
+
+<Aside>Les décimales sont celles de la valeur numérique. `1.50` est le nombre `1.5`, et `0.1 + 0.2` vaut `0.30000000000000004` en virgule flottante : il se lit donc ainsi.</Aside>
+
+## Des nombres uniquement
+
+L’entrée est une valeur numérique, jamais du texte : ni espaces, ni séparateurs, ni chaînes. `'1 500'` donne `INVALID_TYPE`. Pour lire des montants saisis, utilisez le module ariary.
+
 ## Erreurs
 
-| Entrée                               | Code d’erreur     |
-| ----------------------------------- | -------------- |
-| Pas un nombre entier (`1.5`, `'21'`)  | `INVALID_TYPE` |
-| Inférieur à 0 ou supérieur à 999 999 999 999    | `OUT_OF_RANGE` |
+| Entrée | Code d’erreur |
+| --- | --- |
+| Pas un nombre fini (`'21'`, `NaN`, `Infinity`) | `INVALID_TYPE` |
+| Inférieur à 0 | `OUT_OF_RANGE` |
+| Au-delà du plus grand nombre exact du langage | `OUT_OF_RANGE` |
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
     numberToWords(-1); // throws MgError, error.code === 'OUT_OF_RANGE'
+    numberToWords('1 500' as unknown as number); // throws MgError, 'INVALID_TYPE'
+    numberToWords(Number.MAX_SAFE_INTEGER + 1); // throws MgError, 'OUT_OF_RANGE'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
     NumberWords::fromInt(-1); // throws MgUtilsException, ->errorCode === ErrorCode::OutOfRange
+    NumberWords::fromFloat(NAN); // throws MgUtilsException, ErrorCode::InvalidType
     ```
   </TabItem>
 </Tabs>
+
+## Pas encore pris en charge
+
+Les nombres négatifs, et les anciens noms de 10⁷ et au-delà (`safatsiroa`, `tsitamboisa`…), attendent une source ou l’avis d’un expert de la langue malgache. Voir [En attente d’une source ou d’un expert](/mg-utils-docs/fr/docs/words/rules/#waiting-for-a-source-or-an-expert).
 
 ## Règles et sources
 

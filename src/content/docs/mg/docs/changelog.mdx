@@ -1,0 +1,37 @@
+---
+title: Tantaran’ny fiovana
+description: Izay niova tamin’ny kinova tsirairay amin’ny famaritana, ny fihetsika ampiharin’ny fonosana rehetra.
+kicker: Fanombohana
+---
+
+{/* Malagasy translation (draft, needs native review). */}
+Kinovan’ny famaritana ny tsirairay: ny fitsipika, ny angona ary ny ohatra fitsapana ampiharin’ny fonosana rehetra. Ny kinovan’ny fonosana (npm, Packagist) dia manaraka azy ary mitanisa ny fiovany ao amin’ny `CHANGELOG.md`-ny. Jereo ny [Kinova](/mg-utils-docs/mg/docs/versioning/) ho an’ny hevitry ny isa tsirairay.
+
+Ny **Manova valiny** dia valiny miova ho an’ny fampidirana efa nandeha teo aloha.
+
+## 0.5.0 (Mbola tsy navoaka)
+
+- `words`: **Manova valiny**: manoratra isa na inona na inona habeny. Ny `lavitrisa` dia mandray isa na inona na inona habeny, ka ny 10¹² dia `arivo lavitrisa` fa tsy `OUT_OF_RANGE` intsony. Mijanona amin’ny isa marina lehibe indrindra ny fiteny tsirairay.
+- `words`: Isa misy faingo, vakiana amin’ny `faingo`: `3.14` → `telo faingo efatra ambin'ny folo`, `0.008` → `aotra faingo aotra aotra valo`. Manampy `NumberWords::fromFloat()` ny PHP.
+- `words`: Fizarana vaovao momba izay miandry loharano na manam-pahaizana: isa latsaky ny aotra, anarana taloha ho an’ny 10⁷ sy mihoatra.
+- `ariary`: **Manova valiny**: tsy voafetra amin’ny 999 999 999 999 intsony, ary vola misy faingo: `Ar 1 500,5`. Manampy `Ariary::fromFloat()` ny PHP; `int|float` ny `$amount`.
+- `ariary`: **Manova valiny**: ny `parseAriary('1,500')` dia mamaky 1,5 fa tsy `INVALID_FORMAT` intsony. Ho an’ny soratra amin’ny fomba anglisy, omeo ny `{ grouping: 'comma', decimal: 'dot' }`.
+- `ariary`: Safidy vaovao `grouping: comma` sy `decimal` ho an’ny fanoratana sy ireo mpamaky telo; mijanona amin’ny fomba malagasy ny tsy misy safidy.
+- `ariary`: **Manova valiny**: marina tanteraka ny fanovana FMG ary mandray FMG rehetra: `fmgToAriary(7501)` → `1500.2` fa tsy `OUT_OF_RANGE`; `ariaryToFmg(0.07)` → `0.35`.
+- `ariary`: Mbola hojerena: ny famakiana ny `1,500` raha tsy misy safidy, ny fihodinan’ny tarehimarika lava loatra, ary ny soratra voalamina mihoatra ny fetra 32 tarehintsoratra.
+
+## 0.4.0 (2026-11-25)
+
+- `words`: **Manova valiny**: ny `arivo` ihany no tsy asiana `iray`: `10 000` → `iray alina`, `1 000 000` → `iray tapitrisa`; mijanona ho `arivo` ny `1 000`.
+
+## 0.3.0 (2026-11-25)
+
+- `words`: **Manova valiny**: ny zato manomboka amin’ny 200 dia ampifandraisina amin’ny `sy` (`205` → `dimy sy roanjato`), ary ny 11–19 dia mampiasa `ambin'ny` (`11` → `iraika ambin'ny folo`).
+
+## 0.2.0 (2026-11-24)
+
+- `spec`: **Manova valiny**: nafindra ao amin’ny `modules/` ny môdily ary ao amin’ny `schemas/` ny skema. Nampiana ny môdily ariary sy date.
+
+## 0.1.0 (2026-11-23)
+
+- `spec`: Famaritana voalohany: kaody hadisoana sy skema iraisana, môdily words sy phone.

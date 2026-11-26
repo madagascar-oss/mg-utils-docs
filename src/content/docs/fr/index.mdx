@@ -4,16 +4,16 @@ description: Nombres en lettres, numéros de téléphone malgaches, montants en 
 template: splash
 hero:
   image:
-    alt: Madagascar OSS
+    alt: Mdgascar
     light: ../../../assets/brand/mark-green.svg
     dark: ../../../assets/brand/mark-light-green.svg
   tagline: Nombres en lettres, numéros de téléphone malgaches, montants en ariary et dates pour JavaScript et PHP — une seule spécification partagée, les mêmes vecteurs de test, aucune dépendance.
   actions:
     - text: Commencer
-      link: /mg-utils-docs/fr/docs/installation/using-npm/
+      link: /mdg-utils-docs/fr/docs/installation/using-npm/
       icon: right-arrow
     - text: Ouvrir le bac à sable
-      link: /mg-utils-docs/fr/play/
+      link: /mdg-utils-docs/fr/play/
       variant: minimal
 ---
 
@@ -23,10 +23,10 @@ import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```sh title="Terminal"
-    npm install @madagascar-oss/utils
+    npm install @mdgascar/utils
     ```
     ```ts
-    import { formatAriary, formatPhoneNumber, numberToWords } from '@madagascar-oss/utils';
+    import { formatAriary, formatPhoneNumber, numberToWords } from '@mdgascar/utils';
 
     numberToWords(2026); // 'enina amby roapolo sy roa arivo'
     formatPhoneNumber('0341234567', 'international'); // '+261 34 12 345 67'
@@ -35,13 +35,13 @@ import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
   </TabItem>
   <TabItem label="PHP">
     ```sh title="Terminal"
-    composer require madagascar-oss/mg-utils
+    composer require mdgascar/mdg-utils
     ```
     ```php
-    use Madagascar\MgUtils\Ariary\Ariary;
-    use Madagascar\MgUtils\Phone\PhoneNumber;
-    use Madagascar\MgUtils\Phone\PhoneNumberFormat;
-    use Madagascar\MgUtils\Words\NumberWords;
+    use Mdgascar\MdgUtils\Ariary\Ariary;
+    use Mdgascar\MdgUtils\Phone\PhoneNumber;
+    use Mdgascar\MdgUtils\Phone\PhoneNumberFormat;
+    use Mdgascar\MdgUtils\Words\NumberWords;
 
     NumberWords::fromInt(2026); // 'enina amby roapolo sy roa arivo'
     PhoneNumber::parse('0341234567')->format(PhoneNumberFormat::International); // '+261 34 12 345 67'

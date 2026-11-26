@@ -1,6 +1,6 @@
 ---
-title: Hanomboka amin’ny mg-utils ho an’ny PHP
-description: Fonosana Composer iray, madagascar-oss/mg-utils, misy ny môdily rehetra ho toy ny value object sy enum. PHP 8.3+, tsy mila fonosana hafa, valiny mitovy amin’ny fonosana JavaScript.
+title: Hanomboka amin’ny mdg-utils ho an’ny PHP
+description: Fonosana Composer iray, mdgascar/mdg-utils, misy ny môdily rehetra ho toy ny value object sy enum. PHP 8.3+, tsy mila fonosana hafa, valiny mitovy amin’ny fonosana JavaScript.
 kicker: Fametrahana
 ---
 
@@ -17,20 +17,20 @@ import InstallMethods from '../../../../../components/InstallMethods.astro';
 1. ### Takio ny fonosana
 
    ```sh title="Terminal"
-   composer require madagascar-oss/mg-utils
+   composer require mdgascar/mdg-utils
    ```
 
 2. ### Ampiasao ny môdily iray
 
-   Kilasy ao ambanin’ny `Madagascar\MgUtils` ny môdily tsirairay. Vakio ny laharana na ahoana na ahoana fomba nanoratana azy ary soraty indray.
+   Kilasy ao ambanin’ny `Mdgascar\MdgUtils` ny môdily tsirairay. Vakio ny laharana na ahoana na ahoana fomba nanoratana azy ary soraty indray.
 
    ```php title="signup.php"
    <?php
 
    require __DIR__ . '/vendor/autoload.php';
 
-   use Madagascar\MgUtils\Phone\PhoneNumber;
-   use Madagascar\MgUtils\Phone\PhoneNumberFormat;
+   use Mdgascar\MdgUtils\Phone\PhoneNumber;
+   use Mdgascar\MdgUtils\Phone\PhoneNumberFormat;
 
    $phone = PhoneNumber::parse('034 12 345 67');
    $phone->operator->displayName(); // 'Telma'
@@ -39,11 +39,11 @@ import InstallMethods from '../../../../../components/InstallMethods.astro';
 
 3. ### Tantano ny fampidirana diso
 
-   Manipy `MgUtilsException` ny `parse()`. Mamerina ny kaody hadisoana tsy misy fanipazana ny `safeParse()`, mamerina `null` ny `tryParse()`.
+   Manipy `MdgUtilsException` ny `parse()`. Mamerina ny kaody hadisoana tsy misy fanipazana ny `safeParse()`, mamerina `null` ny `tryParse()`.
 
    ```php title="signup.php"
-   use Madagascar\MgUtils\ErrorCode;
-   use Madagascar\MgUtils\Phone\PhoneNumber;
+   use Mdgascar\MdgUtils\ErrorCode;
+   use Mdgascar\MdgUtils\Phone\PhoneNumber;
 
    $result = PhoneNumber::safeParse('035 12 345 67');
    $result->success;           // false
@@ -54,14 +54,14 @@ import InstallMethods from '../../../../../components/InstallMethods.astro';
 
 4. ### Raiso mitovy ny hadisoan’ny môdily rehetra
 
-   Manipy `MgUtilsException` ny môdily rehetra; ny `errorCode` ao aminy dia ilay kaody mitovy amin’ny an’ny JavaScript.
+   Manipy `MdgUtilsException` ny môdily rehetra; ny `errorCode` ao aminy dia ilay kaody mitovy amin’ny an’ny JavaScript.
 
    ```php title="signup.php"
-   use Madagascar\MgUtils\MgUtilsException;
+   use Mdgascar\MdgUtils\MdgUtilsException;
 
    try {
        PhoneNumber::parse($userInput);
-   } catch (MgUtilsException $exception) {
+   } catch (MdgUtilsException $exception) {
        echo $exception->errorCode->value; // 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | …
    }
    ```
@@ -70,9 +70,9 @@ import InstallMethods from '../../../../../components/InstallMethods.astro';
 
 <Aside type="caution" title="Alohan’ny famoahana voalohany amin’ny Packagist">
   Hiseho ao amin’ny Packagist ny fonosana rehefa misy ny famoahana voalohany. Mandra-pahatongan’izany,
-  apetraho avy amin’ny [mg-utils-php](https://github.com/madagascar-oss/mg-utils-php) amin’ny alalan’ny repository Composer `vcs`.
+  apetraho avy amin’ny [mdg-utils-php](https://github.com/mdgascar/mdg-utils-php) amin’ny alalan’ny repository Composer `vcs`.
 </Aside>
 
 <Aside type="tip" title="Misy olana ve?">
-  Andramo mivantana ny asa rehetra, amin’ny JavaScript sy PHP, ao amin’ny [toerana fanandramana](/mg-utils-docs/mg/play/).
+  Andramo mivantana ny asa rehetra, amin’ny JavaScript sy PHP, ao amin’ny [toerana fanandramana](/mdg-utils-docs/mg/play/).
 </Aside>

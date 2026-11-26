@@ -9,7 +9,7 @@ export interface LogLine {
 }
 
 export interface RunError {
-  /** Spec error code (INVALID_FORMAT, …) when the code threw an mg-utils error. */
+  /** Spec error code (INVALID_FORMAT, …) when the code threw an mdg-utils error. */
   readonly code?: string;
   readonly message: string;
 }

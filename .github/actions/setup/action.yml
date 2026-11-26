@@ -1,4 +1,4 @@
-name: Set up mg-utils-docs
+name: Set up mdg-utils-docs
 description: Install pnpm, Node.js and dependencies from the lockfile.
 runs:
   using: composite

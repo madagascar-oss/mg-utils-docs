@@ -24,7 +24,7 @@ Le malgache lit les nombres de la plus petite unité à la plus grande. La parti
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { numberToWords } from '@madagascar-oss/words';
+    import { numberToWords } from '@mdgascar/words';
 
     numberToWords(0); // 'aotra'
     numberToWords(11); // "iraika ambin'ny folo"
@@ -41,7 +41,7 @@ Le malgache lit les nombres de la plus petite unité à la plus grande. La parti
   </TabItem>
   <TabItem label="PHP">
     ```php
-    use Madagascar\MgUtils\Words\NumberWords;
+    use Mdgascar\MdgUtils\Words\NumberWords;
 
     NumberWords::fromInt(0); // 'aotra'
     NumberWords::fromInt(11); // "iraika ambin'ny folo"
@@ -135,23 +135,23 @@ L’entrée est une valeur numérique, jamais du texte : ni espaces, ni séparat
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    numberToWords(-1); // throws MgError, error.code === 'OUT_OF_RANGE'
-    numberToWords('1 500' as unknown as number); // throws MgError, 'INVALID_TYPE'
-    numberToWords(Number.MAX_SAFE_INTEGER + 1); // throws MgError, 'OUT_OF_RANGE'
+    numberToWords(-1); // throws MdgError, error.code === 'OUT_OF_RANGE'
+    numberToWords('1 500' as unknown as number); // throws MdgError, 'INVALID_TYPE'
+    numberToWords(Number.MAX_SAFE_INTEGER + 1); // throws MdgError, 'OUT_OF_RANGE'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
-    NumberWords::fromInt(-1); // throws MgUtilsException, ->errorCode === ErrorCode::OutOfRange
-    NumberWords::fromFloat(NAN); // throws MgUtilsException, ErrorCode::InvalidType
+    NumberWords::fromInt(-1); // throws MdgUtilsException, ->errorCode === ErrorCode::OutOfRange
+    NumberWords::fromFloat(NAN); // throws MdgUtilsException, ErrorCode::InvalidType
     ```
   </TabItem>
 </Tabs>
 
 ## Pas encore pris en charge
 
-Les nombres négatifs, et les anciens noms de 10⁷ et au-delà (`safatsiroa`, `tsitamboisa`…), attendent une source ou l’avis d’un expert de la langue malgache. Voir [En attente d’une source ou d’un expert](/mg-utils-docs/fr/docs/words/rules/#waiting-for-a-source-or-an-expert).
+Les nombres négatifs, et les anciens noms de 10⁷ et au-delà (`safatsiroa`, `tsitamboisa`…), attendent une source ou l’avis d’un expert de la langue malgache. Voir [En attente d’une source ou d’un expert](/mdg-utils-docs/fr/docs/words/rules/#waiting-for-a-source-or-an-expert).
 
 ## Règles et sources
 
-<LinkCard title="Nombres en lettres : règles et sources" description="Comment les nombres sont construits, les sources officielles et les désaccords consignés." href="/mg-utils-docs/fr/docs/words/rules/" />
+<LinkCard title="Nombres en lettres : règles et sources" description="Comment les nombres sont construits, les sources officielles et les désaccords consignés." href="/mdg-utils-docs/fr/docs/words/rules/" />

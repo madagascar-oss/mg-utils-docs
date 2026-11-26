@@ -29,7 +29,7 @@ import TryItBox from '../../../../components/TryItBox.astro';
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { formatDate } from '@madagascar-oss/date';
+    import { formatDate } from '@mdgascar/date';
 
     formatDate('2026-11-23'); // '23 Novambra 2026'
     formatDate('2026-11-23', 'full'); // 'Alatsinainy 23 Novambra 2026'
@@ -39,8 +39,8 @@ import TryItBox from '../../../../components/TryItBox.astro';
   </TabItem>
   <TabItem label="PHP">
     ```php
-    use Madagascar\MgUtils\Date\DateStyle;
-    use Madagascar\MgUtils\Date\MalagasyDate;
+    use Mdgascar\MdgUtils\Date\DateStyle;
+    use Mdgascar\MdgUtils\Date\MalagasyDate;
 
     MalagasyDate::fromString('2026-11-23')->format(); // '23 Novambra 2026'
     MalagasyDate::fromString('2026-11-23')->format(DateStyle::Full); // 'Alatsinainy 23 Novambra 2026'
@@ -57,7 +57,7 @@ Weekdays use ISO numbers: Monday is 1, Sunday is 7.
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { getMonthName, getWeekdayName } from '@madagascar-oss/date';
+    import { getMonthName, getWeekdayName } from '@mdgascar/date';
 
     getMonthName(6); // 'Jona'
     getMonthName(6, 'abbreviated'); // 'Jon'
@@ -67,8 +67,8 @@ Weekdays use ISO numbers: Monday is 1, Sunday is 7.
   </TabItem>
   <TabItem label="PHP">
     ```php
-    use Madagascar\MgUtils\Date\MalagasyDate;
-    use Madagascar\MgUtils\Date\NameWidth;
+    use Mdgascar\MdgUtils\Date\MalagasyDate;
+    use Mdgascar\MdgUtils\Date\NameWidth;
 
     MalagasyDate::monthName(6); // 'Jona'
     MalagasyDate::monthName(6, NameWidth::Abbreviated); // 'Jon'
@@ -88,4 +88,4 @@ Weekdays use ISO numbers: Monday is 1, Sunday is 7.
 
 ## Rules and sources
 
-<LinkCard title="Malagasy dates: rules and sources" description="Month and weekday names, the five styles and recorded decisions." href="/mg-utils-docs/docs/date/rules/" />
+<LinkCard title="Malagasy dates: rules and sources" description="Month and weekday names, the five styles and recorded decisions." href="/mdg-utils-docs/docs/date/rules/" />

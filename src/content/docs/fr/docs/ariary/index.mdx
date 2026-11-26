@@ -26,7 +26,7 @@ Les montants sont des nombres, entiers ou décimaux, sans limite haute dans les 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { formatAriary } from '@madagascar-oss/ariary';
+    import { formatAriary } from '@mdgascar/ariary';
 
     formatAriary(1500); // 'Ar 1 500'
     formatAriary(1500.5); // 'Ar 1 500,5'
@@ -38,9 +38,9 @@ Les montants sont des nombres, entiers ou décimaux, sans limite haute dans les 
   </TabItem>
   <TabItem label="PHP">
     ```php
-    use Madagascar\MgUtils\Ariary\Ariary;
-    use Madagascar\MgUtils\Ariary\Grouping;
-    use Madagascar\MgUtils\Ariary\SymbolPosition;
+    use Mdgascar\MdgUtils\Ariary\Ariary;
+    use Mdgascar\MdgUtils\Ariary\Grouping;
+    use Mdgascar\MdgUtils\Ariary\SymbolPosition;
 
     Ariary::fromInt(1500)->format(); // 'Ar 1 500'
     Ariary::fromFloat(1500.5)->format(); // 'Ar 1 500,5'
@@ -63,7 +63,7 @@ Les montants sont des nombres, entiers ou décimaux, sans limite haute dans les 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { parseAriary, safeParseAriary, tryParseAriary } from '@madagascar-oss/ariary';
+    import { parseAriary, safeParseAriary, tryParseAriary } from '@mdgascar/ariary';
 
     parseAriary('1.500 Ar'); // 1500
     parseAriary('MGA 1500'); // 1500
@@ -100,17 +100,17 @@ Chaque option vaut par défaut l’usage malgache. Pour un texte écrit selon un
     formatAriary(1500.5, { grouping: 'comma', decimal: 'dot' }); // 'Ar 1,500.5'
     parseAriary('1,500.50', { grouping: 'comma', decimal: 'dot' }); // 1500.5
     parseAriary('1,500', { grouping: 'comma', decimal: 'dot' }); // 1500
-    formatAriary(1500, { grouping: 'comma' }); // throws MgError INVALID_TYPE: same as the decimal comma
+    formatAriary(1500, { grouping: 'comma' }); // throws MdgError INVALID_TYPE: same as the decimal comma
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
-    use Madagascar\MgUtils\Ariary\DecimalSeparator;
+    use Mdgascar\MdgUtils\Ariary\DecimalSeparator;
 
     Ariary::fromFloat(1500.5)->format(Grouping::Comma, decimal: DecimalSeparator::Dot); // 'Ar 1,500.5'
     Ariary::parse('1,500.50', Grouping::Comma, DecimalSeparator::Dot)->amount; // 1500.5
     Ariary::parse('1,500', Grouping::Comma, DecimalSeparator::Dot)->amount; // 1500
-    Ariary::fromInt(1500)->format(Grouping::Comma); // throws MgUtilsException, ErrorCode::InvalidType
+    Ariary::fromInt(1500)->format(Grouping::Comma); // throws MdgUtilsException, ErrorCode::InvalidType
     ```
   </TabItem>
 </Tabs>
@@ -122,7 +122,7 @@ Pour les reçus et les chèques : le montant en lettres malgaches suivi de `aria
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { ariaryToWords } from '@madagascar-oss/ariary';
+    import { ariaryToWords } from '@mdgascar/ariary';
 
     ariaryToWords(1500); // 'dimanjato sy arivo ariary'
     ariaryToWords(25_000); // 'dimy arivo sy roa alina ariary'
@@ -147,7 +147,7 @@ Pour les reçus et les chèques : le montant en lettres malgaches suivi de `aria
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { ariaryToFmg, fmgToAriary, formatFmg } from '@madagascar-oss/ariary';
+    import { ariaryToFmg, fmgToAriary, formatFmg } from '@mdgascar/ariary';
 
     fmgToAriary(7500); // 1500
     fmgToAriary(7501); // 1500.2
@@ -179,4 +179,4 @@ Pour les reçus et les chèques : le montant en lettres malgaches suivi de `aria
 
 ## Règles et sources
 
-<LinkCard title="Montants en ariary : règles et sources" description="Groupement, symboles, décimales, taux FMG, décisions consignées et points à revoir." href="/mg-utils-docs/fr/docs/ariary/rules/" />
+<LinkCard title="Montants en ariary : règles et sources" description="Groupement, symboles, décimales, taux FMG, décisions consignées et points à revoir." href="/mdg-utils-docs/fr/docs/ariary/rules/" />

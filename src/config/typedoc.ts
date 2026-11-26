@@ -12,7 +12,7 @@ export const typeDocPlugin = starlightTypeDoc({
     excludeExternals: true,
     // One page per package, every export on it, titled with the npm name.
     router: 'module',
-    pageTitleTemplates: { module: '@madagascar-oss/{name}' },
+    pageTitleTemplates: { module: '@mdgascar/{name}' },
     disableSources: true,
     plugin: ['./scripts/typedoc-module-names.mjs'],
   },

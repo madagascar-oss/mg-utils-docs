@@ -24,7 +24,7 @@ Ny teny malagasy dia mamaky isa manomboka amin’ny singa kely indrindra. Ampifa
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { numberToWords } from '@madagascar-oss/words';
+    import { numberToWords } from '@mdgascar/words';
 
     numberToWords(0); // 'aotra'
     numberToWords(11); // "iraika ambin'ny folo"
@@ -41,7 +41,7 @@ Ny teny malagasy dia mamaky isa manomboka amin’ny singa kely indrindra. Ampifa
   </TabItem>
   <TabItem label="PHP">
     ```php
-    use Madagascar\MgUtils\Words\NumberWords;
+    use Mdgascar\MdgUtils\Words\NumberWords;
 
     NumberWords::fromInt(0); // 'aotra'
     NumberWords::fromInt(11); // "iraika ambin'ny folo"
@@ -135,23 +135,23 @@ Isa no ampidirina, tsy soratra mihitsy: tsy misy elanelana, mpanasaraka na sorat
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    numberToWords(-1); // throws MgError, error.code === 'OUT_OF_RANGE'
-    numberToWords('1 500' as unknown as number); // throws MgError, 'INVALID_TYPE'
-    numberToWords(Number.MAX_SAFE_INTEGER + 1); // throws MgError, 'OUT_OF_RANGE'
+    numberToWords(-1); // throws MdgError, error.code === 'OUT_OF_RANGE'
+    numberToWords('1 500' as unknown as number); // throws MdgError, 'INVALID_TYPE'
+    numberToWords(Number.MAX_SAFE_INTEGER + 1); // throws MdgError, 'OUT_OF_RANGE'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
-    NumberWords::fromInt(-1); // throws MgUtilsException, ->errorCode === ErrorCode::OutOfRange
-    NumberWords::fromFloat(NAN); // throws MgUtilsException, ErrorCode::InvalidType
+    NumberWords::fromInt(-1); // throws MdgUtilsException, ->errorCode === ErrorCode::OutOfRange
+    NumberWords::fromFloat(NAN); // throws MdgUtilsException, ErrorCode::InvalidType
     ```
   </TabItem>
 </Tabs>
 
 ## Mbola tsy azo atao
 
-Ny isa latsaky ny aotra, sy ireo anarana taloha ho an’ny 10⁷ sy mihoatra (`safatsiroa`, `tsitamboisa`…), dia miandry loharano na manam-pahaizana amin’ny teny malagasy. Jereo ny [Waiting for a source or an expert](/mg-utils-docs/mg/docs/words/rules/#waiting-for-a-source-or-an-expert).
+Ny isa latsaky ny aotra, sy ireo anarana taloha ho an’ny 10⁷ sy mihoatra (`safatsiroa`, `tsitamboisa`…), dia miandry loharano na manam-pahaizana amin’ny teny malagasy. Jereo ny [Waiting for a source or an expert](/mdg-utils-docs/mg/docs/words/rules/#waiting-for-a-source-or-an-expert).
 
 ## Fitsipika sy loharano
 
-<LinkCard title="Isa an-teny: fitsipika sy loharano" description="Ny fananganana ny isa, ny loharano ofisialy ary ny tsy fitovian-kevitra voarakitra." href="/mg-utils-docs/mg/docs/words/rules/" />
+<LinkCard title="Isa an-teny: fitsipika sy loharano" description="Ny fananganana ny isa, ny loharano ofisialy ary ny tsy fitovian-kevitra voarakitra." href="/mdg-utils-docs/mg/docs/words/rules/" />

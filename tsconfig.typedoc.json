@@ -14,7 +14,7 @@
     "noEmit": true,
     "types": [],
     "paths": {
-      "@madagascar-oss/*": ["./ports/js/packages/*/src/index.ts"]
+      "@mdgascar/*": ["./ports/js/packages/*/src/index.ts"]
     }
   },
   "include": [

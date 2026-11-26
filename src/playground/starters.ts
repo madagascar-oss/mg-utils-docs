@@ -2,7 +2,7 @@
 import type { LanguageId, ModuleId } from './types.ts';
 
 const js: Record<ModuleId, string> = {
-  words: `import { numberToWords } from '@madagascar-oss/words';
+  words: `import { numberToWords } from '@mdgascar/words';
 
 console.log(numberToWords(21));
 console.log(numberToWords(2026));
@@ -15,7 +15,7 @@ console.log(numberToWords(3.14));
   OPERATOR_NAMES,
   parsePhoneNumber,
   safeParsePhoneNumber,
-} from '@madagascar-oss/phone';
+} from '@mdgascar/phone';
 
 const phone = parsePhoneNumber('034 12 345 67');
 console.log(OPERATOR_NAMES[phone.operator]);
@@ -24,7 +24,7 @@ console.log(formatPhoneNumber('0341234567', 'international'));
 const result = safeParsePhoneNumber('035 12 345 67');
 if (!result.success) console.log(result.error.code);
 `,
-  ariary: `import { ariaryToWords, formatAriary, parseAriary } from '@madagascar-oss/ariary';
+  ariary: `import { ariaryToWords, formatAriary, parseAriary } from '@mdgascar/ariary';
 
 console.log(formatAriary(1500));
 console.log(formatAriary(1500, { grouping: 'dot', symbolPosition: 'after' }));
@@ -34,7 +34,7 @@ console.log(formatAriary(1500.5));
 console.log(parseAriary('1 500,50 Ar'));
 console.log(ariaryToWords(1500.5));
 `,
-  date: `import { formatDate, getMonthName } from '@madagascar-oss/date';
+  date: `import { formatDate, getMonthName } from '@mdgascar/date';
 
 console.log(formatDate('2026-11-23', 'full'));
 console.log(formatDate({ year: 1960, month: 6, day: 26 }));
@@ -45,7 +45,7 @@ console.log(getMonthName(6));
 const php: Record<ModuleId, string> = {
   words: `<?php
 
-use Madagascar\\MgUtils\\Words\\NumberWords;
+use Mdgascar\\MdgUtils\\Words\\NumberWords;
 
 echo NumberWords::fromInt(21), "\\n";
 echo NumberWords::fromInt(2026), "\\n";
@@ -55,8 +55,8 @@ echo NumberWords::fromFloat(3.14), "\\n";
 `,
   phone: `<?php
 
-use Madagascar\\MgUtils\\Phone\\PhoneNumber;
-use Madagascar\\MgUtils\\Phone\\PhoneNumberFormat;
+use Mdgascar\\MdgUtils\\Phone\\PhoneNumber;
+use Mdgascar\\MdgUtils\\Phone\\PhoneNumberFormat;
 
 $phone = PhoneNumber::parse('034 12 345 67');
 echo $phone->operator->displayName(), "\\n";
@@ -67,9 +67,9 @@ if (!$result->success) echo $result->error->errorCode->value, "\\n";
 `,
   ariary: `<?php
 
-use Madagascar\\MgUtils\\Ariary\\Ariary;
-use Madagascar\\MgUtils\\Ariary\\Grouping;
-use Madagascar\\MgUtils\\Ariary\\SymbolPosition;
+use Mdgascar\\MdgUtils\\Ariary\\Ariary;
+use Mdgascar\\MdgUtils\\Ariary\\Grouping;
+use Mdgascar\\MdgUtils\\Ariary\\SymbolPosition;
 
 echo Ariary::fromInt(1500)->format(), "\\n";
 echo Ariary::fromInt(1500)->format(Grouping::Dot, SymbolPosition::After), "\\n";
@@ -81,8 +81,8 @@ echo Ariary::fromFloat(1500.5)->toWords(), "\\n";
 `,
   date: `<?php
 
-use Madagascar\\MgUtils\\Date\\DateStyle;
-use Madagascar\\MgUtils\\Date\\MalagasyDate;
+use Mdgascar\\MdgUtils\\Date\\DateStyle;
+use Mdgascar\\MdgUtils\\Date\\MalagasyDate;
 
 echo MalagasyDate::fromString('2026-11-23')->format(DateStyle::Full), "\\n";
 echo MalagasyDate::fromParts(1960, 6, 26)->format(), "\\n";

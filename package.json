@@ -1,5 +1,5 @@
 {
-  "name": "mg-utils-docs",
+  "name": "mdg-utils-docs",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.30.1",

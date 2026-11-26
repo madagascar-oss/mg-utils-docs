@@ -1,4 +1,4 @@
-// Packs the PHP port's sources (ports/php/src/**/*.php) into public/php/mg-utils.json, a map
+// Packs the PHP port's sources (ports/php/src/**/*.php) into public/php/mdg-utils.json, a map
 // of relative path → source that the playground's PHP runner writes into php-wasm's filesystem.
 import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -22,5 +22,5 @@ const files = Object.fromEntries(
     .map((path) => [relative(SOURCE, path), readFileSync(path, 'utf8')]),
 );
 mkdirSync(OUT_DIR, { recursive: true });
-writeFileSync(join(OUT_DIR, 'mg-utils.json'), JSON.stringify(files));
-console.log(`Packed ${String(Object.keys(files).length)} PHP files into public/php/mg-utils.json`);
+writeFileSync(join(OUT_DIR, 'mdg-utils.json'), JSON.stringify(files));
+console.log(`Packed ${String(Object.keys(files).length)} PHP files into public/php/mdg-utils.json`);

@@ -1,10 +1,10 @@
 // Helpers shared by the module definitions of the Try it widget.
 
-/** A playground snippet that logs one call to @madagascar-oss/utils. */
+/** A playground snippet that logs one call to @mdgascar/utils. */
 export const snippet = (names: string, call: string): string =>
-  `import { ${names} } from '@madagascar-oss/utils';\n\nconsole.log(${call});\n`;
+  `import { ${names} } from '@mdgascar/utils';\n\nconsole.log(${call});\n`;
 
-/** Runs a call that may throw an MgError; keeps the value or the spec error code. */
+/** Runs a call that may throw an MdgError; keeps the value or the spec error code. */
 export function attempt(compute: () => string): { value?: string; error?: string } {
   try {
     return { value: compute() };

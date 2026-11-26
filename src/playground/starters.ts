@@ -20,7 +20,7 @@ const phone = parsePhoneNumber('034 12 345 67');
 console.log(OPERATOR_NAMES[phone.operator]);
 console.log(formatPhoneNumber('0341234567', 'international'));
 
-const result = safeParsePhoneNumber('035 12 345 67');
+const result = safeParsePhoneNumber('031 12 345 67');
 if (!result.success) console.log(result.error.code);
 `,
   ariary: `import { ariaryToWords, formatAriary, parseAriary } from '@mdgascar/ariary';
@@ -60,7 +60,7 @@ $phone = PhoneNumber::parse('034 12 345 67');
 echo $phone->operator->displayName(), "\\n";
 echo PhoneNumber::parse('0341234567')->format(PhoneNumberFormat::International), "\\n";
 
-$result = PhoneNumber::safeParse('035 12 345 67');
+$result = PhoneNumber::safeParse('031 12 345 67');
 if (!$result->success) echo $result->error->errorCode->value, "\\n";
 `,
   ariary: `<?php

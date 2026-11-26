@@ -67,26 +67,26 @@ Functions that read text typed by users — phone numbers and Ariary amounts —
     ```ts
     import { parsePhoneNumber, safeParsePhoneNumber, tryParsePhoneNumber } from '@mdgascar/phone';
 
-    parsePhoneNumber('035 12 345 67'); // throws MdgError UNKNOWN_OPERATOR
+    parsePhoneNumber('031 12 345 67'); // throws MdgError UNKNOWN_OPERATOR
 
-    const result = safeParsePhoneNumber('035 12 345 67');
+    const result = safeParsePhoneNumber('031 12 345 67');
     result.success; // false
     if (!result.success) result.error.code; // 'UNKNOWN_OPERATOR'
 
-    tryParsePhoneNumber('035 12 345 67'); // undefined
+    tryParsePhoneNumber('031 12 345 67'); // undefined
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
     use Mdgascar\MdgUtils\Phone\PhoneNumber;
 
-    PhoneNumber::parse('035 12 345 67'); // throws MdgUtilsException UNKNOWN_OPERATOR
+    PhoneNumber::parse('031 12 345 67'); // throws MdgUtilsException UNKNOWN_OPERATOR
 
-    $result = PhoneNumber::safeParse('035 12 345 67');
+    $result = PhoneNumber::safeParse('031 12 345 67');
     $result->success;           // false
     $result->error?->errorCode; // ErrorCode::UnknownOperator
 
-    PhoneNumber::tryParse('035 12 345 67'); // null
+    PhoneNumber::tryParse('031 12 345 67'); // null
     ```
   </TabItem>
 </Tabs>

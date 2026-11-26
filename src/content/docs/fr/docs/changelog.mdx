@@ -9,7 +9,13 @@ Chaque entrée est une version de la spécification : les règles, les données 
 
 **Rupture** signale un résultat qui change pour une entrée qui fonctionnait déjà.
 
-## 0.5.0 (Non publiée)
+## 0.6.0 (Non publiée)
+
+- `phone`: Nouveau préfixe `035` pour Airtel Madagascar, en vente depuis le 22 juin 2026 : `035 12 345 67` → opérateur `airtel` au lieu de `UNKNOWN_OPERATOR`.
+- `phone`: **Rupture** : Telma s’appelle désormais Yas Madagascar (depuis le 26 novembre 2024). L’identifiant `telma` devient `yas`, nommé `Yas Madagascar` ; en PHP, `Operator::Telma` devient `Operator::Yas`.
+- `phone`: `036`, annoncé par Yas sans source publiée pour l’instant, reste `UNKNOWN_OPERATOR` et figure dans la liste des points en attente de source.
+
+## 0.5.0 (2026-11-26)
 
 - `words`: **Rupture** : écrit les nombres de toute taille. `lavitrisa` prend un multiplicateur de toute taille : 10¹² donne `arivo lavitrisa` au lieu de `OUT_OF_RANGE`. Chaque langage s’arrête à son plus grand nombre exact.
 - `words`: Décimales, lues avec `faingo` : `3.14` → `telo faingo efatra ambin'ny folo`, `0.008` → `aotra faingo aotra aotra valo`. PHP ajoute `NumberWords::fromFloat()`.

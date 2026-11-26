@@ -1,13 +1,13 @@
 ---
 title: Versioning
-description: The spec and the packages follow Semantic Versioning separately. Every package states the spec version it implements, and all JavaScript packages share one version number.
+description: The spec and the packages follow Semantic Versioning separately. Every package states the spec version it implements, and all packages, JavaScript and PHP, share one version number.
 kicker: Getting started
 ---
 
 ## What a version number tells you
 
 - **Spec version** — the behaviour: data, rules and test vectors. Each package README says `Implements spec x.y.z`, and its CI fails if that claim does not match the vectors it passed.
-- **Package version** — the code you install. All `@mdgascar/*` packages share one version: `words` 0.3.0 always goes with `utils` 0.3.0.
+- **Package version** — the code you install. All `@mdgascar/*` packages share one version: `words` 0.3.0 always goes with `utils` 0.3.0. The PHP package `mdgascar/mdg-utils` uses the same number: PHP 0.7.0 behaves exactly like npm 0.7.0. The PHP package `mdgascar/mdg-utils` uses the same number: PHP 0.7.0 behaves exactly like npm 0.7.0.
 
 | Change                               | Spec  | Package |
 | ------------------------------------ | ----- | ------- |

@@ -3,7 +3,7 @@
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, monospace;
 
-  /* Accent: Madagascar OSS brand greens — forest #08432D (primary), mid #2E8B57 (accent on
+  /* Accent: Mdgascar brand greens — forest #08432D (primary), mid #2E8B57 (accent on
      light), light #6FCF97 (accent on dark). Steps in between keep contrast in both themes. */
   --color-accent-50: #effaf3;
   --color-accent-100: #d7f3e1;

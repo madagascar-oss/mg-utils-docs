@@ -12,7 +12,7 @@ const MODULES_DIR = join(ROOT, 'spec', 'modules');
 const RULES_DIR = join(ROOT, 'src', 'content', 'docs', 'docs');
 const API_DIR = join(ROOT, 'src', 'generated', 'api');
 const SPEC_VERSION = readFileSync(join(ROOT, 'spec', 'VERSION'), 'utf8').trim();
-const SPEC_URL = 'https://github.com/madagascar-oss/mg-utils-spec/blob/dev/modules';
+const SPEC_URL = 'https://github.com/mdgascar/mdg-utils-spec/blob/dev/modules';
 
 interface Section {
   readonly heading: string;

@@ -28,7 +28,7 @@ export const mg: Record<UiKey, string> = {
   'play.module.date': 'Daty',
   'play.docs': 'Torolalana',
   'a11y.siteNav': 'Tranonkala',
-  'a11y.org': 'Madagascar OSS ao amin’ny GitHub',
+  'a11y.org': 'Mdgascar ao amin’ny GitHub',
   'play.code': 'Kaody',
   'play.language': 'Fiteny',
   'play.moduleLabel': 'Môdily',

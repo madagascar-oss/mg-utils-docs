@@ -1,5 +1,5 @@
-// JavaScript and TypeScript runner: strips types with sucrase, points @madagascar-oss/* imports
-// at the bundled port (public/js/mg-utils.js), and runs the result in a module Web Worker.
+// JavaScript and TypeScript runner: strips types with sucrase, points @mdgascar/* imports
+// at the bundled port (public/js/mdg-utils.js), and runs the result in a module Web Worker.
 import {
   RUN_TIMEOUT_MS,
   type LogLine,
@@ -8,10 +8,10 @@ import {
   type Runner,
 } from '../types.ts';
 
-const PACKAGE_IMPORT = /(from\s*|import\s*\(\s*|import\s+)(['"])@madagascar-oss\/[a-z]+\2/g;
+const PACKAGE_IMPORT = /(from\s*|import\s*\(\s*|import\s+)(['"])@mdgascar\/[a-z]+\2/g;
 
 function bundleUrl(): string {
-  return new URL(`${import.meta.env.BASE_URL}js/mg-utils.js`, location.href).href;
+  return new URL(`${import.meta.env.BASE_URL}js/mdg-utils.js`, location.href).href;
 }
 
 /** TypeScript → JavaScript, with package imports pointing at the bundle. sucrase loads on first run. */

@@ -1,6 +1,6 @@
 ---
 title: Ny môdily rehetra anaty fonosana iray
-description: 'Mamerina mamoaka ny môdily rehetra ny @madagascar-oss/utils — words, phone, ariary ary date — miaraka amin’ny kilasy MgError iray, ka toerana iray ihany noametrahana sy anafarana.'
+description: 'Mamerina mamoaka ny môdily rehetra ny @mdgascar/utils — words, phone, ariary ary date — miaraka amin’ny kilasy MdgError iray, ka toerana iray ihany noametrahana sy anafarana.'
 kicker: Fametrahana
 ---
 
@@ -19,13 +19,13 @@ Safidio ity raha môdily maromaro no ampiasain’ny rindranasa. Ny asa ampidirin
 1. ### Apetraho ny fonosana
 
    ```sh title="Terminal"
-   npm install @madagascar-oss/utils
+   npm install @mdgascar/utils
    ```
 
 2. ### Ampidiro avy amin’ny toerana iray
 
    ```ts title="invoice.ts"
-   import { ariaryToWords, formatAriary, formatDate, numberToWords } from '@madagascar-oss/utils';
+   import { ariaryToWords, formatAriary, formatDate, numberToWords } from '@mdgascar/utils';
 
    formatAriary(1500); // 'Ar 1 500'
    ariaryToWords(1500); // 'dimanjato sy arivo ariary'
@@ -35,20 +35,20 @@ Safidio ity raha môdily maromaro no ampiasain’ny rindranasa. Ny asa ampidirin
 
 3. ### Raiso mitovy ny hadisoan’ny môdily rehetra
 
-   Manipy `MgError` mitovy ny môdily rehetra, ka `catch` iray dia ampy ho azy rehetra.
+   Manipy `MdgError` mitovy ny môdily rehetra, ka `catch` iray dia ampy ho azy rehetra.
 
    ```ts title="invoice.ts"
-   import { MgError, parseAriary } from '@madagascar-oss/utils';
+   import { MdgError, parseAriary } from '@mdgascar/utils';
 
    try {
      parseAriary('1,500');
    } catch (error) {
-     if (error instanceof MgError) console.log(error.code); // 'INVALID_FORMAT'
+     if (error instanceof MdgError) console.log(error.code); // 'INVALID_FORMAT'
    }
    ```
 
 </Steps>
 
 <Aside type="tip" title="Misy olana ve?">
-  Andramo mivantana ny asa rehetra, amin’ny JavaScript sy PHP, ao amin’ny [toerana fanandramana](/mg-utils-docs/mg/play/).
+  Andramo mivantana ny asa rehetra, amin’ny JavaScript sy PHP, ao amin’ny [toerana fanandramana](/mdg-utils-docs/mg/play/).
 </Aside>

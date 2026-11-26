@@ -30,7 +30,7 @@ import TryItBox from '../../../../../components/TryItBox.astro';
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { formatDate } from '@madagascar-oss/date';
+    import { formatDate } from '@mdgascar/date';
 
     formatDate('2026-11-23'); // '23 Novambra 2026'
     formatDate('2026-11-23', 'full'); // 'Alatsinainy 23 Novambra 2026'
@@ -40,8 +40,8 @@ import TryItBox from '../../../../../components/TryItBox.astro';
   </TabItem>
   <TabItem label="PHP">
     ```php
-    use Madagascar\MgUtils\Date\DateStyle;
-    use Madagascar\MgUtils\Date\MalagasyDate;
+    use Mdgascar\MdgUtils\Date\DateStyle;
+    use Mdgascar\MdgUtils\Date\MalagasyDate;
 
     MalagasyDate::fromString('2026-11-23')->format(); // '23 Novambra 2026'
     MalagasyDate::fromString('2026-11-23')->format(DateStyle::Full); // 'Alatsinainy 23 Novambra 2026'
@@ -58,7 +58,7 @@ Isa ISO no ampiasaina ho an’ny andro: 1 ny Alatsinainy, 7 ny Alahady.
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { getMonthName, getWeekdayName } from '@madagascar-oss/date';
+    import { getMonthName, getWeekdayName } from '@mdgascar/date';
 
     getMonthName(6); // 'Jona'
     getMonthName(6, 'abbreviated'); // 'Jon'
@@ -68,8 +68,8 @@ Isa ISO no ampiasaina ho an’ny andro: 1 ny Alatsinainy, 7 ny Alahady.
   </TabItem>
   <TabItem label="PHP">
     ```php
-    use Madagascar\MgUtils\Date\MalagasyDate;
-    use Madagascar\MgUtils\Date\NameWidth;
+    use Mdgascar\MdgUtils\Date\MalagasyDate;
+    use Mdgascar\MdgUtils\Date\NameWidth;
 
     MalagasyDate::monthName(6); // 'Jona'
     MalagasyDate::monthName(6, NameWidth::Abbreviated); // 'Jon'
@@ -89,4 +89,4 @@ Isa ISO no ampiasaina ho an’ny andro: 1 ny Alatsinainy, 7 ny Alahady.
 
 ## Fitsipika sy loharano
 
-<LinkCard title="Daty: fitsipika sy loharano" description="Anaran’ny volana sy ny andro, ny endrika dimy ary ny fanapahan-kevitra voarakitra." href="/mg-utils-docs/mg/docs/date/rules/" />
+<LinkCard title="Daty: fitsipika sy loharano" description="Anaran’ny volana sy ny andro, ny endrika dimy ary ny fanapahan-kevitra voarakitra." href="/mdg-utils-docs/mg/docs/date/rules/" />

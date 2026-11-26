@@ -37,7 +37,7 @@ test('a share link restores the code', async ({ page, context }) => {
 
 test('shows the spec error code of an uncaught error', async ({ page }) => {
   // A dot is not a decimal point by default, so '1.5' is rejected.
-  const code = "import { parseAriary } from '@madagascar-oss/ariary';\n\nparseAriary('1.5');\n";
+  const code = "import { parseAriary } from '@mdgascar/ariary';\n\nparseAriary('1.5');\n";
   await page.goto(playUrl('js', 'ariary', code));
   await expect(page.getByTestId('error')).toContainText('INVALID_FORMAT');
 });
@@ -99,7 +99,7 @@ test.describe('PHP', () => {
 
   test('reports the spec error code of an uncaught exception', async ({ page }) => {
     const code =
-      "<?php\n\nuse Madagascar\\MgUtils\\Ariary\\Ariary;\n\necho Ariary::parse('1.5')->amount;\n";
+      "<?php\n\nuse Mdgascar\\MdgUtils\\Ariary\\Ariary;\n\necho Ariary::parse('1.5')->amount;\n";
     await page.goto(playUrl('php', 'ariary', code));
     await expect(page.getByTestId('error')).toContainText('INVALID_FORMAT', { timeout: 90_000 });
   });

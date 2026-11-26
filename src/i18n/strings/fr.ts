@@ -28,7 +28,7 @@ export const fr: Record<UiKey, string> = {
   'play.module.date': 'Dates',
   'play.docs': 'Docs',
   'a11y.siteNav': 'Site',
-  'a11y.org': 'Madagascar OSS sur GitHub',
+  'a11y.org': 'Mdgascar sur GitHub',
   'play.code': 'Code',
   'play.language': 'Langage',
   'play.moduleLabel': 'Module',

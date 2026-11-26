@@ -1,6 +1,6 @@
 ---
-title: Bien démarrer avec mg-utils pour PHP
-description: Un seul paquet Composer, madagascar-oss/mg-utils, avec chaque module sous forme d’objets valeur et d’enums. PHP 8.3+, sans dépendance, mêmes résultats que les paquets JavaScript.
+title: Bien démarrer avec mdg-utils pour PHP
+description: Un seul paquet Composer, mdgascar/mdg-utils, avec chaque module sous forme d’objets valeur et d’enums. PHP 8.3+, sans dépendance, mêmes résultats que les paquets JavaScript.
 kicker: Installation
 ---
 
@@ -17,20 +17,20 @@ import InstallMethods from '../../../../../components/InstallMethods.astro';
 1. ### Ajouter le paquet
 
    ```sh title="Terminal"
-   composer require madagascar-oss/mg-utils
+   composer require mdgascar/mdg-utils
    ```
 
 2. ### Utiliser un module
 
-   Chaque module est une classe sous `Madagascar\MgUtils`. Lisez un numéro écrit de n’importe quelle façon courante et formatez-le.
+   Chaque module est une classe sous `Mdgascar\MdgUtils`. Lisez un numéro écrit de n’importe quelle façon courante et formatez-le.
 
    ```php title="signup.php"
    <?php
 
    require __DIR__ . '/vendor/autoload.php';
 
-   use Madagascar\MgUtils\Phone\PhoneNumber;
-   use Madagascar\MgUtils\Phone\PhoneNumberFormat;
+   use Mdgascar\MdgUtils\Phone\PhoneNumber;
+   use Mdgascar\MdgUtils\Phone\PhoneNumberFormat;
 
    $phone = PhoneNumber::parse('034 12 345 67');
    $phone->operator->displayName(); // 'Telma'
@@ -39,11 +39,11 @@ import InstallMethods from '../../../../../components/InstallMethods.astro';
 
 3. ### Gérer les saisies invalides
 
-   `parse()` lève une `MgUtilsException`. `safeParse()` renvoie le code d’erreur sans exception, `tryParse()` renvoie `null`.
+   `parse()` lève une `MdgUtilsException`. `safeParse()` renvoie le code d’erreur sans exception, `tryParse()` renvoie `null`.
 
    ```php title="signup.php"
-   use Madagascar\MgUtils\ErrorCode;
-   use Madagascar\MgUtils\Phone\PhoneNumber;
+   use Mdgascar\MdgUtils\ErrorCode;
+   use Mdgascar\MdgUtils\Phone\PhoneNumber;
 
    $result = PhoneNumber::safeParse('035 12 345 67');
    $result->success;           // false
@@ -54,14 +54,14 @@ import InstallMethods from '../../../../../components/InstallMethods.astro';
 
 4. ### Intercepter les erreurs de tous les modules de la même façon
 
-   Tous les modules lèvent `MgUtilsException` ; son `errorCode` est le même code que celui de JavaScript.
+   Tous les modules lèvent `MdgUtilsException` ; son `errorCode` est le même code que celui de JavaScript.
 
    ```php title="signup.php"
-   use Madagascar\MgUtils\MgUtilsException;
+   use Mdgascar\MdgUtils\MdgUtilsException;
 
    try {
        PhoneNumber::parse($userInput);
-   } catch (MgUtilsException $exception) {
+   } catch (MdgUtilsException $exception) {
        echo $exception->errorCode->value; // 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | …
    }
    ```
@@ -70,9 +70,9 @@ import InstallMethods from '../../../../../components/InstallMethods.astro';
 
 <Aside type="caution" title="Avant la première publication sur Packagist">
   Le paquet sera référencé sur Packagist lors de la première version. D’ici là, installez-le depuis
-  [mg-utils-php](https://github.com/madagascar-oss/mg-utils-php) avec un dépôt Composer `vcs`.
+  [mdg-utils-php](https://github.com/mdgascar/mdg-utils-php) avec un dépôt Composer `vcs`.
 </Aside>
 
 <Aside type="tip" title="Vous êtes bloqué ?">
-  Essayez chaque fonction en direct, en JavaScript et en PHP, dans le [bac à sable](/mg-utils-docs/fr/play/).
+  Essayez chaque fonction en direct, en JavaScript et en PHP, dans le [bac à sable](/mdg-utils-docs/fr/play/).
 </Aside>

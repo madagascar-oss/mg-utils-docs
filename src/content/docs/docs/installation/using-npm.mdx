@@ -1,6 +1,6 @@
 ---
-title: Get started with mg-utils
-description: mg-utils gives you Malagasy number words, Madagascar phone numbers, Ariary amounts and dates. Install only the modules you need — each one is a small package with zero dependencies, ESM + CommonJS + types.
+title: Get started with mdg-utils
+description: mdg-utils gives you Malagasy number words, Madagascar phone numbers, Ariary amounts and dates. Install only the modules you need — each one is a small package with zero dependencies, ESM + CommonJS + types.
 kicker: Installation
 ---
 
@@ -11,7 +11,7 @@ import InstallMethods from '../../../../components/InstallMethods.astro';
 
 ## Installing a module with npm
 
-Each module is its own package: `@madagascar-oss/words`, `@madagascar-oss/phone`, `@madagascar-oss/ariary` and `@madagascar-oss/date`. They run in Node.js 22.18+, Deno, Bun and every modern browser.
+Each module is its own package: `@mdgascar/words`, `@mdgascar/phone`, `@mdgascar/ariary` and `@mdgascar/date`. They run in Node.js 22.18+, Deno, Bun and every modern browser.
 
 <Steps>
 
@@ -20,7 +20,7 @@ Each module is its own package: `@madagascar-oss/words`, `@madagascar-oss/phone`
    Add the module you need. This example uses phone numbers.
 
    ```sh title="Terminal"
-   npm install @madagascar-oss/phone
+   npm install @mdgascar/phone
    ```
 
 2. ### Import a function
@@ -28,7 +28,7 @@ Each module is its own package: `@madagascar-oss/words`, `@madagascar-oss/phone`
    Every module exports plain functions. Read a number written in any common way and format it.
 
    ```ts title="signup.ts"
-   import { formatPhoneNumber, parsePhoneNumber } from '@madagascar-oss/phone';
+   import { formatPhoneNumber, parsePhoneNumber } from '@mdgascar/phone';
 
    const phone = parsePhoneNumber('034 12 345 67');
    phone.operator; // 'telma'
@@ -38,10 +38,10 @@ Each module is its own package: `@madagascar-oss/words`, `@madagascar-oss/phone`
 
 3. ### Handle bad input
 
-   `parse…` functions throw an `MgError`. Use `safeParse…` to get the error code without throwing, or `tryParse…` to get `undefined`.
+   `parse…` functions throw an `MdgError`. Use `safeParse…` to get the error code without throwing, or `tryParse…` to get `undefined`.
 
    ```ts title="signup.ts"
-   import { safeParsePhoneNumber, tryParsePhoneNumber } from '@madagascar-oss/phone';
+   import { safeParsePhoneNumber, tryParsePhoneNumber } from '@mdgascar/phone';
 
    const result = safeParsePhoneNumber('035 12 345 67');
    if (!result.success) result.error.code; // 'UNKNOWN_OPERATOR'
@@ -54,12 +54,12 @@ Each module is its own package: `@madagascar-oss/words`, `@madagascar-oss/phone`
    Error codes are the same in every language, so a form can show the same message whether the check ran in the browser or on a PHP server.
 
    ```ts title="signup.ts"
-   import { MgError, parsePhoneNumber } from '@madagascar-oss/phone';
+   import { MdgError, parsePhoneNumber } from '@mdgascar/phone';
 
    try {
      parsePhoneNumber(userInput);
    } catch (error) {
-     if (error instanceof MgError) console.log(error.code); // 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | …
+     if (error instanceof MdgError) console.log(error.code); // 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | …
    }
    ```
 
@@ -67,10 +67,10 @@ Each module is its own package: `@madagascar-oss/words`, `@madagascar-oss/phone`
 
 <Aside type="caution" title="Before the first npm release">
   The packages are published to npm with the first release. Until then, install them from
-  [mg-utils-js](https://github.com/madagascar-oss/mg-utils-js) or try them in the
-  [playground](/mg-utils-docs/play/).
+  [mdg-utils-js](https://github.com/mdgascar/mdg-utils-js) or try them in the
+  [playground](/mdg-utils-docs/play/).
 </Aside>
 
 <Aside type="tip" title="Are you stuck?">
-  Try every function live, in JavaScript and PHP, in the [playground](/mg-utils-docs/play/).
+  Try every function live, in JavaScript and PHP, in the [playground](/mdg-utils-docs/play/).
 </Aside>

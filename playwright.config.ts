@@ -8,7 +8,7 @@ export default defineConfig({
   forbidOnly: Boolean(process.env['CI']),
   retries: process.env['CI'] ? 1 : 0,
   reporter: process.env['CI'] ? 'github' : 'list',
-  use: { baseURL: `http://localhost:${String(PORT)}/mg-utils-docs/` },
+  use: { baseURL: `http://localhost:${String(PORT)}/mdg-utils-docs/` },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
     { name: 'mobile', use: { ...devices['Pixel 7'] } },

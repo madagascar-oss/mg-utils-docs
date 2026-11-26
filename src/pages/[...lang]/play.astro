@@ -1,8 +1,8 @@
 ---
 // Full-screen playground (outside the Starlight layout), one page per locale:
 // /play/, /mg/play/, /fr/play/.
-import logoDark from '../../assets/brand/mark-light-green.svg';
-import logoLight from '../../assets/brand/mark-green.svg';
+import logoDark from '../../assets/brand/mark-dark.svg';
+import logoLight from '../../assets/brand/mark-light.svg';
 import { localePath, t, type Locale, type UiKey } from '../../i18n/ui.ts';
 import Playground from '../../playground/Playground.tsx';
 import type { PlaygroundText } from '../../playground/text.ts';
@@ -37,7 +37,7 @@ const text: PlaygroundText = {
     date: s('play.module.date'),
   },
 };
-const description = 'Try every mg-utils function live, in JavaScript and PHP.';
+const description = 'Try every mdg-utils function live, in JavaScript and PHP.';
 ---
 
 <!doctype html>
@@ -45,11 +45,11 @@ const description = 'Try every mg-utils function live, in JavaScript and PHP.';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{text.title} | mg-utils</title>
+    <title>{text.title} | mdg-utils</title>
     <meta name="description" content={description} />
     <link rel="icon" href={`${import.meta.env.BASE_URL}brand/favicon-32.png`} type="image/png" />
     <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}brand/favicon-180.png`} />
-    <meta name="theme-color" content="#08432D" />
+    <meta name="theme-color" content="#11141A" />
     <script is:inline>
       // Same theme choice as the docs (Starlight stores it under "starlight-theme").
       (() => {

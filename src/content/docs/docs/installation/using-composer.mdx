@@ -1,6 +1,6 @@
 ---
-title: Get started with mg-utils for PHP
-description: One Composer package, madagascar-oss/mg-utils, with every module as value objects and enums. PHP 8.3+, zero dependencies, same results as the JavaScript packages.
+title: Get started with mdg-utils for PHP
+description: One Composer package, mdgascar/mdg-utils, with every module as value objects and enums. PHP 8.3+, zero dependencies, same results as the JavaScript packages.
 kicker: Installation
 ---
 
@@ -16,20 +16,20 @@ import InstallMethods from '../../../../components/InstallMethods.astro';
 1. ### Require the package
 
    ```sh title="Terminal"
-   composer require madagascar-oss/mg-utils
+   composer require mdgascar/mdg-utils
    ```
 
 2. ### Use a module
 
-   Each module is a class under `Madagascar\MgUtils`. Read a number written in any common way and format it.
+   Each module is a class under `Mdgascar\MdgUtils`. Read a number written in any common way and format it.
 
    ```php title="signup.php"
    <?php
 
    require __DIR__ . '/vendor/autoload.php';
 
-   use Madagascar\MgUtils\Phone\PhoneNumber;
-   use Madagascar\MgUtils\Phone\PhoneNumberFormat;
+   use Mdgascar\MdgUtils\Phone\PhoneNumber;
+   use Mdgascar\MdgUtils\Phone\PhoneNumberFormat;
 
    $phone = PhoneNumber::parse('034 12 345 67');
    $phone->operator->displayName(); // 'Telma'
@@ -38,11 +38,11 @@ import InstallMethods from '../../../../components/InstallMethods.astro';
 
 3. ### Handle bad input
 
-   `parse()` throws `MgUtilsException`. `safeParse()` returns the error code without throwing, `tryParse()` returns `null`.
+   `parse()` throws `MdgUtilsException`. `safeParse()` returns the error code without throwing, `tryParse()` returns `null`.
 
    ```php title="signup.php"
-   use Madagascar\MgUtils\ErrorCode;
-   use Madagascar\MgUtils\Phone\PhoneNumber;
+   use Mdgascar\MdgUtils\ErrorCode;
+   use Mdgascar\MdgUtils\Phone\PhoneNumber;
 
    $result = PhoneNumber::safeParse('035 12 345 67');
    $result->success;           // false
@@ -53,14 +53,14 @@ import InstallMethods from '../../../../components/InstallMethods.astro';
 
 4. ### Catch errors from every module the same way
 
-   Every module throws `MgUtilsException`; its `errorCode` is the same code JavaScript reports.
+   Every module throws `MdgUtilsException`; its `errorCode` is the same code JavaScript reports.
 
    ```php title="signup.php"
-   use Madagascar\MgUtils\MgUtilsException;
+   use Mdgascar\MdgUtils\MdgUtilsException;
 
    try {
        PhoneNumber::parse($userInput);
-   } catch (MgUtilsException $exception) {
+   } catch (MdgUtilsException $exception) {
        echo $exception->errorCode->value; // 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | …
    }
    ```
@@ -69,9 +69,9 @@ import InstallMethods from '../../../../components/InstallMethods.astro';
 
 <Aside type="caution" title="Before the first Packagist release">
   The package is listed on Packagist with the first release. Until then, install it from
-  [mg-utils-php](https://github.com/madagascar-oss/mg-utils-php) with a Composer `vcs` repository.
+  [mdg-utils-php](https://github.com/mdgascar/mdg-utils-php) with a Composer `vcs` repository.
 </Aside>
 
 <Aside type="tip" title="Are you stuck?">
-  Try every function live, in JavaScript and PHP, in the [playground](/mg-utils-docs/play/).
+  Try every function live, in JavaScript and PHP, in the [playground](/mdg-utils-docs/play/).
 </Aside>

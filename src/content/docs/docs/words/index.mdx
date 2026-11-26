@@ -23,7 +23,7 @@ Malagasy reads numbers from the smallest part up. The smaller part joins 10 with
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { numberToWords } from '@madagascar-oss/words';
+    import { numberToWords } from '@mdgascar/words';
 
     numberToWords(0); // 'aotra'
     numberToWords(11); // "iraika ambin'ny folo"
@@ -40,7 +40,7 @@ Malagasy reads numbers from the smallest part up. The smaller part joins 10 with
   </TabItem>
   <TabItem label="PHP">
     ```php
-    use Madagascar\MgUtils\Words\NumberWords;
+    use Mdgascar\MdgUtils\Words\NumberWords;
 
     NumberWords::fromInt(0); // 'aotra'
     NumberWords::fromInt(11); // "iraika ambin'ny folo"
@@ -134,23 +134,23 @@ The input is a number value, never text: no spaces, separators or strings. `'1 5
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    numberToWords(-1); // throws MgError, error.code === 'OUT_OF_RANGE'
-    numberToWords('1 500' as unknown as number); // throws MgError, 'INVALID_TYPE'
-    numberToWords(Number.MAX_SAFE_INTEGER + 1); // throws MgError, 'OUT_OF_RANGE'
+    numberToWords(-1); // throws MdgError, error.code === 'OUT_OF_RANGE'
+    numberToWords('1 500' as unknown as number); // throws MdgError, 'INVALID_TYPE'
+    numberToWords(Number.MAX_SAFE_INTEGER + 1); // throws MdgError, 'OUT_OF_RANGE'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
-    NumberWords::fromInt(-1); // throws MgUtilsException, ->errorCode === ErrorCode::OutOfRange
-    NumberWords::fromFloat(NAN); // throws MgUtilsException, ErrorCode::InvalidType
+    NumberWords::fromInt(-1); // throws MdgUtilsException, ->errorCode === ErrorCode::OutOfRange
+    NumberWords::fromFloat(NAN); // throws MdgUtilsException, ErrorCode::InvalidType
     ```
   </TabItem>
 </Tabs>
 
 ## Not supported yet
 
-Negative numbers, and the old names for 10⁷ and above (`safatsiroa`, `tsitamboisa`…), wait for a source or a Malagasy language expert. See [Waiting for a source or an expert](/mg-utils-docs/docs/words/rules/#waiting-for-a-source-or-an-expert).
+Negative numbers, and the old names for 10⁷ and above (`safatsiroa`, `tsitamboisa`…), wait for a source or a Malagasy language expert. See [Waiting for a source or an expert](/mdg-utils-docs/docs/words/rules/#waiting-for-a-source-or-an-expert).
 
 ## Rules and sources
 
-<LinkCard title="Malagasy cardinal number words: rules and sources" description="How numbers are built, the official sources, and recorded disagreements." href="/mg-utils-docs/docs/words/rules/" />
+<LinkCard title="Malagasy cardinal number words: rules and sources" description="How numbers are built, the official sources, and recorded disagreements." href="/mdg-utils-docs/docs/words/rules/" />

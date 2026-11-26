@@ -1,6 +1,6 @@
 name: Deploy
 
-# main is the live site: merging dev into main publishes https://madagascar-oss.github.io/mg-utils-docs/
+# main is the live site: merging dev into main publishes https://mdgascar.github.io/mdg-utils-docs/
 on:
   push:
     branches: [main]

@@ -16,7 +16,7 @@ export function t(locale: Locale, key: UiKey): string {
   return strings[locale][key];
 }
 
-/** Site-relative link for a locale, with the base path: `/docs/x/` → `/mg-utils-docs/fr/docs/x/`. */
+/** Site-relative link for a locale, with the base path: `/docs/x/` → `/mdg-utils-docs/fr/docs/x/`. */
 export function localePath(locale: Locale, path: string): string {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   const prefix = locale === 'en' ? '' : `/${locale}`;

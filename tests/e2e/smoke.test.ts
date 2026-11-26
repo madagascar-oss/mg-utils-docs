@@ -47,7 +47,7 @@ for (const module of ['words', 'phone', 'ariary', 'date']) {
     await expect(page.getByRole('heading', { level: 2, name: 'Rules' })).toBeVisible();
 
     await page.goto(`docs/reference/js/${module}/`);
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText(`@madagascar-oss/${module}`);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(`@mdgascar/${module}`);
   });
 }
 
@@ -63,7 +63,7 @@ test('translated pages are written in their language', async ({ page }) => {
   await expect(page.getByText('Ato amin’ity pejy ity').first()).toBeAttached();
   await page.goto('fr/docs/installation/using-composer/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Bien démarrer avec mg-utils pour PHP',
+    'Bien démarrer avec mdg-utils pour PHP',
   );
   await expect(page.getByRole('link', { name: /Avec Composer/ })).toHaveAttribute(
     'aria-current',

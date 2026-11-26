@@ -67,7 +67,7 @@ export const sidebar: Sidebar = [
         label: 'JavaScript API',
         translations: { mg: 'API JavaScript', fr: 'API JavaScript' },
         items: modules.map((module) => ({
-          label: `@madagascar-oss/${module.slug}`,
+          label: `@mdgascar/${module.slug}`,
           link: `/docs/reference/js/${module.slug}/`,
         })),
       },

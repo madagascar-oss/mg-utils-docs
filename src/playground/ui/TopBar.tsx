@@ -22,7 +22,7 @@ export default function TopBar(props: Props) {
     <header className="flex flex-wrap items-center gap-3 border-b border-gray-200 px-4 py-2.5 dark:border-gray-800">
       <a href={props.homeHref} className="flex items-center gap-2 font-semibold">
         <img src={props.logoSrc} alt="" width="42" height="28" />
-        <span>mg-utils</span>
+        <span>mdg-utils</span>
       </a>
       <span className="text-sm text-gray-500 dark:text-gray-400">{text.title}</span>
 

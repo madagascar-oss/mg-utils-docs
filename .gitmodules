@@ -1,12 +1,12 @@
 [submodule "spec"]
 	path = spec
-	url = https://github.com/madagascar-oss/mg-utils-spec.git
+	url = https://github.com/mdgascar/mdg-utils-spec.git
 	branch = dev
 [submodule "ports/js"]
 	path = ports/js
-	url = https://github.com/madagascar-oss/mg-utils-js.git
+	url = https://github.com/mdgascar/mdg-utils-js.git
 	branch = dev
 [submodule "ports/php"]
 	path = ports/php
-	url = https://github.com/madagascar-oss/mg-utils-php.git
+	url = https://github.com/mdgascar/mdg-utils-php.git
 	branch = dev

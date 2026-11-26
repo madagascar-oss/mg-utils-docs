@@ -1,6 +1,6 @@
 ---
-title: Bien démarrer avec mg-utils
-description: mg-utils fournit les nombres en lettres malgaches, les numéros de téléphone, les montants en ariary et les dates. N’installez que les modules utiles — chacun est un petit paquet sans dépendance, ESM + CommonJS + types.
+title: Bien démarrer avec mdg-utils
+description: mdg-utils fournit les nombres en lettres malgaches, les numéros de téléphone, les montants en ariary et les dates. N’installez que les modules utiles — chacun est un petit paquet sans dépendance, ESM + CommonJS + types.
 kicker: Installation
 ---
 
@@ -12,7 +12,7 @@ import InstallMethods from '../../../../../components/InstallMethods.astro';
 
 ## Installer un module avec npm
 
-Chaque module est un paquet distinct : `@madagascar-oss/words`, `@madagascar-oss/phone`, `@madagascar-oss/ariary` et `@madagascar-oss/date`. Ils fonctionnent avec Node.js 22.18+, Deno, Bun et tous les navigateurs modernes.
+Chaque module est un paquet distinct : `@mdgascar/words`, `@mdgascar/phone`, `@mdgascar/ariary` et `@mdgascar/date`. Ils fonctionnent avec Node.js 22.18+, Deno, Bun et tous les navigateurs modernes.
 
 <Steps>
 
@@ -21,7 +21,7 @@ Chaque module est un paquet distinct : `@madagascar-oss/words`, `@madagascar-oss
    Ajoutez le module voulu. Cet exemple utilise les numéros de téléphone.
 
    ```sh title="Terminal"
-   npm install @madagascar-oss/phone
+   npm install @mdgascar/phone
    ```
 
 2. ### Importer une fonction
@@ -29,7 +29,7 @@ Chaque module est un paquet distinct : `@madagascar-oss/words`, `@madagascar-oss
    Chaque module exporte de simples fonctions. Lisez un numéro écrit de n’importe quelle façon courante et formatez-le.
 
    ```ts title="signup.ts"
-   import { formatPhoneNumber, parsePhoneNumber } from '@madagascar-oss/phone';
+   import { formatPhoneNumber, parsePhoneNumber } from '@mdgascar/phone';
 
    const phone = parsePhoneNumber('034 12 345 67');
    phone.operator; // 'telma'
@@ -39,10 +39,10 @@ Chaque module est un paquet distinct : `@madagascar-oss/words`, `@madagascar-oss
 
 3. ### Gérer les saisies invalides
 
-   Les fonctions `parse…` lèvent une `MgError`. Utilisez `safeParse…` pour obtenir le code d’erreur sans exception, ou `tryParse…` pour obtenir `undefined`.
+   Les fonctions `parse…` lèvent une `MdgError`. Utilisez `safeParse…` pour obtenir le code d’erreur sans exception, ou `tryParse…` pour obtenir `undefined`.
 
    ```ts title="signup.ts"
-   import { safeParsePhoneNumber, tryParsePhoneNumber } from '@madagascar-oss/phone';
+   import { safeParsePhoneNumber, tryParsePhoneNumber } from '@mdgascar/phone';
 
    const result = safeParsePhoneNumber('035 12 345 67');
    if (!result.success) result.error.code; // 'UNKNOWN_OPERATOR'
@@ -55,12 +55,12 @@ Chaque module est un paquet distinct : `@madagascar-oss/words`, `@madagascar-oss
    Les codes d’erreur sont les mêmes dans tous les langages : un formulaire affiche le même message, que la vérification ait eu lieu dans le navigateur ou sur un serveur PHP.
 
    ```ts title="signup.ts"
-   import { MgError, parsePhoneNumber } from '@madagascar-oss/phone';
+   import { MdgError, parsePhoneNumber } from '@mdgascar/phone';
 
    try {
      parsePhoneNumber(userInput);
    } catch (error) {
-     if (error instanceof MgError) console.log(error.code); // 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | …
+     if (error instanceof MdgError) console.log(error.code); // 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | …
    }
    ```
 
@@ -68,10 +68,10 @@ Chaque module est un paquet distinct : `@madagascar-oss/words`, `@madagascar-oss
 
 <Aside type="caution" title="Avant la première publication sur npm">
   Les paquets seront publiés sur npm lors de la première version. D’ici là, installez-les depuis
-  [mg-utils-js](https://github.com/madagascar-oss/mg-utils-js) ou essayez-les dans le
-  [bac à sable](/mg-utils-docs/fr/play/).
+  [mdg-utils-js](https://github.com/mdgascar/mdg-utils-js) ou essayez-les dans le
+  [bac à sable](/mdg-utils-docs/fr/play/).
 </Aside>
 
 <Aside type="tip" title="Vous êtes bloqué ?">
-  Essayez chaque fonction en direct, en JavaScript et en PHP, dans le [bac à sable](/mg-utils-docs/fr/play/).
+  Essayez chaque fonction en direct, en JavaScript et en PHP, dans le [bac à sable](/mdg-utils-docs/fr/play/).
 </Aside>

@@ -1,8 +1,8 @@
 ---
 // Footer like tailwindcss.com: link columns + one copyright line. The edit link stays.
 import EditLink from '@astrojs/starlight/components/EditLink.astro';
-import wideDark from '../assets/brand/wide-dark-transparent.svg';
-import wideLight from '../assets/brand/wide-light.svg';
+import wordmarkDark from '../assets/brand/wordmark-dark.svg';
+import wordmarkLight from '../assets/brand/wordmark-light.svg';
 import { links } from '../config/site.ts';
 import { localePath, t, toLocale } from '../i18n/ui.ts';
 
@@ -21,17 +21,17 @@ const columns = [
   {
     title: t(locale, 'footer.packages'),
     items: [
-      { label: 'npm · @madagascar-oss/*', href: links.npm },
-      { label: 'Packagist · madagascar-oss/mg-utils', href: links.packagist },
+      { label: 'npm · @mdgascar/*', href: links.npm },
+      { label: 'Packagist · mdgascar/mdg-utils', href: links.packagist },
     ],
   },
   {
     title: t(locale, 'footer.community'),
     items: [
-      { label: 'mg-utils-spec', href: links.spec },
-      { label: 'mg-utils-js', href: links.js },
-      { label: 'mg-utils-php', href: links.php },
-      { label: 'mg-utils-docs', href: links.docs },
+      { label: 'mdg-utils-spec', href: links.spec },
+      { label: 'mdg-utils-js', href: links.js },
+      { label: 'mdg-utils-php', href: links.php },
+      { label: 'mdg-utils-docs', href: links.docs },
     ],
   },
 ];
@@ -43,20 +43,8 @@ const columns = [
   </div>
   <div class="mg-columns">
     <a class="mg-org" href={links.github} aria-label={t(locale, 'a11y.org')}>
-      <img
-        class="light:sl-hidden"
-        src={wideDark.src}
-        alt="Madagascar OSS"
-        width="186"
-        height="40"
-      />
-      <img
-        class="dark:sl-hidden"
-        src={wideLight.src}
-        alt="Madagascar OSS"
-        width="186"
-        height="40"
-      />
+      <img class="light:sl-hidden" src={wordmarkDark.src} alt="Mdgascar" width="151" height="40" />
+      <img class="dark:sl-hidden" src={wordmarkLight.src} alt="Mdgascar" width="151" height="40" />
     </a>
     {columns.map((column) => (
       <div>
@@ -72,7 +60,7 @@ const columns = [
     ))}
   </div>
   <p class="mg-copyright">
-    © {new Date().getFullYear()} Madagascar OSS contributors. {t(locale, 'footer.license')}
+    © {new Date().getFullYear()} Mdgascar contributors. {t(locale, 'footer.license')}
   </p>
 </footer>
 

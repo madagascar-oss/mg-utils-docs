@@ -9,20 +9,20 @@ import { phpWasm } from './src/config/php-wasm.ts';
 import { sidebar } from './src/config/sidebar.ts';
 import { typeDocPlugin } from './src/config/typedoc.ts';
 
-// Served from GitHub Pages under /mg-utils-docs/. With a custom domain, drop `base`.
+// Served from GitHub Pages under /mdg-utils-docs/. With a custom domain, drop `base`.
 export default defineConfig({
-  site: 'https://madagascar-oss.github.io',
-  base: '/mg-utils-docs',
+  site: 'https://mdgascar.github.io',
+  base: '/mdg-utils-docs',
   trailingSlash: 'always',
   integrations: [
     starlight({
-      title: 'mg-utils',
+      title: 'mdg-utils',
       description:
         'Malagasy number words, Madagascar phone numbers, Ariary amounts and dates — the same in every language.',
-      // Madagascar OSS brand kit: the ravinala mark, green on light, light green on dark.
+      // Mdgascar brand kit: the MG diamond, ink frame on light, white frame on dark.
       logo: {
-        light: './src/assets/brand/mark-green.svg',
-        dark: './src/assets/brand/mark-light-green.svg',
+        light: './src/assets/brand/mark-light.svg',
+        dark: './src/assets/brand/mark-dark.svg',
       },
       favicon: '/brand/favicon-32.png',
       head,
@@ -36,7 +36,7 @@ export default defineConfig({
         {
           icon: 'github',
           label: 'GitHub',
-          href: 'https://github.com/madagascar-oss/mg-utils-docs',
+          href: 'https://github.com/mdgascar/mdg-utils-docs',
         },
       ],
       customCss: [
@@ -50,13 +50,13 @@ export default defineConfig({
         Footer: './src/components/Footer.astro',
       },
       expressiveCode: { defaultProps: { wrap: true } },
-      editLink: { baseUrl: 'https://github.com/madagascar-oss/mg-utils-docs/edit/dev/' },
+      editLink: { baseUrl: 'https://github.com/mdgascar/mdg-utils-docs/edit/dev/' },
       plugins: [
         typeDocPlugin,
         // /play/ is an Astro page, which the validator cannot see; its own e2e tests cover it.
         // Rules pages exist in English only; translated pages link to their English fallback.
         starlightLinksValidator({
-          exclude: ['/mg-utils-docs/play/', '/mg-utils-docs/{mg,fr}/play/'],
+          exclude: ['/mdg-utils-docs/play/', '/mdg-utils-docs/{mg,fr}/play/'],
           errorOnFallbackPages: false,
         }),
       ],

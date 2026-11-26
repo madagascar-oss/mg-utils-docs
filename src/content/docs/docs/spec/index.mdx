@@ -1,6 +1,6 @@
 ---
 title: One spec, every language
-description: Every mg-utils package implements the same specification — data with official sources and shared test vectors — so a function gives the same answer in JavaScript, PHP and every future port.
+description: Every mdg-utils package implements the same specification — data with official sources and shared test vectors — so a function gives the same answer in JavaScript, PHP and every future port.
 kicker: Spec
 ---
 
@@ -8,12 +8,12 @@ import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 ## How it works
 
-The [spec repository](https://github.com/madagascar-oss/mg-utils-spec) holds, for each module, the rules in plain words, the data with an official source and the date it was checked, and the **test vectors**: inputs with the exact output or error code every port must produce.
+The [spec repository](https://github.com/mdgascar/mdg-utils-spec) holds, for each module, the rules in plain words, the data with an official source and the date it was checked, and the **test vectors**: inputs with the exact output or error code every port must produce.
 
 ```text
-mg-utils-spec           data, rules, Public API tables, test vectors
-  ├─ mg-utils-js        includes the spec, generates its tables, runs every vector
-  └─ mg-utils-php       includes the spec, generates its tables, runs every vector
+mdg-utils-spec           data, rules, Public API tables, test vectors
+  ├─ mdg-utils-js        includes the spec, generates its tables, runs every vector
+  └─ mdg-utils-php       includes the spec, generates its tables, runs every vector
 ```
 
 <CardGrid>
@@ -33,5 +33,5 @@ mg-utils-spec           data, rules, Public API tables, test vectors
 
 ## Implementations
 
-<LinkCard title="mg-utils-js" description="npm packages @madagascar-oss/* — ESM, CommonJS and types" href="https://github.com/madagascar-oss/mg-utils-js" />
-<LinkCard title="mg-utils-php" description="Composer package madagascar-oss/mg-utils — PHP 8.3+" href="https://github.com/madagascar-oss/mg-utils-php" />
+<LinkCard title="mdg-utils-js" description="npm packages @mdgascar/* — ESM, CommonJS and types" href="https://github.com/mdgascar/mdg-utils-js" />
+<LinkCard title="mdg-utils-php" description="Composer package mdgascar/mdg-utils — PHP 8.3+" href="https://github.com/mdgascar/mdg-utils-php" />

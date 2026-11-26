@@ -1,4 +1,4 @@
-# mg-utils-docs — every command in one place. Run `just` to list them.
+# mdg-utils-docs — every command in one place. Run `just` to list them.
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
 # List commands
@@ -13,7 +13,7 @@ setup:
     pnpm exec playwright install chromium
     pnpm hooks
 
-# Start the dev server on http://localhost:4321/mg-utils-docs/
+# Start the dev server on http://localhost:4321/mdg-utils-docs/
 dev:
     pnpm dev
 

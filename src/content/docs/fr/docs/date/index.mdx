@@ -30,7 +30,7 @@ import TryItBox from '../../../../../components/TryItBox.astro';
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { formatDate } from '@madagascar-oss/date';
+    import { formatDate } from '@mdgascar/date';
 
     formatDate('2026-11-23'); // '23 Novambra 2026'
     formatDate('2026-11-23', 'full'); // 'Alatsinainy 23 Novambra 2026'
@@ -40,8 +40,8 @@ import TryItBox from '../../../../../components/TryItBox.astro';
   </TabItem>
   <TabItem label="PHP">
     ```php
-    use Madagascar\MgUtils\Date\DateStyle;
-    use Madagascar\MgUtils\Date\MalagasyDate;
+    use Mdgascar\MdgUtils\Date\DateStyle;
+    use Mdgascar\MdgUtils\Date\MalagasyDate;
 
     MalagasyDate::fromString('2026-11-23')->format(); // '23 Novambra 2026'
     MalagasyDate::fromString('2026-11-23')->format(DateStyle::Full); // 'Alatsinainy 23 Novambra 2026'
@@ -58,7 +58,7 @@ Les jours utilisent la numérotation ISO : lundi vaut 1, dimanche 7.
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { getMonthName, getWeekdayName } from '@madagascar-oss/date';
+    import { getMonthName, getWeekdayName } from '@mdgascar/date';
 
     getMonthName(6); // 'Jona'
     getMonthName(6, 'abbreviated'); // 'Jon'
@@ -68,8 +68,8 @@ Les jours utilisent la numérotation ISO : lundi vaut 1, dimanche 7.
   </TabItem>
   <TabItem label="PHP">
     ```php
-    use Madagascar\MgUtils\Date\MalagasyDate;
-    use Madagascar\MgUtils\Date\NameWidth;
+    use Mdgascar\MdgUtils\Date\MalagasyDate;
+    use Mdgascar\MdgUtils\Date\NameWidth;
 
     MalagasyDate::monthName(6); // 'Jona'
     MalagasyDate::monthName(6, NameWidth::Abbreviated); // 'Jon'
@@ -89,4 +89,4 @@ Les jours utilisent la numérotation ISO : lundi vaut 1, dimanche 7.
 
 ## Règles et sources
 
-<LinkCard title="Dates : règles et sources" description="Noms des mois et des jours, les cinq styles et les décisions consignées." href="/mg-utils-docs/fr/docs/date/rules/" />
+<LinkCard title="Dates : règles et sources" description="Noms des mois et des jours, les cinq styles et les décisions consignées." href="/mdg-utils-docs/fr/docs/date/rules/" />

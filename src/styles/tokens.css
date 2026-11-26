@@ -3,19 +3,20 @@
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, monospace;
 
-  /* Accent: Madagascar OSS brand greens — forest #08432D (primary), mid #2E8B57 (accent on
-     light), light #6FCF97 (accent on dark). Steps in between keep contrast in both themes. */
-  --color-accent-50: #effaf3;
-  --color-accent-100: #d7f3e1;
-  --color-accent-200: #b1e7c6;
-  --color-accent-300: #6fcf97;
-  --color-accent-400: #49b77a;
-  --color-accent-500: #2e8b57;
-  --color-accent-600: #237548;
-  --color-accent-700: #1a5f3b;
-  --color-accent-800: #0f4f33;
-  --color-accent-900: #08432d;
-  --color-accent-950: #04281b;
+  /* Accent: green of the MG logo (#64C34F, step 500), scale built in OKLCH on its hue.
+     600 meets WCAG AA with white text and as link text on white (4.6:1); dark mode uses
+     500 for the accent (8.6:1 on the ink background), see global.css. */
+  --color-accent-50: #f2fdef;
+  --color-accent-100: #e4fadf;
+  --color-accent-200: #caf4c1;
+  --color-accent-300: #a4ea95;
+  --color-accent-400: #80d76e;
+  --color-accent-500: #64c34f;
+  --color-accent-600: #2e8616;
+  --color-accent-700: #2b7119;
+  --color-accent-800: #2a5e1e;
+  --color-accent-900: #254d1d;
+  --color-accent-950: #112d0b;
 
   /* Neutral grays (zinc). */
   --color-gray-50: #fafafa;
@@ -30,6 +31,6 @@
   --color-gray-900: #18181b;
   --color-gray-950: #0d1117; /* brand ink */
 
-  /* Red of the flag, for errors in examples and the playground. */
-  --color-error: #e5372f;
+  /* Red of the MG logo and the flag, for errors in examples and the playground. */
+  --color-error: #e22b27;
 }

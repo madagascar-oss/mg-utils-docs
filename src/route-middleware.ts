@@ -23,7 +23,7 @@ export const onRequest = defineRouteMiddleware((context) => {
   // Generated JS reference pages are titled after the folder ("phone"); show the npm name.
   const module = JS_REFERENCE.exec(path)?.[1];
   if (module !== undefined) {
-    const title = `@madagascar-oss/${module}`;
+    const title = `@mdgascar/${module}`;
     route.entry.data.title = title;
     for (const tag of route.head) {
       if (tag.tag === 'title') tag.content = tag.content?.replace(module, title);

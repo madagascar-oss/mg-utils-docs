@@ -21,7 +21,7 @@ function newWorker(): Worker {
 }
 
 function libraryUrl(): string {
-  return new URL(`${import.meta.env.BASE_URL}php/mg-utils.json`, location.href).href;
+  return new URL(`${import.meta.env.BASE_URL}php/mdg-utils.json`, location.href).href;
 }
 
 /** Sends one request and waits for its reply, or for the timeout. */

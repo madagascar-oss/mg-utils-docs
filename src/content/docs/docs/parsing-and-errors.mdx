@@ -1,6 +1,6 @@
 ---
 title: Parsing and errors
-description: Every mg-utils function rejects bad input with the same four error codes in every language. Parsers come in three forms, so you choose between exceptions, error codes and plain absence.
+description: Every mdg-utils function rejects bad input with the same four error codes in every language. Parsers come in three forms, so you choose between exceptions, error codes and plain absence.
 kicker: Getting started
 ---
 
@@ -21,31 +21,31 @@ The codes are defined once in the spec, so a browser and a PHP server reject the
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
-    Every package throws `MgError`. Check `error.code`.
+    Every package throws `MdgError`. Check `error.code`.
 
     ```ts
-    import { MgError, parseAriary } from '@madagascar-oss/ariary';
+    import { MdgError, parseAriary } from '@mdgascar/ariary';
 
     try {
       parseAriary('1,500');
     } catch (error) {
-      if (error instanceof MgError) error.code; // 'INVALID_FORMAT'
+      if (error instanceof MdgError) error.code; // 'INVALID_FORMAT'
     }
     ```
 
-    `instanceof MgError` works across packages and across duplicated copies of a package.
+    `instanceof MdgError` works across packages and across duplicated copies of a package.
   </TabItem>
   <TabItem label="PHP">
-    Every class throws `MgUtilsException` (an `InvalidArgumentException`). Check `errorCode`.
+    Every class throws `MdgUtilsException` (an `InvalidArgumentException`). Check `errorCode`.
 
     ```php
-    use Madagascar\MgUtils\Ariary\Ariary;
-    use Madagascar\MgUtils\ErrorCode;
-    use Madagascar\MgUtils\MgUtilsException;
+    use Mdgascar\MdgUtils\Ariary\Ariary;
+    use Mdgascar\MdgUtils\ErrorCode;
+    use Mdgascar\MdgUtils\MdgUtilsException;
 
     try {
         Ariary::parse('1,500');
-    } catch (MgUtilsException $exception) {
+    } catch (MdgUtilsException $exception) {
         $exception->errorCode === ErrorCode::InvalidFormat; // true
     }
     ```
@@ -65,9 +65,9 @@ Functions that read text typed by users — phone numbers and Ariary amounts —
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { parsePhoneNumber, safeParsePhoneNumber, tryParsePhoneNumber } from '@madagascar-oss/phone';
+    import { parsePhoneNumber, safeParsePhoneNumber, tryParsePhoneNumber } from '@mdgascar/phone';
 
-    parsePhoneNumber('035 12 345 67'); // throws MgError UNKNOWN_OPERATOR
+    parsePhoneNumber('035 12 345 67'); // throws MdgError UNKNOWN_OPERATOR
 
     const result = safeParsePhoneNumber('035 12 345 67');
     result.success; // false
@@ -78,9 +78,9 @@ Functions that read text typed by users — phone numbers and Ariary amounts —
   </TabItem>
   <TabItem label="PHP">
     ```php
-    use Madagascar\MgUtils\Phone\PhoneNumber;
+    use Mdgascar\MdgUtils\Phone\PhoneNumber;
 
-    PhoneNumber::parse('035 12 345 67'); // throws MgUtilsException UNKNOWN_OPERATOR
+    PhoneNumber::parse('035 12 345 67'); // throws MdgUtilsException UNKNOWN_OPERATOR
 
     $result = PhoneNumber::safeParse('035 12 345 67');
     $result->success;           // false

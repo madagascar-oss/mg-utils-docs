@@ -239,10 +239,16 @@ const lineText = (line: Line) => line.tokens.map((token) => token.text).join('')
   }
 
   for (const button of document.querySelectorAll<HTMLButtonElement>('[data-copy]')) {
-    button.addEventListener('click', async () => {
-      await navigator.clipboard.writeText(button.dataset.copy ?? '');
-      button.textContent = button.dataset.done ?? '';
-      setTimeout(() => (button.textContent = button.dataset.label ?? ''), COPIED_MS);
+    button.addEventListener('click', () => {
+      navigator.clipboard.writeText(button.dataset.copy ?? '').then(
+        () => {
+          button.textContent = button.dataset.done ?? '';
+          setTimeout(() => (button.textContent = button.dataset.label ?? ''), COPIED_MS);
+        },
+        () => {
+          // Clipboard blocked (permissions, insecure context): the command stays selectable.
+        },
+      );
     });
   }
 </script>

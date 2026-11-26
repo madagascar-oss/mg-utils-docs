@@ -11,11 +11,14 @@ import { words } from './words.ts';
 
 interface Props {
   readonly module: ModuleId;
+  readonly initialInput?: string | undefined;
+  readonly examples: readonly string[];
   readonly playHref: string;
   readonly labels: {
     readonly input: string;
     readonly option: string;
     readonly result: string;
+    readonly examples: string;
     readonly open: string;
   };
 }
@@ -25,9 +28,9 @@ const MODULES: Record<ModuleId, TryModule> = { words, phone, ariary, date };
 const fieldClass =
   'rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm dark:border-gray-700';
 
-export default function TryIt({ module, playHref, labels }: Props) {
+export default function TryIt({ module, initialInput, examples, playHref, labels }: Props) {
   const definition = MODULES[module];
-  const [input, setInput] = useState(definition.initialInput);
+  const [input, setInput] = useState(initialInput ?? definition.initialInput);
   const [option, setOption] = useState(definition.options[0] ?? '');
   const outcome = useMemo(() => definition.compute(input, option), [definition, input, option]);
   const playLink = `${playHref}${toHash({ language: 'js', module, code: outcome.snippet })}`;
@@ -62,6 +65,27 @@ export default function TryIt({ module, playHref, labels }: Props) {
               </option>
             ))}
           </select>
+        )}
+        {examples.length > 0 && (
+          <div className="flex w-full flex-wrap items-center gap-2" aria-label={labels.examples}>
+            <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+              {labels.examples}
+            </span>
+            {examples.map((example) => (
+              <button
+                key={example}
+                type="button"
+                data-testid="try-example"
+                aria-pressed={example === input}
+                className="rounded-full border border-gray-300 px-2.5 py-0.5 font-mono text-xs hover:border-accent-600 aria-pressed:border-accent-600 aria-pressed:text-accent-700 dark:border-gray-700 dark:aria-pressed:text-accent-300"
+                onClick={() => {
+                  setInput(example);
+                }}
+              >
+                {example}
+              </button>
+            ))}
+          </div>
         )}
       </div>
       <div className="space-y-3 p-4">

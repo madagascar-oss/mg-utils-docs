@@ -13,6 +13,6 @@ export interface TryModule {
   readonly initialInput: string;
   readonly options: readonly string[];
   readonly inputType: 'text' | 'date';
-  readonly inputMode?: 'numeric';
+  readonly inputMode?: 'numeric' | 'decimal';
   compute(input: string, option: string): Outcome;
 }

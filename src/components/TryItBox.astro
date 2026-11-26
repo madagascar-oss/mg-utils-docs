@@ -6,24 +6,43 @@ import type { ModuleId } from '../playground/types.ts';
 
 interface Props {
   module: ModuleId;
+  /** Starting input; the module's default when omitted. */
+  input?: string;
+  /** Inputs offered as one-click chips under the field. */
+  examples?: readonly string[];
 }
 
 const locale = toLocale(Astro.locals.starlightRoute.locale);
 const labels = {
-  en: { input: 'Input', option: 'Option', result: 'Result', open: 'Open in the playground' },
+  en: {
+    input: 'Input',
+    option: 'Option',
+    result: 'Result',
+    examples: 'Examples',
+    open: 'Open in the playground',
+  },
   mg: {
     input: 'Fampidirana',
     option: 'Safidy',
     result: 'Valiny',
+    examples: 'Ohatra',
     open: 'Sokafy ao amin’ny toerana fanandramana',
   },
-  fr: { input: 'Entrée', option: 'Option', result: 'Résultat', open: 'Ouvrir dans le bac à sable' },
+  fr: {
+    input: 'Entrée',
+    option: 'Option',
+    result: 'Résultat',
+    examples: 'Exemples',
+    open: 'Ouvrir dans le bac à sable',
+  },
 }[locale];
 ---
 
 <TryIt
   client:visible
   module={Astro.props.module}
+  initialInput={Astro.props.input}
+  examples={Astro.props.examples ?? []}
   playHref={localePath(locale, '/play/')}
   labels={labels}
 />

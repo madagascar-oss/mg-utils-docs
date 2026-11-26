@@ -7,6 +7,8 @@ const js: Record<ModuleId, string> = {
 console.log(numberToWords(21));
 console.log(numberToWords(2026));
 console.log(numberToWords(1_000_000));
+console.log(numberToWords(1_000_000_000_000));
+console.log(numberToWords(3.14));
 `,
   phone: `import {
   formatPhoneNumber,
@@ -28,6 +30,9 @@ console.log(formatAriary(1500));
 console.log(formatAriary(1500, { grouping: 'dot', symbolPosition: 'after' }));
 console.log(parseAriary('1.500 Ar'));
 console.log(ariaryToWords(1500));
+console.log(formatAriary(1500.5));
+console.log(parseAriary('1 500,50 Ar'));
+console.log(ariaryToWords(1500.5));
 `,
   date: `import { formatDate, getMonthName } from '@madagascar-oss/date';
 
@@ -45,6 +50,8 @@ use Madagascar\\MgUtils\\Words\\NumberWords;
 echo NumberWords::fromInt(21), "\\n";
 echo NumberWords::fromInt(2026), "\\n";
 echo NumberWords::fromInt(1_000_000), "\\n";
+echo NumberWords::fromInt(1_000_000_000_000), "\\n";
+echo NumberWords::fromFloat(3.14), "\\n";
 `,
   phone: `<?php
 
@@ -68,6 +75,9 @@ echo Ariary::fromInt(1500)->format(), "\\n";
 echo Ariary::fromInt(1500)->format(Grouping::Dot, SymbolPosition::After), "\\n";
 echo Ariary::parse('1.500 Ar')->amount, "\\n";
 echo Ariary::fromInt(1500)->toWords(), "\\n";
+echo Ariary::fromFloat(1500.5)->format(), "\\n";
+echo Ariary::parse('1 500,50 Ar')->amount, "\\n";
+echo Ariary::fromFloat(1500.5)->toWords(), "\\n";
 `,
   date: `<?php
 

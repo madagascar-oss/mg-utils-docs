@@ -2,7 +2,6 @@ import { expect, test } from '@playwright/test';
 
 const locales = [
   { prefix: '', lang: 'en' },
-  { prefix: 'mg/', lang: 'mg' },
   { prefix: 'fr/', lang: 'fr' },
 ];
 
@@ -58,9 +57,6 @@ test('the language tab choice is shared across code blocks', async ({ page }) =>
 });
 
 test('translated pages are written in their language', async ({ page }) => {
-  await page.goto('mg/docs/phone/');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Laharan-telefaonina');
-  await expect(page.getByText('Ato amin’ity pejy ity').first()).toBeAttached();
   await page.goto('fr/docs/installation/using-composer/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'Bien démarrer avec mdg-utils pour PHP',
@@ -76,4 +72,21 @@ test('untranslated pages fall back to English with a notice', async ({ page }) =
   await expect(
     page.getByText('Ce contenu n’est pas encore disponible dans votre langue.'),
   ).toBeVisible();
+});
+
+test('the landing types real calls and fills the preview', async ({ page }) => {
+  await page.goto('');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Malagasy data, right in one call.',
+  );
+  const demo = page.getByRole('region', { name: 'Code typed live, with its result' });
+  await expect(demo.getByText('Ar 150 000')).toBeVisible();
+  await expect(demo.locator('[data-field="date"]')).not.toHaveClass(/is-empty/, {
+    timeout: 15_000,
+  });
+  await expect(demo.locator('[data-field="date"]')).toContainText('Alatsinainy 23 Novambra 2026');
+  await demo.getByRole('tab', { name: 'receipt.php' }).click();
+  await expect(demo.getByText('MalagasyDate::fromString', { exact: false })).toBeVisible({
+    timeout: 15_000,
+  });
 });

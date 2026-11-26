@@ -1,66 +1,9 @@
 ---
-title: Des données malgaches, identiques dans chaque langage
-description: Nombres en lettres, numéros de téléphone malgaches, montants en ariary et dates pour JavaScript et PHP — une seule spécification, les mêmes tests.
+title: mdg-utils, les données malgaches en un appel
+description: Nombres en lettres, numéros +261, montants en ariary et dates pour JavaScript et PHP. Aucune dépendance, le même résultat dans chaque langage.
 template: splash
-hero:
-  image:
-    alt: Mdgascar
-    light: ../../../assets/brand/mark-light.svg
-    dark: ../../../assets/brand/mark-dark.svg
-  tagline: Nombres en lettres, numéros de téléphone malgaches, montants en ariary et dates pour JavaScript et PHP — une seule spécification partagée, les mêmes vecteurs de test, aucune dépendance.
-  actions:
-    - text: Commencer
-      link: /mdg-utils-docs/fr/docs/installation/using-npm/
-      icon: right-arrow
-    - text: Ouvrir le bac à sable
-      link: /mdg-utils-docs/fr/play/
-      variant: minimal
 ---
 
-{/* Traduction française. Les blocs de code sont identiques à la page anglaise. */}
-import { Card, CardGrid, Tabs, TabItem } from '@astrojs/starlight/components';
+import Landing from '../../../components/landing/Landing.astro';
 
-<Tabs syncKey="language">
-  <TabItem label="JavaScript">
-    ```sh title="Terminal"
-    npm install @mdgascar/utils
-    ```
-    ```ts
-    import { formatAriary, formatPhoneNumber, numberToWords } from '@mdgascar/utils';
-
-    numberToWords(2026); // 'enina amby roapolo sy roa arivo'
-    formatPhoneNumber('0341234567', 'international'); // '+261 34 12 345 67'
-    formatAriary(1500); // 'Ar 1 500'
-    ```
-  </TabItem>
-  <TabItem label="PHP">
-    ```sh title="Terminal"
-    composer require mdgascar/mdg-utils
-    ```
-    ```php
-    use Mdgascar\MdgUtils\Ariary\Ariary;
-    use Mdgascar\MdgUtils\Phone\PhoneNumber;
-    use Mdgascar\MdgUtils\Phone\PhoneNumberFormat;
-    use Mdgascar\MdgUtils\Words\NumberWords;
-
-    NumberWords::fromInt(2026); // 'enina amby roapolo sy roa arivo'
-    PhoneNumber::parse('0341234567')->format(PhoneNumberFormat::International); // '+261 34 12 345 67'
-    Ariary::fromInt(1500)->format(); // 'Ar 1 500'
-    ```
-  </TabItem>
-</Tabs>
-
-<CardGrid>
-  <Card title="Nombres en lettres" icon="pencil">
-    `21` → `iraika amby roapolo`, `3.14` → `telo faingo efatra ambin'ny folo`, des nombres de toute taille, en malgache officiel.
-  </Card>
-  <Card title="Numéros de téléphone" icon="phone">
-    Lire, valider et formater les numéros mobiles `+261`, avec l’opérateur de chaque préfixe.
-  </Card>
-  <Card title="Montants en ariary" icon="analytics">
-    `1500` → `Ar 1 500`, lire les montants saisis, les écrire en lettres, convertir les anciens FMG.
-  </Card>
-  <Card title="Dates" icon="clock">
-    `2026-11-23` → `Alatsinainy 23 Novambra 2026`, noms des mois et des jours.
-  </Card>
-</CardGrid>
+<Landing locale="fr" />

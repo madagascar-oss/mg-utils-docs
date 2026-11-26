@@ -1,17 +1,17 @@
 ---
 title: Isa an-teny
-description: Soraty an-teny malagasy ny isa feno manomboka amin’ny 0 hatramin’ny 999 999 999 999, araka ny teny ofisialy — ny singa kely indrindra no voalohany.
+description: Soraty an-teny malagasy ny isa rehetra, feno na misy faingo, araka ny teny ofisialy, ny singa kely indrindra no voalohany.
 kicker: Môdily
 ---
 
 {/* Malagasy translation (draft, needs native review). Code blocks match the English page. */}
-import { LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import { Aside, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
 import ApiTable from '../../../../../components/ApiTable.astro';
 import TryItBox from '../../../../../components/TryItBox.astro';
 
 ## Andramo
 
-<TryItBox module="words" />
+<TryItBox module="words" examples={['0', '11', '21', '101', '205', '1960', '2026', '280000']} />
 
 ## Fanondroana haingana
 
@@ -27,10 +27,15 @@ Ny teny malagasy dia mamaky isa manomboka amin’ny singa kely indrindra. Ampifa
     import { numberToWords } from '@madagascar-oss/words';
 
     numberToWords(0); // 'aotra'
+    numberToWords(11); // "iraika ambin'ny folo"
     numberToWords(21); // 'iraika amby roapolo'
+    numberToWords(101); // 'iraika amby zato'
     numberToWords(205); // 'dimy sy roanjato'
+    numberToWords(348); // 'valo amby efapolo sy telonjato'
     numberToWords(1960); // 'enimpolo sy sivinjato sy arivo'
+    numberToWords(2026); // 'enina amby roapolo sy roa arivo'
     numberToWords(10_000); // 'iray alina'
+    numberToWords(280_000); // 'valo alina sy roa hetsy'
     numberToWords(1_000_000); // 'iray tapitrisa'
     ```
   </TabItem>
@@ -39,34 +44,113 @@ Ny teny malagasy dia mamaky isa manomboka amin’ny singa kely indrindra. Ampifa
     use Madagascar\MgUtils\Words\NumberWords;
 
     NumberWords::fromInt(0); // 'aotra'
+    NumberWords::fromInt(11); // "iraika ambin'ny folo"
     NumberWords::fromInt(21); // 'iraika amby roapolo'
+    NumberWords::fromInt(101); // 'iraika amby zato'
     NumberWords::fromInt(205); // 'dimy sy roanjato'
+    NumberWords::fromInt(348); // 'valo amby efapolo sy telonjato'
     NumberWords::fromInt(1960); // 'enimpolo sy sivinjato sy arivo'
+    NumberWords::fromInt(2026); // 'enina amby roapolo sy roa arivo'
     NumberWords::fromInt(10_000); // 'iray alina'
+    NumberWords::fromInt(280_000); // 'valo alina sy roa hetsy'
     NumberWords::fromInt(1_000_000); // 'iray tapitrisa'
     ```
   </TabItem>
 </Tabs>
 
+## Isa lehibe
+
+Tsy misy fetra ambony ny fitsipika: ny `lavitrisa` (10⁹), teny vondrona lehibe indrindra, dia mandray isa na inona na inona habeny, soratana amin’ireo fitsipika ireo ihany. Noho izany ny 10¹² dia `arivo lavitrisa`. Ny fiteny tsirairay dia mijanona fotsiny rehefa tsy marina tsara intsony ny isany: `Number.MAX_SAFE_INTEGER` amin’ny JavaScript, `PHP_INT_MAX` amin’ny PHP.
+
+<TryItBox module="words" input="1999999999999" examples={['1000000000', '1000000000000', '1999999999999', '1000000000000000', '9007199254740991']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    numberToWords(1_000_000_000); // 'iray lavitrisa'
+    numberToWords(1_000_000_000_000); // 'arivo lavitrisa'
+    numberToWords(1_000_000_000_000_000); // 'iray tapitrisa lavitrisa'
+    numberToWords(1_999_999_999_999);
+    // 'sivy amby sivifolo sy sivinjato sy sivy arivo sy sivy alina sy sivy hetsy
+    //  sy sivy amby sivifolo sy sivinjato tapitrisa
+    //  sy sivy amby sivifolo sy sivinjato sy arivo lavitrisa'
+    numberToWords(Number.MAX_SAFE_INTEGER); // the largest exact number
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    NumberWords::fromInt(1_000_000_000); // 'iray lavitrisa'
+    NumberWords::fromInt(1_000_000_000_000); // 'arivo lavitrisa'
+    NumberWords::fromInt(1_000_000_000_000_000); // 'iray tapitrisa lavitrisa'
+    NumberWords::fromInt(PHP_INT_MAX); // up to 9 223 372 036 854 775 807
+    ```
+  </TabItem>
+</Tabs>
+
+## Isa misy faingo
+
+Ny ampahany feno no voalohany, avy eo ny `faingo`, avy eo ny tarehimarika aorian’ny faingo vakiana ho isa feno. Ny aotra tsirairay eo aorian’ny faingo dia `aotra`.
+
+<TryItBox module="words" input="3.14" examples={['3.14', '18.3', '0.5', '1.05', '0.008', '12.75', '1234.5678']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    numberToWords(3.14); // "telo faingo efatra ambin'ny folo"
+    numberToWords(18.3); // "valo ambin'ny folo faingo telo"
+    numberToWords(0.5); // 'aotra faingo dimy'
+    numberToWords(1.05); // 'iray faingo aotra dimy'
+    numberToWords(0.008); // 'aotra faingo aotra aotra valo'
+    numberToWords(12.75); // "roa ambin'ny folo faingo dimy amby fitopolo"
+    numberToWords(1.0); // 'iray' (a whole number has no faingo)
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    NumberWords::fromFloat(3.14); // "telo faingo efatra ambin'ny folo"
+    NumberWords::fromFloat(18.3); // "valo ambin'ny folo faingo telo"
+    NumberWords::fromFloat(0.5); // 'aotra faingo dimy'
+    NumberWords::fromFloat(1.05); // 'iray faingo aotra dimy'
+    NumberWords::fromFloat(0.008); // 'aotra faingo aotra aotra valo'
+    NumberWords::fromFloat(12.75); // "roa ambin'ny folo faingo dimy amby fitopolo"
+    NumberWords::fromFloat(1.0); // 'iray' (a whole number has no faingo)
+    ```
+  </TabItem>
+</Tabs>
+
+<Aside>Ny tarehimarika aorian’ny faingo dia an’ny sandan’ny isa. Ny `1.50` dia ny isa `1.5`, ary ny `0.1 + 0.2` dia `0.30000000000000004` amin’ny kajy amin’ny solosaina, ka izany no vakiana.</Aside>
+
+## Isa ihany
+
+Isa no ampidirina, tsy soratra mihitsy: tsy misy elanelana, mpanasaraka na soratra. Ny `'1 500'` dia `INVALID_TYPE`. Raha hamaky vola nosoratan’ny mpampiasa, ampiasao ny môdily ariary.
+
 ## Hadisoana
 
-| Fampidirana                               | Kaody hadisoana     |
-| ----------------------------------- | -------------- |
-| Tsy isa feno (`1.5`, `'21'`)  | `INVALID_TYPE` |
-| Ambanin’ny 0 na mihoatra ny 999 999 999 999    | `OUT_OF_RANGE` |
+| Fampidirana | Kaody hadisoana |
+| --- | --- |
+| Tsy isa voafetra (`'21'`, `NaN`, `Infinity`) | `INVALID_TYPE` |
+| Ambanin’ny 0 | `OUT_OF_RANGE` |
+| Mihoatra ny isa marina lehibe indrindra amin’ilay fiteny | `OUT_OF_RANGE` |
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
     numberToWords(-1); // throws MgError, error.code === 'OUT_OF_RANGE'
+    numberToWords('1 500' as unknown as number); // throws MgError, 'INVALID_TYPE'
+    numberToWords(Number.MAX_SAFE_INTEGER + 1); // throws MgError, 'OUT_OF_RANGE'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
     NumberWords::fromInt(-1); // throws MgUtilsException, ->errorCode === ErrorCode::OutOfRange
+    NumberWords::fromFloat(NAN); // throws MgUtilsException, ErrorCode::InvalidType
     ```
   </TabItem>
 </Tabs>
+
+## Mbola tsy azo atao
+
+Ny isa latsaky ny aotra, sy ireo anarana taloha ho an’ny 10⁷ sy mihoatra (`safatsiroa`, `tsitamboisa`…), dia miandry loharano na manam-pahaizana amin’ny teny malagasy. Jereo ny [Waiting for a source or an expert](/mg-utils-docs/mg/docs/words/rules/#waiting-for-a-source-or-an-expert).
 
 ## Fitsipika sy loharano
 

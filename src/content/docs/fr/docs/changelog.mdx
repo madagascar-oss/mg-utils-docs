@@ -1,0 +1,37 @@
+---
+title: Journal des modifications
+description: Ce qui a changé dans chaque version de la spécification, le comportement que chaque paquet implémente.
+kicker: Prise en main
+---
+
+{/* Traduction française. */}
+Chaque entrée est une version de la spécification : les règles, les données et les vecteurs de test que chaque paquet implémente. Les versions des paquets (npm, Packagist) la suivent et listent leurs propres changements dans leur `CHANGELOG.md`. Voir [Versions](/mg-utils-docs/fr/docs/versioning/) pour le sens de chaque numéro.
+
+**Rupture** signale un résultat qui change pour une entrée qui fonctionnait déjà.
+
+## 0.5.0 (Non publiée)
+
+- `words`: **Rupture** : écrit les nombres de toute taille. `lavitrisa` prend un multiplicateur de toute taille : 10¹² donne `arivo lavitrisa` au lieu de `OUT_OF_RANGE`. Chaque langage s’arrête à son plus grand nombre exact.
+- `words`: Décimales, lues avec `faingo` : `3.14` → `telo faingo efatra ambin'ny folo`, `0.008` → `aotra faingo aotra aotra valo`. PHP ajoute `NumberWords::fromFloat()`.
+- `words`: Nouvelle section des points en attente d’une source ou d’un expert : nombres négatifs, anciens noms de 10⁷ et au-delà.
+- `ariary`: **Rupture** : plus de plafond à 999 999 999 999, et montants décimaux après une virgule : `Ar 1 500,5`. PHP ajoute `Ariary::fromFloat()` ; `$amount` est `int|float`.
+- `ariary`: **Rupture** : `parseAriary('1,500')` lit 1,5 au lieu de lever `INVALID_FORMAT`. Pour un texte à l’anglaise, passez `{ grouping: 'comma', decimal: 'dot' }`.
+- `ariary`: Nouvelles options `grouping: comma` et `decimal` pour le formatage et les trois lecteurs ; les valeurs par défaut restent malgaches.
+- `ariary`: **Rupture** : la conversion FMG est exacte en décimal et accepte tous les francs : `fmgToAriary(7501)` → `1500.2` au lieu de `OUT_OF_RANGE` ; `ariaryToFmg(0.07)` → `0.35`.
+- `ariary`: Points à revoir : la lecture par défaut de `1,500`, l’arrondi des décimales très longues, et les textes formatés plus longs que la limite de lecture de 32 caractères.
+
+## 0.4.0 (2026-11-25)
+
+- `words`: **Rupture** : un multiplicateur de un reste seul uniquement pour `arivo` : `10 000` → `iray alina`, `1 000 000` → `iray tapitrisa` ; `1 000` reste `arivo`.
+
+## 0.3.0 (2026-11-25)
+
+- `words`: **Rupture** : les centaines à partir de 200 se relient par `sy` à toute taille (`205` → `dimy sy roanjato`), et 11–19 utilisent `ambin'ny` (`11` → `iraika ambin'ny folo`).
+
+## 0.2.0 (2026-11-24)
+
+- `spec`: **Rupture** : modules déplacés dans `modules/` et schémas dans `schemas/`. Ajout des modules ariary et date.
+
+## 0.1.0 (2026-11-23)
+
+- `spec`: Première spécification : codes d’erreur et schémas communs, modules words et phone.

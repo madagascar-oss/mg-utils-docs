@@ -36,7 +36,8 @@ test('a share link restores the code', async ({ page, context }) => {
 });
 
 test('shows the spec error code of an uncaught error', async ({ page }) => {
-  const code = "import { parseAriary } from '@madagascar-oss/ariary';\n\nparseAriary('1,500');\n";
+  // A dot is not a decimal point by default, so '1.5' is rejected.
+  const code = "import { parseAriary } from '@madagascar-oss/ariary';\n\nparseAriary('1.5');\n";
   await page.goto(playUrl('js', 'ariary', code));
   await expect(page.getByTestId('error')).toContainText('INVALID_FORMAT');
 });
@@ -60,12 +61,17 @@ test('accessible names follow the page language', async ({ page }) => {
 
 test('a Try it widget updates and opens the playground', async ({ page }) => {
   await page.goto('docs/ariary/');
-  const result = page.getByTestId('try-result');
-  await page.getByRole('textbox', { name: 'Input' }).fill('1,500');
+  // The page has a Try it box per section; use the first one.
+  const result = page.getByTestId('try-result').first();
+  const input = page.getByRole('textbox', { name: 'Input' }).first();
+  await input.fill('1.5');
   await expect(result).toHaveText('INVALID_FORMAT');
-  await page.getByRole('textbox', { name: 'Input' }).fill('1.500 Ar');
+  await input.fill('1.500 Ar');
   await expect(result).toContainText('dimanjato sy arivo ariary');
-  await page.getByRole('link', { name: /Open in the playground/ }).click();
+  await page
+    .getByRole('link', { name: /Open in the playground/ })
+    .first()
+    .click();
   await expect(page.getByTestId('output')).toContainText('Ar 1 500');
 });
 
@@ -93,7 +99,7 @@ test.describe('PHP', () => {
 
   test('reports the spec error code of an uncaught exception', async ({ page }) => {
     const code =
-      "<?php\n\nuse Madagascar\\MgUtils\\Ariary\\Ariary;\n\necho Ariary::parse('1,500')->amount;\n";
+      "<?php\n\nuse Madagascar\\MgUtils\\Ariary\\Ariary;\n\necho Ariary::parse('1.5')->amount;\n";
     await page.goto(playUrl('php', 'ariary', code));
     await expect(page.getByTestId('error')).toContainText('INVALID_FORMAT', { timeout: 90_000 });
   });

@@ -1,6 +1,6 @@
 ---
 title: Ariary amounts
-description: Format amounts in Malagasy Ariary (MGA), read amounts typed by users, write them in words and convert old Malagasy francs (FMG).
+description: Format amounts in Malagasy Ariary (MGA), whole or decimal, read amounts typed by users, write them in words and convert old Malagasy francs (FMG).
 kicker: Modules
 ---
 
@@ -10,7 +10,9 @@ import TryItBox from '../../../../components/TryItBox.astro';
 
 ## Try it
 
-<TryItBox module="ariary" />
+Type an amount the way people write it. The result shows it formatted and in words.
+
+<TryItBox module="ariary" examples={['Ar 2 026 000', '1.500 Ar', '1 500,50 Ar', 'MGA 1500', '0,5', '1 000 000 000 000', '1.5']} />
 
 ## Quick reference
 
@@ -18,7 +20,7 @@ import TryItBox from '../../../../components/TryItBox.astro';
 
 ## Formatting
 
-Amounts are whole ariary, grouped by thousands with a no-break space (or a dot). A comma is never a thousands separator.
+Amounts are numbers, whole or decimal, with no upper limit in the rules. Thousands are grouped with a no-break space (or a dot), and decimals follow a comma. A comma is never a thousand separator.
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
@@ -26,8 +28,11 @@ Amounts are whole ariary, grouped by thousands with a no-break space (or a dot).
     import { formatAriary } from '@madagascar-oss/ariary';
 
     formatAriary(1500); // 'Ar 1 500'
-    formatAriary(1500, { grouping: 'dot' }); // 'Ar 1.500'
+    formatAriary(1500.5); // 'Ar 1 500,5'
+    formatAriary(2_026_000, { grouping: 'dot' }); // 'Ar 2.026.000'
+    formatAriary(1234567.89, { grouping: 'dot' }); // 'Ar 1.234.567,89'
     formatAriary(1500, { symbolPosition: 'after' }); // '1 500 Ar'
+    formatAriary(1_000_000_000_000); // 'Ar 1 000 000 000 000'
     ```
   </TabItem>
   <TabItem label="PHP">
@@ -37,8 +42,11 @@ Amounts are whole ariary, grouped by thousands with a no-break space (or a dot).
     use Madagascar\MgUtils\Ariary\SymbolPosition;
 
     Ariary::fromInt(1500)->format(); // 'Ar 1 500'
-    Ariary::fromInt(1500)->format(Grouping::Dot); // 'Ar 1.500'
+    Ariary::fromFloat(1500.5)->format(); // 'Ar 1 500,5'
+    Ariary::fromInt(2_026_000)->format(Grouping::Dot); // 'Ar 2.026.000'
+    Ariary::fromFloat(1234567.89)->format(Grouping::Dot); // 'Ar 1.234.567,89'
     Ariary::fromInt(1500)->format(position: SymbolPosition::After); // '1 500 Ar'
+    Ariary::fromInt(1_000_000_000_000)->format(); // 'Ar 1 000 000 000 000'
     ```
   </TabItem>
 </Tabs>
@@ -47,7 +55,9 @@ Amounts are whole ariary, grouped by thousands with a no-break space (or a dot).
 
 ## Reading amounts typed by users
 
-`Ar 1 500`, `1.500 Ar`, `MGA 1500` and `1 500` all read as 1500. Commas, decimals and signs are rejected.
+`Ar 1 500`, `1.500 Ar`, `MGA 1500` and `1 500` all read as 1500, and `1 500,50 Ar` as 1500.5. Signs are rejected, and so is a dot used as a decimal point.
+
+<TryItBox module="ariary" input="1 500,50 Ar" examples={['1 500,50 Ar', '1.234.567,89', 'Ar 0,25', '1,500', '1,5,0', '-1 500', 'Ar 1 500 Ar']} />
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
@@ -56,9 +66,11 @@ Amounts are whole ariary, grouped by thousands with a no-break space (or a dot).
 
     parseAriary('1.500 Ar'); // 1500
     parseAriary('MGA 1500'); // 1500
+    parseAriary('1 500,50 Ar'); // 1500.5
+    parseAriary('1,500'); // 1.5 (the comma is the decimal separator)
 
-    tryParseAriary('1,500'); // undefined
-    const result = safeParseAriary('1,500');
+    tryParseAriary('1.5'); // undefined: a dot is not a decimal point by default
+    const result = safeParseAriary('1.5');
     if (!result.success) result.error.code; // 'INVALID_FORMAT'
     ```
   </TabItem>
@@ -66,16 +78,45 @@ Amounts are whole ariary, grouped by thousands with a no-break space (or a dot).
     ```php
     Ariary::parse('1.500 Ar')->amount; // 1500
     Ariary::parse('MGA 1500')->amount; // 1500
+    Ariary::parse('1 500,50 Ar')->amount; // 1500.5
+    Ariary::parse('1,500')->amount; // 1.5 (the comma is the decimal separator)
 
-    Ariary::tryParse('1,500'); // null
-    Ariary::safeParse('1,500')->error?->errorCode; // ErrorCode::InvalidFormat
+    Ariary::tryParse('1.5'); // null: a dot is not a decimal point by default
+    Ariary::safeParse('1.5')->error?->errorCode; // ErrorCode::InvalidFormat
+    ```
+  </TabItem>
+</Tabs>
+
+<Aside type="caution">By default `1,500` reads as **1.5**: in Madagascar the comma is the decimal separator. Text written the English way, where `1,500` means fifteen hundred, would be read 1000 times too small. If your input can come in that form, say so with the options below. This default is listed for review in the rules.</Aside>
+
+## Other conventions
+
+Every option defaults to the Malagasy way. For text written in another convention, pass `grouping` and `decimal`: the library never guesses. The two must be different characters.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    formatAriary(1500.5, { grouping: 'comma', decimal: 'dot' }); // 'Ar 1,500.5'
+    parseAriary('1,500.50', { grouping: 'comma', decimal: 'dot' }); // 1500.5
+    parseAriary('1,500', { grouping: 'comma', decimal: 'dot' }); // 1500
+    formatAriary(1500, { grouping: 'comma' }); // throws MgError INVALID_TYPE: same as the decimal comma
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Madagascar\MgUtils\Ariary\DecimalSeparator;
+
+    Ariary::fromFloat(1500.5)->format(Grouping::Comma, decimal: DecimalSeparator::Dot); // 'Ar 1,500.5'
+    Ariary::parse('1,500.50', Grouping::Comma, DecimalSeparator::Dot)->amount; // 1500.5
+    Ariary::parse('1,500', Grouping::Comma, DecimalSeparator::Dot)->amount; // 1500
+    Ariary::fromInt(1500)->format(Grouping::Comma); // throws MgUtilsException, ErrorCode::InvalidType
     ```
   </TabItem>
 </Tabs>
 
 ## Amounts in words
 
-For receipts and cheques: the amount in Malagasy words followed by `ariary`.
+For receipts and cheques: the amount in Malagasy words followed by `ariary`. Decimals follow `faingo`.
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
@@ -83,18 +124,24 @@ For receipts and cheques: the amount in Malagasy words followed by `ariary`.
     import { ariaryToWords } from '@madagascar-oss/ariary';
 
     ariaryToWords(1500); // 'dimanjato sy arivo ariary'
+    ariaryToWords(25_000); // 'dimy arivo sy roa alina ariary'
+    ariaryToWords(1500.5); // 'dimanjato sy arivo faingo dimy ariary'
+    ariaryToWords(1_000_000_000_000); // 'arivo lavitrisa ariary'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
     Ariary::fromInt(1500)->toWords(); // 'dimanjato sy arivo ariary'
+    Ariary::fromInt(25_000)->toWords(); // 'dimy arivo sy roa alina ariary'
+    Ariary::fromFloat(1500.5)->toWords(); // 'dimanjato sy arivo faingo dimy ariary'
+    Ariary::fromInt(1_000_000_000_000)->toWords(); // 'arivo lavitrisa ariary'
     ```
   </TabItem>
 </Tabs>
 
 ## Old Malagasy francs (FMG)
 
-5 FMG = 1 Ar. Francs that do not divide by 5 are rejected rather than rounded.
+5 FMG = 1 Ar. The conversion is exact in decimal, so francs that do not divide by 5 give decimal ariary, never a rounding artefact.
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
@@ -102,29 +149,33 @@ For receipts and cheques: the amount in Malagasy words followed by `ariary`.
     import { ariaryToFmg, fmgToAriary, formatFmg } from '@madagascar-oss/ariary';
 
     fmgToAriary(7500); // 1500
+    fmgToAriary(7501); // 1500.2
     ariaryToFmg(1500); // 7500
+    ariaryToFmg(0.07); // 0.35 (exact, never 0.35000000000000003)
     formatFmg(7500); // 'Fmg 7 500'
-    fmgToAriary(7501); // throws MgError OUT_OF_RANGE
+    formatFmg(7500.5); // 'Fmg 7 500,5'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
     Ariary::fromFmg(7500)->amount; // 1500
+    Ariary::fromFmg(7501)->amount; // 1500.2
     Ariary::fromInt(1500)->toFmg(); // 7500
+    Ariary::fromFloat(0.07)->toFmg(); // 0.35 (exact)
     Ariary::formatFmg(7500); // 'Fmg 7 500'
-    Ariary::fromFmg(7501); // throws MgUtilsException, ErrorCode::OutOfRange
+    Ariary::formatFmg(7500.5); // 'Fmg 7 500,5'
     ```
   </TabItem>
 </Tabs>
 
 ## Errors
 
-| Input                                                 | Error code       |
-| ----------------------------------------------------- | ---------------- |
-| Not a whole number, or options that are not an object | `INVALID_TYPE`   |
-| Text with commas, decimals or signs                   | `INVALID_FORMAT` |
-| Below 0, above 999 999 999 999, or FMG not divisible by 5 | `OUT_OF_RANGE` |
+| Input | Error code |
+| --- | --- |
+| Not a finite number, bad options, or the same character for grouping and decimal | `INVALID_TYPE` |
+| Text with signs, a dot as decimal point (by default) or another currency | `INVALID_FORMAT` |
+| Below 0, or above the largest exact number of the language | `OUT_OF_RANGE` |
 
 ## Rules and sources
 
-<LinkCard title="Malagasy Ariary amounts: rules and sources" description="Grouping, symbols, the FMG rate and recorded decisions." href="/mg-utils-docs/docs/ariary/rules/" />
+<LinkCard title="Malagasy Ariary amounts: rules and sources" description="Grouping, symbols, decimals, the FMG rate, recorded decisions and points under review." href="/mg-utils-docs/docs/ariary/rules/" />

@@ -1,15 +1,14 @@
 // UI strings outside Starlight's own translations (header, footer, playground), per locale.
 import { en, type UiKey } from './strings/en.ts';
 import { fr } from './strings/fr.ts';
-import { mg } from './strings/mg.ts';
 
 export type { UiKey };
-export type Locale = 'en' | 'mg' | 'fr';
+export type Locale = 'en' | 'fr';
 
-const strings = { en, mg, fr };
+const strings = { en, fr };
 
 export function toLocale(starlightLocale: string | undefined): Locale {
-  return starlightLocale === 'mg' || starlightLocale === 'fr' ? starlightLocale : 'en';
+  return starlightLocale === 'fr' ? 'fr' : 'en';
 }
 
 export function t(locale: Locale, key: UiKey): string {

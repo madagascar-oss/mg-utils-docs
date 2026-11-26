@@ -1,0 +1,96 @@
+---
+title: Get started with mdg-utils for Laravel
+description: mdgascar/mdg-utils-laravel adds validation rules, Eloquent casts and Blade directives on top of the PHP package. Laravel 12 and 13, PHP 8.3+.
+kicker: Installation
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+import InstallMethods from '../../../../components/InstallMethods.astro';
+
+<InstallMethods current="using-laravel" />
+
+## Installing in a Laravel app
+
+<Steps>
+
+1. ### Require the package
+
+   ```sh title="Terminal"
+   composer require mdgascar/mdg-utils-laravel
+   ```
+
+   Laravel discovers the service provider on its own. The package brings in
+   `mdgascar/mdg-utils`, so every class from [Using Composer](/mdg-utils-docs/docs/installation/using-composer/) works too.
+
+2. ### Validate input
+
+   Use the string rules, or the rule objects if you prefer classes.
+
+   ```php title="app/Http/Controllers/OrderController.php"
+   use Mdgascar\MdgUtils\Laravel\Rules\AriaryAmount;
+
+   $request->validate([
+       'phone' => ['required', 'mg_phone'],
+       'total' => ['required', new AriaryAmount()], // or 'mg_ariary'
+   ]);
+   ```
+
+   `mg_phone` passes for `034 12 345 67` or `+261 34 12 345 67` and fails for `031 12 345 67`.
+   `mg_ariary` passes for `Ar 1 500`, `1 500,50` or `1500` from JSON. Messages come in English
+   and French.
+
+3. ### Cast model attributes
+
+   ```php title="app/Models/Order.php"
+   use Mdgascar\MdgUtils\Laravel\Casts\AsAriary;
+   use Mdgascar\MdgUtils\Laravel\Casts\AsPhoneNumber;
+
+   protected function casts(): array
+   {
+       return [
+           'phone' => AsPhoneNumber::class, // stored as +261341234567
+           'total' => AsAriary::class,      // stored as a number
+       ];
+   }
+   ```
+
+   ```php
+   $order = Order::create(['phone' => '034 12 345 67', 'total' => 'Ar 1 500']);
+   $order->phone->operator; // Operator::Yas
+   $order->total->amount;   // 1500
+   ```
+
+4. ### Print values in Blade
+
+   ```blade title="resources/views/orders/show.blade.php"
+   @ariary($order->total)      {{-- Ar 1 500 --}}
+   @mgPhone($order->phone)     {{-- 034 12 345 67 --}}
+   @mgWords(2026)              {{-- enina amby roapolo sy roa arivo --}}
+   @mgDate($order->created_at) {{-- 27 Novambra 2026 --}}
+   ```
+
+   Each directive escapes its output and prints nothing for `null`.
+
+</Steps>
+
+## Configuration
+
+Only Ariary amounts have options. Publish `config/mdg-utils.php` with
+`php artisan vendor:publish --tag=mdg-utils`, or set the environment variables.
+
+| Key | Env | Values | Default |
+| --- | --- | --- | --- |
+| `ariary.grouping` | `MDG_UTILS_ARIARY_GROUPING` | `space`, `dot`, `comma` | `space` |
+| `ariary.symbol_position` | `MDG_UTILS_ARIARY_SYMBOL_POSITION` | `before`, `after` | `before` |
+| `ariary.decimal` | `MDG_UTILS_ARIARY_DECIMAL` | `comma`, `dot` | `comma` |
+
+<Aside type="caution" title="Before the first Packagist release">
+  `mdgascar/mdg-utils-laravel` is listed on Packagist with its first release. Until then,
+  install it from [mdg-utils-laravel](https://github.com/mdgascar/mdg-utils-laravel) with a
+  Composer `vcs` repository.
+</Aside>
+
+<Aside type="tip" title="Want more?">
+  The full API, including how to change the validation messages, is in the
+  [package README](https://github.com/mdgascar/mdg-utils-laravel#readme).
+</Aside>

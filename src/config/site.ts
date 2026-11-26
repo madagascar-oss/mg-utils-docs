@@ -9,6 +9,7 @@ export const links = {
   spec: 'https://github.com/mdgascar/mdg-utils-spec',
   js: 'https://github.com/mdgascar/mdg-utils-js',
   php: 'https://github.com/mdgascar/mdg-utils-php',
+  laravel: 'https://github.com/mdgascar/mdg-utils-laravel',
   docs: 'https://github.com/mdgascar/mdg-utils-docs',
   npm: 'https://www.npmjs.com/package/@mdgascar/utils',
   packagist: 'https://packagist.org/packages/mdgascar/mdg-utils',

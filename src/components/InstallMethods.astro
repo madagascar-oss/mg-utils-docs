@@ -3,19 +3,29 @@
 import { localePath, t, toLocale } from '../i18n/ui.ts';
 
 interface Props {
-  current: 'using-npm' | 'using-utils-bundle' | 'using-composer';
+  current: 'using-npm' | 'using-utils-bundle' | 'using-composer' | 'using-laravel';
 }
 
 const locale = toLocale(Astro.locals.starlightRoute.locale);
 const labels = {
-  en: { npm: 'Using npm', utils: 'All modules (utils)', composer: 'Using Composer' },
-  mg: { npm: 'Amin’ny npm', utils: 'Môdily rehetra (utils)', composer: 'Amin’ny Composer' },
-  fr: { npm: 'Avec npm', utils: 'Tous les modules (utils)', composer: 'Avec Composer' },
+  en: {
+    npm: 'Using npm',
+    utils: 'All modules (utils)',
+    composer: 'Using Composer',
+    laravel: 'Using Laravel',
+  },
+  fr: {
+    npm: 'Avec npm',
+    utils: 'Tous les modules (utils)',
+    composer: 'Avec Composer',
+    laravel: 'Avec Laravel',
+  },
 }[locale];
 const methods = [
   { slug: 'using-npm', label: labels.npm, language: 'JavaScript' },
   { slug: 'using-utils-bundle', label: labels.utils, language: 'JavaScript' },
   { slug: 'using-composer', label: labels.composer, language: 'PHP' },
+  { slug: 'using-laravel', label: labels.laravel, language: 'PHP' },
 ] as const;
 ---
 

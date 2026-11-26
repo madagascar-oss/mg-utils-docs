@@ -27,7 +27,7 @@ Espaces, tirets, points, parenthèses, `+261`, `00261` et le `0` initial sont to
     import { parsePhoneNumber } from '@mdgascar/phone';
 
     parsePhoneNumber('034 12 345 67');
-    // { e164: '+261341234567', nationalNumber: '341234567', operator: 'telma' }
+    // { e164: '+261341234567', nationalNumber: '341234567', operator: 'yas' }
 
     parsePhoneNumber('+261 32 12 345 67').operator; // 'orange'
     ```
@@ -39,7 +39,7 @@ Espaces, tirets, points, parenthèses, `+261`, `00261` et le `0` initial sont to
     $phone = PhoneNumber::parse('034 12 345 67');
     $phone->e164;           // '+261341234567'
     $phone->nationalNumber; // '341234567'
-    $phone->operator;       // Operator::Telma
+    $phone->operator;       // Operator::Yas
 
     PhoneNumber::parse('+261 32 12 345 67')->operator; // Operator::Orange
     ```
@@ -80,13 +80,13 @@ Trois formats : `e164` pour le stockage et les API, `international` pour l’ét
     ```ts
     import { OPERATOR_NAMES, parsePhoneNumber } from '@mdgascar/phone';
 
-    OPERATOR_NAMES[parsePhoneNumber('034 12 345 67').operator]; // 'Telma'
+    OPERATOR_NAMES[parsePhoneNumber('034 12 345 67').operator]; // 'Yas Madagascar'
     OPERATOR_NAMES.orange; // 'Orange Madagascar'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
-    PhoneNumber::parse('034 12 345 67')->operator->displayName(); // 'Telma'
+    PhoneNumber::parse('034 12 345 67')->operator->displayName(); // 'Yas Madagascar'
     Operator::Orange->displayName(); // 'Orange Madagascar'
     ```
   </TabItem>
@@ -101,22 +101,22 @@ Trois formats : `e164` pour le stockage et les API, `international` pour l’ét
     ```ts
     import { isValidPhoneNumber, safeParsePhoneNumber, tryParsePhoneNumber } from '@mdgascar/phone';
 
-    isValidPhoneNumber('035 12 345 67'); // false
+    isValidPhoneNumber('031 12 345 67'); // false
 
-    const result = safeParsePhoneNumber('035 12 345 67');
+    const result = safeParsePhoneNumber('031 12 345 67');
     if (!result.success) result.error.code; // 'UNKNOWN_OPERATOR'
 
-    tryParsePhoneNumber('035 12 345 67'); // undefined
+    tryParsePhoneNumber('031 12 345 67'); // undefined
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
-    PhoneNumber::isValid('035 12 345 67'); // false
+    PhoneNumber::isValid('031 12 345 67'); // false
 
-    $result = PhoneNumber::safeParse('035 12 345 67');
+    $result = PhoneNumber::safeParse('031 12 345 67');
     $result->error?->errorCode; // ErrorCode::UnknownOperator
 
-    PhoneNumber::tryParse('035 12 345 67'); // null
+    PhoneNumber::tryParse('031 12 345 67'); // null
     ```
   </TabItem>
 </Tabs>
@@ -127,7 +127,7 @@ Trois formats : `e164` pour le stockage et les API, `international` pour l’ét
 | -------------------------------------------------- | ------------------ |
 | Pas une chaîne                                       | `INVALID_TYPE`     |
 | Pas un numéro mobile malgache (longueur, lettres) | `INVALID_FORMAT` |
-| Préfixe non attribué à un opérateur (`035`)  | `UNKNOWN_OPERATOR` |
+| Préfixe non attribué à un opérateur (`031`)  | `UNKNOWN_OPERATOR` |
 
 ## Règles et sources
 

@@ -1,0 +1,97 @@
+---
+title: Bien démarrer avec mdg-utils pour Laravel
+description: mdgascar/mdg-utils-laravel ajoute des règles de validation, des casts Eloquent et des directives Blade au paquet PHP. Laravel 12 et 13, PHP 8.3+.
+kicker: Installation
+---
+
+{/* Traduction française. Les blocs de code sont identiques à la page anglaise. */}
+import { Aside, Steps } from '@astrojs/starlight/components';
+import InstallMethods from '../../../../../components/InstallMethods.astro';
+
+<InstallMethods current="using-laravel" />
+
+## Installer dans une application Laravel
+
+<Steps>
+
+1. ### Ajouter le paquet
+
+   ```sh title="Terminal"
+   composer require mdgascar/mdg-utils-laravel
+   ```
+
+   Laravel découvre le service provider tout seul. Le paquet installe aussi
+   `mdgascar/mdg-utils`, donc toutes les classes de [Avec Composer](/mdg-utils-docs/fr/docs/installation/using-composer/) fonctionnent aussi.
+
+2. ### Valider les saisies
+
+   Utilisez les règles en texte, ou les objets règle si vous préférez les classes.
+
+   ```php title="app/Http/Controllers/OrderController.php"
+   use Mdgascar\MdgUtils\Laravel\Rules\AriaryAmount;
+
+   $request->validate([
+       'phone' => ['required', 'mg_phone'],
+       'total' => ['required', new AriaryAmount()], // or 'mg_ariary'
+   ]);
+   ```
+
+   `mg_phone` accepte `034 12 345 67` ou `+261 34 12 345 67` et refuse `031 12 345 67`.
+   `mg_ariary` accepte `Ar 1 500`, `1 500,50` ou `1500` venant de JSON. Les messages existent
+   en anglais et en français.
+
+3. ### Typer les attributs du modèle
+
+   ```php title="app/Models/Order.php"
+   use Mdgascar\MdgUtils\Laravel\Casts\AsAriary;
+   use Mdgascar\MdgUtils\Laravel\Casts\AsPhoneNumber;
+
+   protected function casts(): array
+   {
+       return [
+           'phone' => AsPhoneNumber::class, // stored as +261341234567
+           'total' => AsAriary::class,      // stored as a number
+       ];
+   }
+   ```
+
+   ```php
+   $order = Order::create(['phone' => '034 12 345 67', 'total' => 'Ar 1 500']);
+   $order->phone->operator; // Operator::Yas
+   $order->total->amount;   // 1500
+   ```
+
+4. ### Afficher les valeurs dans Blade
+
+   ```blade title="resources/views/orders/show.blade.php"
+   @ariary($order->total)      {{-- Ar 1 500 --}}
+   @mgPhone($order->phone)     {{-- 034 12 345 67 --}}
+   @mgWords(2026)              {{-- enina amby roapolo sy roa arivo --}}
+   @mgDate($order->created_at) {{-- 27 Novambra 2026 --}}
+   ```
+
+   Chaque directive échappe sa sortie et n’affiche rien pour `null`.
+
+</Steps>
+
+## Configuration
+
+Seuls les montants en ariary ont des options. Publiez `config/mdg-utils.php` avec
+`php artisan vendor:publish --tag=mdg-utils`, ou définissez les variables d’environnement.
+
+| Clé | Env | Valeurs | Défaut |
+| --- | --- | --- | --- |
+| `ariary.grouping` | `MDG_UTILS_ARIARY_GROUPING` | `space`, `dot`, `comma` | `space` |
+| `ariary.symbol_position` | `MDG_UTILS_ARIARY_SYMBOL_POSITION` | `before`, `after` | `before` |
+| `ariary.decimal` | `MDG_UTILS_ARIARY_DECIMAL` | `comma`, `dot` | `comma` |
+
+<Aside type="caution" title="Avant la première publication sur Packagist">
+  `mdgascar/mdg-utils-laravel` est publié sur Packagist avec sa première version. D’ici là,
+  installez-le depuis [mdg-utils-laravel](https://github.com/mdgascar/mdg-utils-laravel) avec un
+  dépôt Composer `vcs`.
+</Aside>
+
+<Aside type="tip" title="Envie d’aller plus loin ?">
+  L’API complète, y compris comment changer les messages de validation, se trouve dans le
+  [README du paquet](https://github.com/mdgascar/mdg-utils-laravel#readme).
+</Aside>

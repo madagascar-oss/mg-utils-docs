@@ -12,7 +12,7 @@ import TryItBox from '../../../../components/TryItBox.astro';
 
 Type an amount the way people write it. The result shows it formatted and in words.
 
-<TryItBox module="ariary" examples={['Ar 2 026 000', '1.500 Ar', '1 500,50 Ar', 'MGA 1500', '0,5', '1 000 000 000 000', '1.5']} />
+<TryItBox module="ariary" examples={['Ar 2 026 000', '1.500 Ar', '1 500,50 Ar', 'MGA 1500', '0,5', '1.5']} />
 
 ## Quick reference
 
@@ -29,10 +29,9 @@ Amounts are numbers, whole or decimal, with no upper limit in the rules. Thousan
 
     formatAriary(1500); // 'Ar 1 500'
     formatAriary(1500.5); // 'Ar 1 500,5'
-    formatAriary(2_026_000, { grouping: 'dot' }); // 'Ar 2.026.000'
+    formatAriary(2026000, { grouping: 'dot' }); // 'Ar 2.026.000'
     formatAriary(1234567.89, { grouping: 'dot' }); // 'Ar 1.234.567,89'
     formatAriary(1500, { symbolPosition: 'after' }); // '1 500 Ar'
-    formatAriary(1_000_000_000_000); // 'Ar 1 000 000 000 000'
     ```
   </TabItem>
   <TabItem label="PHP">
@@ -43,10 +42,9 @@ Amounts are numbers, whole or decimal, with no upper limit in the rules. Thousan
 
     Ariary::fromInt(1500)->format(); // 'Ar 1 500'
     Ariary::fromFloat(1500.5)->format(); // 'Ar 1 500,5'
-    Ariary::fromInt(2_026_000)->format(Grouping::Dot); // 'Ar 2.026.000'
+    Ariary::fromInt(2026000)->format(Grouping::Dot); // 'Ar 2.026.000'
     Ariary::fromFloat(1234567.89)->format(Grouping::Dot); // 'Ar 1.234.567,89'
     Ariary::fromInt(1500)->format(position: SymbolPosition::After); // '1 500 Ar'
-    Ariary::fromInt(1_000_000_000_000)->format(); // 'Ar 1 000 000 000 000'
     ```
   </TabItem>
 </Tabs>
@@ -124,17 +122,15 @@ For receipts and cheques: the amount in Malagasy words followed by `ariary`. Dec
     import { ariaryToWords } from '@mdgascar/ariary';
 
     ariaryToWords(1500); // 'dimanjato sy arivo ariary'
-    ariaryToWords(25_000); // 'dimy arivo sy roa alina ariary'
+    ariaryToWords(25000); // 'dimy arivo sy roa alina ariary'
     ariaryToWords(1500.5); // 'dimanjato sy arivo faingo dimy ariary'
-    ariaryToWords(1_000_000_000_000); // 'arivo lavitrisa ariary'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
     Ariary::fromInt(1500)->toWords(); // 'dimanjato sy arivo ariary'
-    Ariary::fromInt(25_000)->toWords(); // 'dimy arivo sy roa alina ariary'
+    Ariary::fromInt(25000)->toWords(); // 'dimy arivo sy roa alina ariary'
     Ariary::fromFloat(1500.5)->toWords(); // 'dimanjato sy arivo faingo dimy ariary'
-    Ariary::fromInt(1_000_000_000_000)->toWords(); // 'arivo lavitrisa ariary'
     ```
   </TabItem>
 </Tabs>

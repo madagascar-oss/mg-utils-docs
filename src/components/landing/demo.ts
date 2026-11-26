@@ -22,7 +22,7 @@ export interface Line {
 export type FieldId = 'amount' | 'words' | 'phone' | 'date';
 export type CodeLanguage = 'js' | 'php';
 
-const AMOUNT = 150_000;
+const AMOUNT = 150000;
 const PHONE = '0341234567';
 const DATE = '2026-11-23';
 
@@ -66,8 +66,6 @@ function tokenize(source: string): Token[] {
 
 const line = (source: string, field?: FieldId): Line => ({ tokens: tokenize(source), field });
 
-const amount = String(AMOUNT).replace(/\B(?=(\d{3})+$)/g, '_');
-
 export const code: Record<CodeLanguage, { file: string; lines: Line[] }> = {
   js: {
     file: 'receipt.ts',
@@ -77,8 +75,8 @@ export const code: Record<CodeLanguage, { file: string; lines: Line[] }> = {
       line("import { formatDate } from '@mdgascar/date';"),
       line(''),
       line('const receipt = {'),
-      line(`  amount: formatAriary(${amount}),`, 'amount'),
-      line(`  words: ariaryToWords(${amount}),`, 'words'),
+      line(`  amount: formatAriary(${AMOUNT}),`, 'amount'),
+      line(`  words: ariaryToWords(${AMOUNT}),`, 'words'),
       line(`  phone: formatPhoneNumber('${PHONE}', 'international'),`, 'phone'),
       line(`  date: formatDate('${DATE}', 'full'),`, 'date'),
       line('};'),
@@ -92,8 +90,8 @@ export const code: Record<CodeLanguage, { file: string; lines: Line[] }> = {
       line('use Mdgascar\\MdgUtils\\Date\\{DateStyle, MalagasyDate};'),
       line(''),
       line('$receipt = ['),
-      line(`    'amount' => Ariary::fromInt(${amount})->format(),`, 'amount'),
-      line(`    'words' => Ariary::fromInt(${amount})->toWords(),`, 'words'),
+      line(`    'amount' => Ariary::fromInt(${AMOUNT})->format(),`, 'amount'),
+      line(`    'words' => Ariary::fromInt(${AMOUNT})->toWords(),`, 'words'),
       line(
         `    'phone' => PhoneNumber::parse('${PHONE}')->format(PhoneNumberFormat::International),`,
         'phone',

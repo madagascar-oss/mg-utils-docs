@@ -96,8 +96,12 @@ test('a Try it widget updates and opens the playground', async ({ page }) => {
     .getByRole('link', { name: /Open in the playground/ })
     .first()
     .click();
-  await page.getByRole('button', { name: 'Run' }).click();
-  await expect(page.getByTestId('output')).toContainText('Ar 1 500');
+  // The playground may not be hydrated yet when the page opens, and a click before that is
+  // lost: click Run again until the output appears.
+  await expect(async () => {
+    await page.getByRole('button', { name: 'Run' }).click();
+    await expect(page.getByTestId('output')).toContainText('Ar 1 500', { timeout: 1_000 });
+  }).toPass();
 });
 
 test.describe('PHP', () => {

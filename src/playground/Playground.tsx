@@ -23,14 +23,15 @@ interface Props {
 const AUTO_RUN_DELAY_MS = 400;
 const COPIED_NOTICE_MS = 2000;
 
-/** A shared link wins; otherwise the JavaScript starter for number words. */
+/** The code in a share link, if the page was opened from one and its language can run here. */
 function sharedSnapshot(): Snapshot | undefined {
-  const shared = typeof location === 'undefined' ? undefined : fromHash(location.hash);
+  const shared = fromHash(location.hash);
   return shared && isAvailable(shared.language) ? shared : undefined;
 }
 
+/** What the server renders: the JavaScript starter for number words. */
 function initialState(): Snapshot {
-  return sharedSnapshot() ?? { language: 'js', module: 'words', code: starter('js', 'words') };
+  return { language: 'js', module: 'words', code: starter('js', 'words') };
 }
 
 export default function Playground({ text, homeHref, docsHref, logo }: Props) {
@@ -39,7 +40,16 @@ export default function Playground({ text, homeHref, docsHref, logo }: Props) {
   const dark = useDarkMode();
   const { result, busy, run, clear } = useRunner();
   // Off for shared code until the visitor presses Run; on for our own starters.
-  const autoRun = useRef(sharedSnapshot() === undefined);
+  const autoRun = useRef(true);
+
+  // A share link is applied after hydration: the prerendered HTML always shows the starter, and
+  // React does not patch a <select> value that differs at hydration.
+  useEffect(() => {
+    const shared = sharedSnapshot();
+    if (shared === undefined) return;
+    autoRun.current = false;
+    setState(shared);
+  }, []);
 
   useEffect(() => {
     history.replaceState(null, '', toHash(state));

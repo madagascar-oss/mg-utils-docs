@@ -1,0 +1,99 @@
+---
+title: Get started with mdg-utils for Symfony
+description: mdgascar/mdg-utils-bundle adds validation constraints, Twig filters and Doctrine types on top of the PHP package. Symfony 7.4 LTS and 8, PHP 8.3+.
+kicker: Installation
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+import InstallMethods from '../../../../components/InstallMethods.astro';
+
+<InstallMethods current="using-symfony" />
+
+## Installing in a Symfony app
+
+<Steps>
+
+1. ### Require the bundle
+
+   ```sh title="Terminal"
+   composer require mdgascar/mdg-utils-bundle
+   ```
+
+   With Symfony Flex the bundle is enabled for you; otherwise add
+   `Mdgascar\MdgUtilsBundle\MdgUtilsBundle::class => ['all' => true]` to `config/bundles.php`.
+   It brings in `mdgascar/mdg-utils`, so every class from
+   [Using Composer](/mdg-utils-docs/docs/installation/using-composer/) works too.
+
+2. ### Validate input
+
+   ```php title="src/Dto/OrderInput.php"
+   use Mdgascar\MdgUtilsBundle\Validator\AriaryAmount;
+   use Mdgascar\MdgUtilsBundle\Validator\MalagasyPhone;
+   use Symfony\Component\Validator\Constraints as Assert;
+
+   final class OrderInput
+   {
+       #[Assert\NotBlank, MalagasyPhone]
+       public ?string $phone = null;
+
+       #[Assert\NotBlank, AriaryAmount]
+       public ?string $total = null;
+   }
+   ```
+
+   `MalagasyPhone` passes for `034 12 345 67` or `+261 34 12 345 67` and fails for
+   `031 12 345 67`. `AriaryAmount` passes for `Ar 1 500`, `1 500,50` or `1500` from JSON.
+   Messages come in English and French.
+
+3. ### Store value objects with Doctrine
+
+   ```php title="src/Entity/Order.php"
+   use Doctrine\ORM\Mapping as ORM;
+   use Mdgascar\MdgUtils\Ariary\Ariary;
+   use Mdgascar\MdgUtils\Phone\PhoneNumber;
+
+   #[ORM\Column(type: 'mg_phone')] // stored as +261341234567
+   public ?PhoneNumber $phone = null;
+
+   #[ORM\Column(type: 'mg_ariary', precision: 20, scale: 2)]
+   public ?Ariary $total = null;
+   ```
+
+4. ### Print values in Twig
+
+   ```twig title="templates/order/show.html.twig"
+   {{ order.total|ariary }}       {# Ar 1 500 #}
+   {{ order.phone|mg_phone }}     {# 034 12 345 67 #}
+   {{ 2026|mg_words }}            {# enina amby roapolo sy roa arivo #}
+   {{ order.createdAt|mg_date }}  {# 27 Novambra 2026 #}
+   ```
+
+   `mg_phone` and `mg_date` take a format name: `mg_phone('international')`,
+   `mg_date('numeric')`. Each filter prints nothing for `null`.
+
+</Steps>
+
+## Configuration
+
+Only Ariary amounts have options.
+
+```yaml title="config/packages/mdg_utils.yaml"
+mdg_utils:
+  ariary:
+    grouping: space # space, dot or comma
+    symbol_position: before # before or after
+    decimal: comma # comma or dot
+```
+
+A wrong value fails when the container is built, with the option named.
+
+<Aside type="caution" title="Before the first Packagist release">
+  `mdgascar/mdg-utils-bundle` is listed on Packagist with its first release. Until then,
+  install it from [mdg-utils-bundle](https://github.com/mdgascar/mdg-utils-bundle) with a
+  Composer `vcs` repository.
+</Aside>
+
+<Aside type="tip" title="Want more?">
+  The full API, including violation codes and the Doctrine types, is in the
+  [bundle README](https://github.com/mdgascar/mdg-utils-bundle#readme).
+</Aside>

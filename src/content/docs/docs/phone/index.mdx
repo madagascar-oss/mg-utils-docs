@@ -23,12 +23,12 @@ Spaces, dashes, dots, parentheses, `+261`, `00261` and the leading `0` are all a
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { parsePhoneNumber } from '@mdgascar/phone';
+    import { parsePhone } from '@mdgascar/phone';
 
-    parsePhoneNumber('034 12 345 67');
+    parsePhone('034 12 345 67');
     // { e164: '+261341234567', nationalNumber: '341234567', operator: 'yas' }
 
-    parsePhoneNumber('+261 32 12 345 67').operator; // 'orange'
+    parsePhone('+261 32 12 345 67').operator; // 'orange'
     ```
   </TabItem>
   <TabItem label="PHP">
@@ -52,11 +52,11 @@ Three formats: `e164` for storage and APIs, `international` for people abroad, `
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { formatPhoneNumber } from '@mdgascar/phone';
+    import { formatPhone } from '@mdgascar/phone';
 
-    formatPhoneNumber('034 12 345 67', 'e164'); // '+261341234567'
-    formatPhoneNumber('034 12 345 67', 'international'); // '+261 34 12 345 67'
-    formatPhoneNumber('+261341234567', 'national'); // '034 12 345 67'
+    formatPhone('034 12 345 67', 'e164'); // '+261341234567'
+    formatPhone('034 12 345 67', 'international'); // '+261 34 12 345 67'
+    formatPhone('+261341234567', 'national'); // '034 12 345 67'
     ```
   </TabItem>
   <TabItem label="PHP">
@@ -77,9 +77,9 @@ Three formats: `e164` for storage and APIs, `international` for people abroad, `
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { OPERATOR_NAMES, parsePhoneNumber } from '@mdgascar/phone';
+    import { OPERATOR_NAMES, parsePhone } from '@mdgascar/phone';
 
-    OPERATOR_NAMES[parsePhoneNumber('034 12 345 67').operator]; // 'Yas Madagascar'
+    OPERATOR_NAMES[parsePhone('034 12 345 67').operator]; // 'Yas Madagascar'
     OPERATOR_NAMES.orange; // 'Orange Madagascar'
     ```
   </TabItem>
@@ -98,14 +98,14 @@ Three formats: `e164` for storage and APIs, `international` for people abroad, `
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { isValidPhoneNumber, safeParsePhoneNumber, tryParsePhoneNumber } from '@mdgascar/phone';
+    import { isValidPhone, safeParsePhone, tryParsePhone } from '@mdgascar/phone';
 
-    isValidPhoneNumber('031 12 345 67'); // false
+    isValidPhone('031 12 345 67'); // false
 
-    const result = safeParsePhoneNumber('031 12 345 67');
+    const result = safeParsePhone('031 12 345 67');
     if (!result.success) result.error.code; // 'UNKNOWN_OPERATOR'
 
-    tryParsePhoneNumber('031 12 345 67'); // undefined
+    tryParsePhone('031 12 345 67'); // undefined
     ```
   </TabItem>
   <TabItem label="PHP">

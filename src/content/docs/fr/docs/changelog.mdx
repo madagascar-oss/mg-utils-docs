@@ -9,6 +9,13 @@ Chaque entrée est une version de la spécification : les règles, les données 
 
 **Rupture** signale un résultat qui change pour une entrée qui fonctionnait déjà.
 
+## 0.8.0 (2026-11-27)
+
+- **Rupture** : les noms de fonctions reprennent les mots du domaine : `spell` (ex-`numberToWords`), `spellAriary` (`ariaryToWords`), `parsePhone`, `safeParsePhone`, `tryParsePhone`, `isValidPhone`, `formatPhone` (ex-`…PhoneNumber`), `monthName` (`getMonthName`), `weekdayName` (`getWeekdayName`). PHP : `NumberWords::spell()` accepte un entier, un flottant ou du texte ; `->spell()` remplace `->toWords()`. Les résultats ne changent pas.
+- `words` : le texte décimal est lu exactement : `spell('2000000000000000.9')` → `roa tapitrisa lavitrisa faingo sivy`, alors que le nombre a déjà perdu son `.9`. Un texte qui n’est pas décimal simple donne `INVALID_FORMAT` ; `'12'` donne `roa ambin'ny folo` au lieu de `INVALID_TYPE`.
+- `words` : dans le système traditionnel, un nombre de 10¹⁹ ou plus (texte uniquement) s’écrit dans le système standard.
+- `ariary` : `spellAriary` accepte le même texte décimal.
+
 ## 0.7.0 (2026-11-27)
 
 - `words`: Nouvelle option `system: 'traditional'` : un nom par puissance de dix, chacun avec un seul chiffre. `30 000 000` → `telo safatsiroa` au lieu de `telopolo tapitrisa`. 10⁷–10¹⁵ viennent d’Assimil, et 10¹⁶–10¹⁸ sont déduits de sa règle `faharoa`. Le système standard reste celui par défaut, et ses résultats ne changent pas.

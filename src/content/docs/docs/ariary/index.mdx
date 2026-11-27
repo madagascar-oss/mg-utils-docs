@@ -119,18 +119,18 @@ For receipts and cheques: the amount in Malagasy words followed by `ariary`. Dec
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { ariaryToWords } from '@mdgascar/ariary';
+    import { spellAriary } from '@mdgascar/ariary';
 
-    ariaryToWords(1500); // 'dimanjato sy arivo ariary'
-    ariaryToWords(25000); // 'dimy arivo sy roa alina ariary'
-    ariaryToWords(1500.5); // 'dimanjato sy arivo faingo dimy ariary'
+    spellAriary(1500); // 'dimanjato sy arivo ariary'
+    spellAriary(25000); // 'dimy arivo sy roa alina ariary'
+    spellAriary(1500.5); // 'dimanjato sy arivo faingo dimy ariary'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
-    Ariary::fromInt(1500)->toWords(); // 'dimanjato sy arivo ariary'
-    Ariary::fromInt(25000)->toWords(); // 'dimy arivo sy roa alina ariary'
-    Ariary::fromFloat(1500.5)->toWords(); // 'dimanjato sy arivo faingo dimy ariary'
+    Ariary::fromInt(1500)->spell(); // 'dimanjato sy arivo ariary'
+    Ariary::fromInt(25000)->spell(); // 'dimy arivo sy roa alina ariary'
+    Ariary::fromFloat(1500.5)->spell(); // 'dimanjato sy arivo faingo dimy ariary'
     ```
   </TabItem>
 </Tabs>

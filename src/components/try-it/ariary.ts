@@ -1,5 +1,5 @@
 import {
-  ariaryToWords,
+  spellAriary,
   formatAriary,
   safeParseAriary,
 } from '../../../ports/js/packages/ariary/src/index.ts';
@@ -20,7 +20,7 @@ export const ariary: TryModule = {
     const parsed = safeParseAriary(input);
     return {
       ...(parsed.success
-        ? { value: `${formatAriary(parsed.data, { grouping })}  ·  ${ariaryToWords(parsed.data)}` }
+        ? { value: `${formatAriary(parsed.data, { grouping })}  ·  ${spellAriary(parsed.data)}` }
         : { error: parsed.error.code }),
       js: call,
       php: `Ariary::parse(${quote(input)})->format(Grouping::${GROUPINGS[grouping]})`,

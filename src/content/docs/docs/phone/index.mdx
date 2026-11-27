@@ -1,6 +1,6 @@
 ---
 title: Phone numbers
-description: Read, check and format Madagascar (+261) mobile numbers written in any common way, and know the operator of each one.
+description: Read, check and format Madagascar (+261) phone numbers, mobile and fixed, written in any common way, and know the operator of each one.
 kicker: Modules
 ---
 
@@ -26,7 +26,7 @@ Spaces, dashes, dots, parentheses, `+261`, `00261` and the leading `0` are all a
     import { parsePhone } from '@mdgascar/phone';
 
     parsePhone('034 12 345 67');
-    // { e164: '+261341234567', nationalNumber: '341234567', operator: 'yas' }
+    // { e164: '+261341234567', nationalNumber: '341234567', operator: 'yas', type: 'mobile', area: null }
 
     parsePhone('+261 32 12 345 67').operator; // 'orange'
     ```
@@ -41,6 +41,27 @@ Spaces, dashes, dots, parentheses, `+261`, `00261` and the leading `0` are all a
     $phone->operator;       // Operator::Yas
 
     PhoneNumber::parse('+261 32 12 345 67')->operator; // Operator::Orange
+    ```
+  </TabItem>
+</Tabs>
+
+## Fixed lines
+
+Fixed-line numbers are read too: `020` for the Yas (Telecom Malagasy) network and `022` for Gulfsat. A parsed number tells its `type`, and the town of a geographic number when the national plan lists it.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    parsePhone('020 22 421 19').type; // 'fixed'
+    parsePhone('020 22 421 19').area; // { name: 'Antananarivo', province: 'Antananarivo' }
+    parsePhone('034 12 345 67').type; // 'mobile'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    PhoneNumber::parse('020 22 421 19')->type;        // PhoneLineType::Fixed
+    PhoneNumber::parse('020 22 421 19')->area?->name; // 'Antananarivo'
+    PhoneNumber::parse('034 12 345 67')->type;        // PhoneLineType::Mobile
     ```
   </TabItem>
 </Tabs>
@@ -125,9 +146,9 @@ Three formats: `e164` for storage and APIs, `international` for people abroad, `
 | Input                                              | Error code         |
 | -------------------------------------------------- | ------------------ |
 | Not a string                                       | `INVALID_TYPE`     |
-| Not a Malagasy mobile number (wrong length, letters) | `INVALID_FORMAT` |
-| Mobile prefix not assigned to an operator (`031`)  | `UNKNOWN_OPERATOR` |
+| Not a Malagasy phone number (wrong length, letters) | `INVALID_FORMAT` |
+| Prefix not assigned to an operator (`031`)  | `UNKNOWN_OPERATOR` |
 
 ## Rules and sources
 
-<LinkCard title="Madagascar mobile phone numbers: rules and sources" description="Accepted spellings, operator prefixes and the regulator sources." href="/mdg-utils-docs/docs/phone/rules/" />
+<LinkCard title="Madagascar phone numbers: rules and sources" description="Accepted spellings, operator prefixes and the regulator sources." href="/mdg-utils-docs/docs/phone/rules/" />

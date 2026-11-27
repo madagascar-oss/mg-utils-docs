@@ -50,6 +50,29 @@ import TryItBox from '../../../../components/TryItBox.astro';
   </TabItem>
 </Tabs>
 
+## Reading a date
+
+`parseDate` reads back every style `formatDate` writes. Case and extra spaces do not matter, and day and month may have one digit.
+
+<TryItBox module="date" variant="readDate" examples={['23 Novambra 2026', 'Alatsinainy 23 Novambra 2026', '23/11/2026', '5/7/2026', '2026-11-23']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { parseDate } from '@mdgascar/date';
+
+    parseDate('23 Novambra 2026'); // { year: 2026, month: 11, day: 23 }
+    parseDate('23/11/2026'); // { year: 2026, month: 11, day: 23 }
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    MalagasyDate::parse('23 Novambra 2026')->month; // 11
+    MalagasyDate::parse('23/11/2026')->day; // 23
+    ```
+  </TabItem>
+</Tabs>
+
 ## Month and weekday names
 
 Weekdays use ISO numbers: Monday is 1, Sunday is 7.

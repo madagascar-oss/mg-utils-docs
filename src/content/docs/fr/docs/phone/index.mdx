@@ -27,7 +27,7 @@ Espaces, tirets, points, parenthèses, `+261`, `00261` et le `0` initial sont to
     import { parsePhone } from '@mdgascar/phone';
 
     parsePhone('034 12 345 67');
-    // { e164: '+261341234567', nationalNumber: '341234567', operator: 'yas' }
+    // { e164: '+261341234567', nationalNumber: '341234567', operator: 'yas', type: 'mobile', area: null }
 
     parsePhone('+261 32 12 345 67').operator; // 'orange'
     ```
@@ -42,6 +42,27 @@ Espaces, tirets, points, parenthèses, `+261`, `00261` et le `0` initial sont to
     $phone->operator;       // Operator::Yas
 
     PhoneNumber::parse('+261 32 12 345 67')->operator; // Operator::Orange
+    ```
+  </TabItem>
+</Tabs>
+
+## Lignes fixes
+
+Les numéros fixes sont lus aussi : `020` pour le réseau Yas (Telecom Malagasy) et `022` pour Gulfsat. Un numéro lu donne son `type`, et la ville d'un numéro géographique quand le plan national la cite.
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    parsePhone('020 22 421 19').type; // 'fixed'
+    parsePhone('020 22 421 19').area; // { name: 'Antananarivo', province: 'Antananarivo' }
+    parsePhone('034 12 345 67').type; // 'mobile'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    PhoneNumber::parse('020 22 421 19')->type;        // PhoneLineType::Fixed
+    PhoneNumber::parse('020 22 421 19')->area?->name; // 'Antananarivo'
+    PhoneNumber::parse('034 12 345 67')->type;        // PhoneLineType::Mobile
     ```
   </TabItem>
 </Tabs>

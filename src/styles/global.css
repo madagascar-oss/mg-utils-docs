@@ -12,7 +12,7 @@
   --sl-nav-height: 3.75rem;
   --sl-text-h1: 2.25rem;
   --mg-grid-line: color-mix(in srgb, var(--sl-color-gray-5) 70%, transparent);
-  /* Dark theme: the logo green itself, readable under dark button text (8.6:1). */
+  /* Dark theme: the bright accent, readable on the ink background (7.3:1). */
   --sl-color-accent: var(--color-accent-500);
 }
 

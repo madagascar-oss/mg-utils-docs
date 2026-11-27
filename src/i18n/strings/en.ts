@@ -32,8 +32,6 @@ export const en = {
   'play.moduleLabel': 'Module',
   'try.option': 'Option',
   'home.title': 'Malagasy data, right in one call.',
-  'home.lead':
-    'Number words, +261 phone numbers, Ariary amounts and dates for JavaScript and PHP. Zero dependencies, and the same result in every language.',
   'home.start': 'Get started',
   'home.play': 'Playground',
   'home.copy': 'Copy',
@@ -47,6 +45,39 @@ export const en = {
   'home.replay': 'Replay',
   'home.modules': 'Modules',
   'home.demo': 'Code typed live, with its result',
+  'home.lead':
+    'Spell numbers, read +261 phone numbers, format Ariary amounts and dates. For JavaScript, TypeScript and PHP, with zero dependencies and the same result everywhere.',
+  'home.stack': 'Same receipt, your stack',
+  'home.group.js': 'JavaScript',
+  'home.group.php': 'PHP',
+  'home.everywhere': 'Works in any project',
+  'home.js.title': 'JavaScript and TypeScript',
+  'home.js.lead':
+    'Any JavaScript or TypeScript project, on the server or in the browser. Types are built in, so the editor knows every option and error code.',
+  'home.js.req':
+    'Node.js 22.18+, Bun, Deno and modern browsers · ESM and CommonJS · TypeScript types included · zero dependencies',
+  'home.js.docs': 'One package per module, or all of them',
+  'home.php.title': 'PHP',
+  'home.php.lead':
+    'Any PHP 8.3+ project: plain PHP, WordPress or any framework through Composer, with ready-made packages for Laravel and Symfony.',
+  'home.php.req':
+    'PHP 8.3, 8.4, 8.5 · Laravel 12 and 13 · Symfony 7.4 LTS and 8 · zero dependencies',
+  'home.php.laravel': 'Validation rules, Eloquent casts, Blade directives',
+  'home.php.symfony': 'Constraints, Twig filters, Doctrine types',
+  'home.requirements': 'Requirements',
+  'home.cases': 'Built for real screens',
+  'home.case.signup': 'Sign-up forms',
+  'home.case.signup.when': 'Check a +261 number as it is typed, and know the operator.',
+  'home.case.cheque': 'Cheques and contracts',
+  'home.case.cheque.when': 'Write any amount in words, every digit exact.',
+  'home.case.form': 'Amounts typed by people',
+  'home.case.form.when': 'Read Ar 1.500,50 the Malagasy way, then show it your way.',
+  'home.case.francs': 'Old prices in francs',
+  'home.case.francs.when': 'Convert Malagasy francs (FMG) to ariary, exactly.',
+  'home.case.traditional': 'Traditional counting',
+  'home.case.traditional.when': 'One name per power of ten, when tradition asks for it.',
+  'home.case.calendar': 'Dates and calendars',
+  'home.case.calendar.when': 'Malagasy month and weekday names, in every style.',
 } as const;
 
 export type UiKey = keyof typeof en;

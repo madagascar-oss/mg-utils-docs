@@ -1,0 +1,79 @@
+---
+title: Utiliser mdg-utils avec votre framework
+description: Le même reçu de paiement en TypeScript, React, Vue, Angular, Svelte, Node, Bun et Deno, PHP simple, Laravel et Symfony.
+kicker: Guides
+---
+
+{/* Traduction française. Les blocs de code sont identiques à la page anglaise. */}
+import { Aside, LinkCard } from '@astrojs/starlight/components';
+import FrameworkCode from '../../../../../components/guides/FrameworkCode.astro';
+
+Les fonctions sont de simples appels sans dépendance : elles marchent de la même façon dans tous les frameworks, sans plugin, provider ni configuration. Chaque exemple écrit le même reçu : `Ar 150 000`, le montant en lettres, le numéro du payeur au format international et la date en malgache.
+
+## JavaScript et TypeScript
+
+Installez `@mdgascar/utils` pour tous les modules, ou seulement les paquets utiles (`@mdgascar/ariary`, `@mdgascar/phone`, `@mdgascar/words`, `@mdgascar/date`). Ils tournent sous Node.js 22.18+, Bun, Deno et tous les navigateurs modernes, en ESM ou CommonJS, avec les types TypeScript inclus.
+
+### TypeScript
+
+Des fonctions simples, des options et résultats typés. `satisfies` vérifie l’objet sans l’élargir.
+
+<FrameworkCode id="ts" />
+
+### React
+
+Appelez les fonctions pendant le rendu : elles sont pures et rapides, rien à mémoïser. Pareil dans Next.js, Remix et React Native.
+
+<FrameworkCode id="react" />
+
+### Vue
+
+Utilisez-les directement dans le gabarit, avec `<script setup lang="ts">`. Pareil dans Nuxt.
+
+<FrameworkCode id="vue" />
+
+### Angular
+
+Placez les appels dans des signaux `computed()` d’un composant autonome, ou dans un pipe pur si vous préférez les gabarits.
+
+<FrameworkCode id="angular" />
+
+### Svelte
+
+Appelez-les dans le balisage avec les runes de Svelte 5. Pareil dans SvelteKit.
+
+<FrameworkCode id="svelte" />
+
+### Node, Bun et Deno
+
+Côté serveur, renvoyez les valeurs depuis n’importe quel gestionnaire. Cet export `fetch` tourne tel quel sous Bun et Deno, et sous Node derrière un adaptateur (Hono, Express…).
+
+<FrameworkCode id="node" />
+
+## PHP
+
+PHP 8.3 ou plus. Le paquet principal marche dans tout projet Composer ; Laravel et Symfony ont des paquets dédiés pour la validation, les gabarits et les types de base de données.
+
+### PHP simple
+
+`composer require mdgascar/mdg-utils`, puis des objets valeur et des enums. Pareil dans WordPress, Slim, Laminas ou tout script.
+
+<FrameworkCode id="php" />
+
+### Laravel
+
+`composer require mdgascar/mdg-utils-laravel` ajoute des directives Blade, des casts Eloquent (`AsAriary`, `AsPhoneNumber`) et les règles `mg_phone` / `mg_ariary`. Laravel 12 et 13.
+
+<FrameworkCode id="laravel" />
+
+<LinkCard title="Guide Laravel" href="/mdg-utils-docs/fr/docs/installation/using-laravel/" />
+
+### Symfony
+
+`composer require mdgascar/mdg-utils-bundle` ajoute des filtres Twig, des types Doctrine (`mg_ariary`, `mg_phone`) et les contraintes `#[MalagasyPhone]` / `#[AriaryAmount]`. Symfony 7.4 LTS et 8.
+
+<FrameworkCode id="symfony" />
+
+<LinkCard title="Guide Symfony" href="/mdg-utils-docs/fr/docs/installation/using-symfony/" />
+
+<Aside type="tip">Chaque exemple donne le même résultat, car tous les langages suivent une même spécification. Essayez-les en direct dans le [bac à sable](/mdg-utils-docs/fr/play/).</Aside>

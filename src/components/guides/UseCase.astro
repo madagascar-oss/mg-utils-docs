@@ -1,0 +1,15 @@
+---
+// One use case on the Use cases page: TypeScript to write, and the results the library returns
+// for it, computed at build time (demo.ts), so the page can never show a wrong value.
+import { Code } from '@astrojs/starlight/components';
+import { useCaseById, type UseCaseId } from '../landing/demo.ts';
+
+interface Props {
+  id: UseCaseId;
+}
+
+const useCase = useCaseById(Astro.props.id);
+const results = useCase.results.map((result) => `// → ${result}`).join('\n');
+---
+
+<Code code={`${useCase.code}\n${results}`} lang="ts" />

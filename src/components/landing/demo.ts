@@ -91,26 +91,28 @@ const JS_IMPORTS = `import { formatAriary, spellAriary } from '@mdgascar/ariary'
 import { formatPhone } from '@mdgascar/phone';
 import { formatDate } from '@mdgascar/date';`;
 
-/** The language group a sample belongs to, for the tab bar. */
-export type SampleGroup = 'js' | 'php';
-
 export interface Sample {
   id: string;
   label: string;
   file: string;
-  group: SampleGroup;
+  /** Highlighting language for the docs Frameworks page. */
+  lang: string;
+  source: string;
   lines: Line[];
 }
 
+// A sample from its source; `marks` are the line indexes where each preview field fills in.
+const sample = (
+  base: Omit<Sample, 'source' | 'lines'>,
+  source: string,
+  marks: Partial<Record<number, FieldId>>,
+): Sample => ({ ...base, source, lines: lines(source, marks) });
+
 // The same receipt in every framework. Line indexes mark where each preview field fills in.
-export const samples: Sample[] = [
-  {
-    id: 'ts',
-    label: 'TypeScript',
-    file: 'receipt.ts',
-    group: 'js',
-    lines: lines(
-      `${JS_IMPORTS}
+const samples: Sample[] = [
+  sample(
+    { id: 'ts', label: 'TypeScript', file: 'receipt.ts', lang: 'ts' },
+    `${JS_IMPORTS}
 
 const receipt = {
   amount: formatAriary(${AMOUNT}),
@@ -118,16 +120,11 @@ const receipt = {
   phone: formatPhone('${PHONE}', 'international'),
   date: formatDate('${DATE}', 'full'),
 } satisfies Record<string, string>;`,
-      { 5: 'amount', 6: 'words', 7: 'phone', 8: 'date' },
-    ),
-  },
-  {
-    id: 'react',
-    label: 'React',
-    file: 'Receipt.tsx',
-    group: 'js',
-    lines: lines(
-      `${JS_IMPORTS}
+    { 5: 'amount', 6: 'words', 7: 'phone', 8: 'date' },
+  ),
+  sample(
+    { id: 'react', label: 'React', file: 'Receipt.tsx', lang: 'tsx' },
+    `${JS_IMPORTS}
 
 export function Receipt({ order }: { order: Order }) {
   return (
@@ -139,16 +136,11 @@ export function Receipt({ order }: { order: Order }) {
     </dl>
   );
 }`,
-      { 7: 'amount', 8: 'words', 9: 'phone', 10: 'date' },
-    ),
-  },
-  {
-    id: 'vue',
-    label: 'Vue',
-    file: 'Receipt.vue',
-    group: 'js',
-    lines: lines(
-      `<script setup lang="ts">
+    { 7: 'amount', 8: 'words', 9: 'phone', 10: 'date' },
+  ),
+  sample(
+    { id: 'vue', label: 'Vue', file: 'Receipt.vue', lang: 'vue' },
+    `<script setup lang="ts">
 ${JS_IMPORTS}
 defineProps<{ order: Order }>();
 </script>
@@ -159,16 +151,11 @@ defineProps<{ order: Order }>();
   <p>{{ formatPhone(order.phone, 'international') }}</p>
   <p>{{ formatDate(order.paidOn, 'full') }}</p>
 </template>`,
-      { 8: 'amount', 9: 'words', 10: 'phone', 11: 'date' },
-    ),
-  },
-  {
-    id: 'angular',
-    label: 'Angular',
-    file: 'receipt.component.ts',
-    group: 'js',
-    lines: lines(
-      `import { Component, computed, input } from '@angular/core';
+    { 8: 'amount', 9: 'words', 10: 'phone', 11: 'date' },
+  ),
+  sample(
+    { id: 'angular', label: 'Angular', file: 'receipt.component.ts', lang: 'ts' },
+    `import { Component, computed, input } from '@angular/core';
 ${JS_IMPORTS}
 
 @Component({ selector: 'app-receipt', template: '{{ amount() }} · {{ words() }}' })
@@ -179,16 +166,11 @@ export class ReceiptComponent {
   phone = computed(() => formatPhone(this.order().phone, 'international'));
   date = computed(() => formatDate(this.order().paidOn, 'full'));
 }`,
-      { 8: 'amount', 9: 'words', 10: 'phone', 11: 'date' },
-    ),
-  },
-  {
-    id: 'svelte',
-    label: 'Svelte',
-    file: 'Receipt.svelte',
-    group: 'js',
-    lines: lines(
-      `<script lang="ts">
+    { 8: 'amount', 9: 'words', 10: 'phone', 11: 'date' },
+  ),
+  sample(
+    { id: 'svelte', label: 'Svelte', file: 'Receipt.svelte', lang: 'svelte' },
+    `<script lang="ts">
 ${JS_IMPORTS}
   let { order }: { order: Order } = $props();
 </script>
@@ -197,16 +179,11 @@ ${JS_IMPORTS}
 <p>{spellAriary(order.total)}</p>
 <p>{formatPhone(order.phone, 'international')}</p>
 <p>{formatDate(order.paidOn, 'full')}</p>`,
-      { 7: 'amount', 8: 'words', 9: 'phone', 10: 'date' },
-    ),
-  },
-  {
-    id: 'node',
-    label: 'Node · Bun · Deno',
-    file: 'server.ts',
-    group: 'js',
-    lines: lines(
-      `${JS_IMPORTS}
+    { 7: 'amount', 8: 'words', 9: 'phone', 10: 'date' },
+  ),
+  sample(
+    { id: 'node', label: 'Node · Bun · Deno', file: 'server.ts', lang: 'ts' },
+    `${JS_IMPORTS}
 
 export default {
   fetch: () =>
@@ -217,16 +194,11 @@ export default {
       date: formatDate('${DATE}', 'full'),
     }),
 };`,
-      { 7: 'amount', 8: 'words', 9: 'phone', 10: 'date' },
-    ),
-  },
-  {
-    id: 'php',
-    label: 'PHP',
-    file: 'receipt.php',
-    group: 'php',
-    lines: lines(
-      `use Mdgascar\\MdgUtils\\Ariary\\Ariary;
+    { 7: 'amount', 8: 'words', 9: 'phone', 10: 'date' },
+  ),
+  sample(
+    { id: 'php', label: 'PHP', file: 'receipt.php', lang: 'php' },
+    `use Mdgascar\\MdgUtils\\Ariary\\Ariary;
 use Mdgascar\\MdgUtils\\Phone\\{PhoneNumber, PhoneNumberFormat};
 use Mdgascar\\MdgUtils\\Date\\{DateStyle, MalagasyDate};
 
@@ -236,16 +208,11 @@ $receipt = [
     'phone' => PhoneNumber::parse('${PHONE}')->format(PhoneNumberFormat::International),
     'date' => MalagasyDate::fromString('${DATE}')->format(DateStyle::Full),
 ];`,
-      { 5: 'amount', 6: 'words', 7: 'phone', 8: 'date' },
-    ),
-  },
-  {
-    id: 'laravel',
-    label: 'Laravel',
-    file: 'receipt.blade.php',
-    group: 'php',
-    lines: lines(
-      `{{-- Order casts: 'total' => AsAriary::class, 'phone' => AsPhoneNumber::class --}}
+    { 5: 'amount', 6: 'words', 7: 'phone', 8: 'date' },
+  ),
+  sample(
+    { id: 'laravel', label: 'Laravel', file: 'receipt.blade.php', lang: 'blade' },
+    `{{-- Order casts: 'total' => AsAriary::class, 'phone' => AsPhoneNumber::class --}}
 @use('Mdgascar\\MdgUtils\\Phone\\PhoneNumberFormat')
 @use('Mdgascar\\MdgUtils\\Date\\DateStyle')
 
@@ -253,25 +220,38 @@ $receipt = [
 <p>{{ $order->total->spell() }}</p>
 <p>@mgPhone($order->phone, PhoneNumberFormat::International)</p>
 <p>@mgDate($order->paid_on, DateStyle::Full)</p>`,
-      { 4: 'amount', 5: 'words', 6: 'phone', 7: 'date' },
-    ),
-  },
-  {
-    id: 'symfony',
-    label: 'Symfony',
-    file: 'receipt.html.twig',
-    group: 'php',
-    lines: lines(
-      `{# Doctrine types: order.total is an Ariary, order.phone a PhoneNumber #}
+    { 4: 'amount', 5: 'words', 6: 'phone', 7: 'date' },
+  ),
+  sample(
+    { id: 'symfony', label: 'Symfony', file: 'receipt.html.twig', lang: 'twig' },
+    `{# Doctrine types: order.total is an Ariary, order.phone a PhoneNumber #}
 
 <p>{{ order.total|ariary }}</p>
 <p>{{ order.total.spell }}</p>
 <p>{{ order.phone|mg_phone('international') }}</p>
 <p>{{ order.paidOn|mg_date('full') }}</p>`,
-      { 2: 'amount', 3: 'words', 4: 'phone', 5: 'date' },
-    ),
-  },
+    { 2: 'amount', 3: 'words', 4: 'phone', 5: 'date' },
+  ),
 ];
+
+/** The landing demo keeps one sample per language; the docs Frameworks page shows them all. */
+export const landingSamples: Sample[] = samples.filter(
+  (item) => item.id === 'ts' || item.id === 'php',
+);
+
+/** A sample by id, for the docs Frameworks page. */
+export function sampleById(id: string): Sample {
+  const found = samples.find((item) => item.id === id);
+  if (found === undefined) throw new Error(`No framework sample "${id}"`);
+  return found;
+}
+
+/** A use case by id, for the docs Use cases page. */
+export function useCaseById(id: UseCaseId): (typeof useCases)[number] {
+  const found = useCases.find((item) => item.id === id);
+  if (found === undefined) throw new Error(`No use case "${id}"`);
+  return found;
+}
 
 /** One-line examples for the module grid, computed by the library. */
 export const modules = [

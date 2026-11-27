@@ -1,0 +1,46 @@
+---
+title: Cas d’usage
+description: Quand utiliser chaque fonction, pour de vrais écrans ; chaque résultat affiché est calculé par la bibliothèque.
+kicker: Guides
+---
+
+{/* Traduction française. Les blocs de code sont identiques à la page anglaise. */}
+import UseCase from '../../../../../components/guides/UseCase.astro';
+
+Chaque cas montre le TypeScript à écrire et, en commentaire, ce que la bibliothèque renvoie. Les résultats sont calculés à la construction de cette page, par le même code que vous installez. En PHP, les appels portent les mêmes noms sur les objets valeur (`PhoneNumber::safeParse()`, `Ariary::spellText()`, …).
+
+## Formulaires d’inscription
+
+Vérifier un numéro +261 pendant la saisie, afficher la raison d’un refus, et l’enregistrer en E.164 avec son opérateur.
+
+<UseCase id="signup" />
+
+## Chèques et contrats
+
+Écrire n’importe quel montant en lettres, chaque chiffre exact. Passez le montant en texte : un nombre aussi grand a déjà perdu ses décimales.
+
+<UseCase id="cheque" />
+
+## Montants saisis
+
+Lire un montant écrit à la malgache (`Ar 1.500,50`), puis l’afficher comme votre écran le demande.
+
+<UseCase id="form" />
+
+## Anciens prix en francs
+
+Afficher et convertir les anciens francs malgaches (FMG) en ariary, exactement en décimal.
+
+<UseCase id="francs" />
+
+## Numération traditionnelle
+
+Un nom par puissance de dix, pour les textes qui demandent le système traditionnel.
+
+<UseCase id="traditional" />
+
+## Dates et calendriers
+
+Les noms malgaches des mois et des jours, dans tous les styles de date.
+
+<UseCase id="calendar" />

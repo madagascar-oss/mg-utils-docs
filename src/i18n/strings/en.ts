@@ -47,9 +47,6 @@ export const en = {
   'home.demo': 'Code typed live, with its result',
   'home.lead':
     'Spell numbers, read +261 phone numbers, format Ariary amounts and dates. For JavaScript, TypeScript and PHP, with zero dependencies and the same result everywhere.',
-  'home.stack': 'Same receipt, your stack',
-  'home.group.js': 'JavaScript',
-  'home.group.php': 'PHP',
   'home.everywhere': 'Works in any project',
   'home.js.title': 'JavaScript and TypeScript',
   'home.js.lead':
@@ -64,20 +61,8 @@ export const en = {
     'PHP 8.3, 8.4, 8.5 · Laravel 12 and 13 · Symfony 7.4 LTS and 8 · zero dependencies',
   'home.php.laravel': 'Validation rules, Eloquent casts, Blade directives',
   'home.php.symfony': 'Constraints, Twig filters, Doctrine types',
+  'home.frameworks': 'Examples for every framework',
   'home.requirements': 'Requirements',
-  'home.cases': 'Built for real screens',
-  'home.case.signup': 'Sign-up forms',
-  'home.case.signup.when': 'Check a +261 number as it is typed, and know the operator.',
-  'home.case.cheque': 'Cheques and contracts',
-  'home.case.cheque.when': 'Write any amount in words, every digit exact.',
-  'home.case.form': 'Amounts typed by people',
-  'home.case.form.when': 'Read Ar 1.500,50 the Malagasy way, then show it your way.',
-  'home.case.francs': 'Old prices in francs',
-  'home.case.francs.when': 'Convert Malagasy francs (FMG) to ariary, exactly.',
-  'home.case.traditional': 'Traditional counting',
-  'home.case.traditional.when': 'One name per power of ten, when tradition asks for it.',
-  'home.case.calendar': 'Dates and calendars',
-  'home.case.calendar.when': 'Malagasy month and weekday names, in every style.',
 } as const;
 
 export type UiKey = keyof typeof en;

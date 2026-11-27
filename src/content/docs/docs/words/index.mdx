@@ -76,6 +76,39 @@ There is no upper limit in the rules: `lavitrisa` (10⁹), the largest group wor
   </TabItem>
 </Tabs>
 
+## Traditional system
+
+Malagasy also has a name for every power of ten. It is not used in everyday writing, but learner books list it. Pass `system: 'traditional'` to use it: each name takes a single digit, 1 to 9, smallest part first, joined by `sy`. Below 10 000 both systems write the same words, and decimals follow the system you choose.
+
+| Power | Name | Power | Name | Power | Name |
+| --- | --- | --- | --- | --- | --- |
+| 10⁴ | `alina` | 10⁹ | `lavitrisa` | 10¹⁴ | `safatsiroafaharoa` |
+| 10⁵ | `hetsy` | 10¹⁰ | `alinkisa` | 10¹⁵ | `tsitamboisafaharoa` |
+| 10⁶ | `tapitrisa` | 10¹¹ | `tsipesimpesenina` | 10¹⁶ | `lavitrisafaharoa`\* |
+| 10⁷ | `safatsiroa` | 10¹² | `tsitokotsiforohana` | 10¹⁷ | `alinkisafaharoa`\* |
+| 10⁸ | `tsitamboisa` | 10¹³ | `tsihitanoanoa` | 10¹⁸ | `tsipesimpeseninafaharoa`\* |
+
+\* Derived from the source's rule: `<name>faharoa` ("the second") is that name × 10⁷.
+
+<TryItBox module="words" input="30000000" option="traditional" examples={['30000000', '45000000', '12345678901', '1000000000000000']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    numberToWords(30000000); // 'telopolo tapitrisa'
+    numberToWords(30000000, { system: 'traditional' }); // 'telo safatsiroa'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Mdgascar\MdgUtils\Words\NumberSystem;
+
+    NumberWords::fromInt(30000000); // 'telopolo tapitrisa'
+    NumberWords::fromInt(30000000, NumberSystem::Traditional); // 'telo safatsiroa'
+    ```
+  </TabItem>
+</Tabs>
+
 ## Decimals
 
 The whole part comes first, then `faingo` (the comma), then the digits after the point read as a whole number. Each zero right after the point is `aotra`.
@@ -139,7 +172,7 @@ The input is a number value, never text: no spaces, separators or strings. `'1 5
 
 ## Not supported yet
 
-Negative numbers, and the old names for 10⁷ and above (`safatsiroa`, `tsitamboisa`…), wait for a source or a Malagasy language expert. See [Waiting for a source or an expert](/mdg-utils-docs/docs/words/rules/#waiting-for-a-source-or-an-expert).
+Negative numbers wait for a source or a Malagasy language expert. See [Waiting for a source or an expert](/mdg-utils-docs/docs/words/rules/#waiting-for-a-source-or-an-expert).
 
 ## Rules and sources
 

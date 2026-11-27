@@ -8,6 +8,8 @@ interface Props {
   module: ModuleId;
   /** Starting input; the module's default when omitted. */
   input?: string;
+  /** Starting option (e.g. a words system); the module's first option when omitted. */
+  option?: string;
   /** Inputs offered as one-click chips under the field. */
   examples?: readonly string[];
 }
@@ -35,6 +37,7 @@ const labels = {
   client:visible
   module={Astro.props.module}
   initialInput={Astro.props.input}
+  initialOption={Astro.props.option}
   examples={Astro.props.examples ?? []}
   playHref={localePath(locale, '/play/')}
   labels={labels}

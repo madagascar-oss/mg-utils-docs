@@ -28,12 +28,12 @@ Each module is its own package: `@mdgascar/words`, `@mdgascar/phone`, `@mdgascar
    Every module exports plain functions. Read a number written in any common way and format it.
 
    ```ts title="signup.ts"
-   import { formatPhoneNumber, parsePhoneNumber } from '@mdgascar/phone';
+   import { formatPhone, parsePhone } from '@mdgascar/phone';
 
-   const phone = parsePhoneNumber('034 12 345 67');
+   const phone = parsePhone('034 12 345 67');
    phone.operator; // 'yas'
 
-   formatPhoneNumber('0341234567', 'international'); // '+261 34 12 345 67'
+   formatPhone('0341234567', 'international'); // '+261 34 12 345 67'
    ```
 
 3. ### Handle bad input
@@ -41,12 +41,12 @@ Each module is its own package: `@mdgascar/words`, `@mdgascar/phone`, `@mdgascar
    `parse…` functions throw an `MdgError`. Use `safeParse…` to get the error code without throwing, or `tryParse…` to get `undefined`.
 
    ```ts title="signup.ts"
-   import { safeParsePhoneNumber, tryParsePhoneNumber } from '@mdgascar/phone';
+   import { safeParsePhone, tryParsePhone } from '@mdgascar/phone';
 
-   const result = safeParsePhoneNumber('031 12 345 67');
+   const result = safeParsePhone('031 12 345 67');
    if (!result.success) result.error.code; // 'UNKNOWN_OPERATOR'
 
-   tryParsePhoneNumber('not a number'); // undefined
+   tryParsePhone('not a number'); // undefined
    ```
 
 4. ### Check the result
@@ -54,10 +54,10 @@ Each module is its own package: `@mdgascar/words`, `@mdgascar/phone`, `@mdgascar
    Error codes are the same in every language, so a form can show the same message whether the check ran in the browser or on a PHP server.
 
    ```ts title="signup.ts"
-   import { MdgError, parsePhoneNumber } from '@mdgascar/phone';
+   import { MdgError, parsePhone } from '@mdgascar/phone';
 
    try {
-     parsePhoneNumber(userInput);
+     parsePhone(userInput);
    } catch (error) {
      if (error instanceof MdgError) console.log(error.code); // 'INVALID_FORMAT' | 'UNKNOWN_OPERATOR' | …
    }

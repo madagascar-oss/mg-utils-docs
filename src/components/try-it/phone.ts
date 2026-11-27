@@ -1,7 +1,7 @@
 import {
   OPERATOR_NAMES,
-  formatPhoneNumber,
-  safeParsePhoneNumber,
+  formatPhone,
+  safeParsePhone,
 } from '../../../ports/js/packages/phone/src/index.ts';
 import { quote, snippet } from './shared.ts';
 import type { TryModule } from './types.ts';
@@ -16,17 +16,17 @@ export const phone: TryModule = {
   inputType: 'text',
   compute(input, option) {
     const format = option as Format;
-    const call = `formatPhoneNumber(${quote(input)}, '${format}')`;
-    const parsed = safeParsePhoneNumber(input);
+    const call = `formatPhone(${quote(input)}, '${format}')`;
+    const parsed = safeParsePhone(input);
     return {
       ...(parsed.success
         ? {
-            value: `${formatPhoneNumber(input, format)}  ·  ${OPERATOR_NAMES[parsed.data.operator]}`,
+            value: `${formatPhone(input, format)}  ·  ${OPERATOR_NAMES[parsed.data.operator]}`,
           }
         : { error: parsed.error.code }),
       js: call,
       php: `PhoneNumber::parse(${quote(input)})->format(PhoneNumberFormat::${FORMATS[format]})`,
-      snippet: snippet('formatPhoneNumber', call),
+      snippet: snippet('formatPhone', call),
     };
   },
 };

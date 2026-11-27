@@ -2,42 +2,42 @@
 import type { LanguageId, ModuleId } from './types.ts';
 
 const js: Record<ModuleId, string> = {
-  words: `import { numberToWords } from '@mdgascar/words';
+  words: `import { spell } from '@mdgascar/words';
 
-console.log(numberToWords(21));
-console.log(numberToWords(2026));
-console.log(numberToWords(1000000));
-console.log(numberToWords(3.14));
+console.log(spell(21));
+console.log(spell(2026));
+console.log(spell(1000000));
+console.log(spell(3.14));
 `,
   phone: `import {
-  formatPhoneNumber,
+  formatPhone,
   OPERATOR_NAMES,
-  parsePhoneNumber,
-  safeParsePhoneNumber,
+  parsePhone,
+  safeParsePhone,
 } from '@mdgascar/phone';
 
-const phone = parsePhoneNumber('034 12 345 67');
+const phone = parsePhone('034 12 345 67');
 console.log(OPERATOR_NAMES[phone.operator]);
-console.log(formatPhoneNumber('0341234567', 'international'));
+console.log(formatPhone('0341234567', 'international'));
 
-const result = safeParsePhoneNumber('031 12 345 67');
+const result = safeParsePhone('031 12 345 67');
 if (!result.success) console.log(result.error.code);
 `,
-  ariary: `import { ariaryToWords, formatAriary, parseAriary } from '@mdgascar/ariary';
+  ariary: `import { spellAriary, formatAriary, parseAriary } from '@mdgascar/ariary';
 
 console.log(formatAriary(1500));
 console.log(formatAriary(1500, { grouping: 'dot', symbolPosition: 'after' }));
 console.log(parseAriary('1.500 Ar'));
-console.log(ariaryToWords(1500));
+console.log(spellAriary(1500));
 console.log(formatAriary(1500.5));
 console.log(parseAriary('1 500,50 Ar'));
-console.log(ariaryToWords(1500.5));
+console.log(spellAriary(1500.5));
 `,
-  date: `import { formatDate, getMonthName } from '@mdgascar/date';
+  date: `import { formatDate, monthName } from '@mdgascar/date';
 
 console.log(formatDate('2026-11-23', 'full'));
 console.log(formatDate({ year: 1960, month: 6, day: 26 }));
-console.log(getMonthName(6));
+console.log(monthName(6));
 `,
 };
 
@@ -46,10 +46,10 @@ const php: Record<ModuleId, string> = {
 
 use Mdgascar\\MdgUtils\\Words\\NumberWords;
 
-echo NumberWords::fromInt(21), "\\n";
-echo NumberWords::fromInt(2026), "\\n";
-echo NumberWords::fromInt(1000000), "\\n";
-echo NumberWords::fromFloat(3.14), "\\n";
+echo NumberWords::spell(21), "\\n";
+echo NumberWords::spell(2026), "\\n";
+echo NumberWords::spell(1000000), "\\n";
+echo NumberWords::spell(3.14), "\\n";
 `,
   phone: `<?php
 
@@ -72,10 +72,10 @@ use Mdgascar\\MdgUtils\\Ariary\\SymbolPosition;
 echo Ariary::fromInt(1500)->format(), "\\n";
 echo Ariary::fromInt(1500)->format(Grouping::Dot, SymbolPosition::After), "\\n";
 echo Ariary::parse('1.500 Ar')->amount, "\\n";
-echo Ariary::fromInt(1500)->toWords(), "\\n";
+echo Ariary::fromInt(1500)->spell(), "\\n";
 echo Ariary::fromFloat(1500.5)->format(), "\\n";
 echo Ariary::parse('1 500,50 Ar')->amount, "\\n";
-echo Ariary::fromFloat(1500.5)->toWords(), "\\n";
+echo Ariary::fromFloat(1500.5)->spell(), "\\n";
 `,
   date: `<?php
 

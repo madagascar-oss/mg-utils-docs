@@ -1,13 +1,13 @@
 // Landing demo data. Every value shown on the landing page is computed here, at build time, by
 // the library itself (the pinned ports/js submodule), so the page can never show a wrong result.
-import { ariaryToWords, formatAriary } from '../../../ports/js/packages/ariary/src/index.ts';
+import { spellAriary, formatAriary } from '../../../ports/js/packages/ariary/src/index.ts';
 import { formatDate } from '../../../ports/js/packages/date/src/index.ts';
 import {
   OPERATOR_NAMES,
-  formatPhoneNumber,
-  parsePhoneNumber,
+  formatPhone,
+  parsePhone,
 } from '../../../ports/js/packages/phone/src/index.ts';
-import { numberToWords } from '../../../ports/js/packages/words/src/index.ts';
+import { spell } from '../../../ports/js/packages/words/src/index.ts';
 
 type TokenKind = 'plain' | 'keyword' | 'string' | 'number' | 'fn' | 'type' | 'var' | 'punct';
 interface Token {
@@ -26,13 +26,13 @@ const AMOUNT = 150000;
 const PHONE = '0341234567';
 const DATE = '2026-11-23';
 
-const phone = parsePhoneNumber(PHONE);
+const phone = parsePhone(PHONE);
 
 /** Preview values, from the library. */
 export const fields: Record<FieldId, string> = {
   amount: formatAriary(AMOUNT),
-  words: ariaryToWords(AMOUNT),
-  phone: formatPhoneNumber(PHONE, 'international'),
+  words: spellAriary(AMOUNT),
+  phone: formatPhone(PHONE, 'international'),
   date: formatDate(DATE, 'full'),
 };
 export const operatorName: string = OPERATOR_NAMES[phone.operator];
@@ -70,14 +70,14 @@ export const code: Record<CodeLanguage, { file: string; lines: Line[] }> = {
   js: {
     file: 'receipt.ts',
     lines: [
-      line("import { formatAriary, ariaryToWords } from '@mdgascar/ariary';"),
-      line("import { formatPhoneNumber } from '@mdgascar/phone';"),
+      line("import { formatAriary, spellAriary } from '@mdgascar/ariary';"),
+      line("import { formatPhone } from '@mdgascar/phone';"),
       line("import { formatDate } from '@mdgascar/date';"),
       line(''),
       line('const receipt = {'),
       line(`  amount: formatAriary(${AMOUNT}),`, 'amount'),
-      line(`  words: ariaryToWords(${AMOUNT}),`, 'words'),
-      line(`  phone: formatPhoneNumber('${PHONE}', 'international'),`, 'phone'),
+      line(`  words: spellAriary(${AMOUNT}),`, 'words'),
+      line(`  phone: formatPhone('${PHONE}', 'international'),`, 'phone'),
       line(`  date: formatDate('${DATE}', 'full'),`, 'date'),
       line('};'),
     ],
@@ -91,7 +91,7 @@ export const code: Record<CodeLanguage, { file: string; lines: Line[] }> = {
       line(''),
       line('$receipt = ['),
       line(`    'amount' => Ariary::fromInt(${AMOUNT})->format(),`, 'amount'),
-      line(`    'words' => Ariary::fromInt(${AMOUNT})->toWords(),`, 'words'),
+      line(`    'words' => Ariary::fromInt(${AMOUNT})->spell(),`, 'words'),
       line(
         `    'phone' => PhoneNumber::parse('${PHONE}')->format(PhoneNumberFormat::International),`,
         'phone',
@@ -104,11 +104,11 @@ export const code: Record<CodeLanguage, { file: string; lines: Line[] }> = {
 
 /** One-line examples for the module grid, computed by the library. */
 export const modules = [
-  { id: 'words', call: 'numberToWords(2026)', result: numberToWords(2026) },
+  { id: 'words', call: 'spell(2026)', result: spell(2026) },
   {
     id: 'phone',
-    call: "formatPhoneNumber('0341234567', 'national')",
-    result: formatPhoneNumber(PHONE, 'national'),
+    call: "formatPhone('0341234567', 'national')",
+    result: formatPhone(PHONE, 'national'),
   },
   { id: 'ariary', call: 'formatAriary(1500.5)', result: formatAriary(1500.5) },
   { id: 'date', call: "formatDate('2026-11-23', 'full')", result: formatDate(DATE, 'full') },

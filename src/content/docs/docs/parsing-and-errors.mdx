@@ -65,15 +65,15 @@ Functions that read text typed by users — phone numbers and Ariary amounts —
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { parsePhoneNumber, safeParsePhoneNumber, tryParsePhoneNumber } from '@mdgascar/phone';
+    import { parsePhone, safeParsePhone, tryParsePhone } from '@mdgascar/phone';
 
-    parsePhoneNumber('031 12 345 67'); // throws MdgError UNKNOWN_OPERATOR
+    parsePhone('031 12 345 67'); // throws MdgError UNKNOWN_OPERATOR
 
-    const result = safeParsePhoneNumber('031 12 345 67');
+    const result = safeParsePhone('031 12 345 67');
     result.success; // false
     if (!result.success) result.error.code; // 'UNKNOWN_OPERATOR'
 
-    tryParsePhoneNumber('031 12 345 67'); // undefined
+    tryParsePhone('031 12 345 67'); // undefined
     ```
   </TabItem>
   <TabItem label="PHP">

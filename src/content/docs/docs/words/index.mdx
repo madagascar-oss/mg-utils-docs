@@ -23,36 +23,36 @@ Malagasy reads numbers from the smallest part up. The smaller part joins 10 with
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    import { numberToWords } from '@mdgascar/words';
+    import { spell } from '@mdgascar/words';
 
-    numberToWords(0); // 'aotra'
-    numberToWords(11); // "iraika ambin'ny folo"
-    numberToWords(21); // 'iraika amby roapolo'
-    numberToWords(101); // 'iraika amby zato'
-    numberToWords(205); // 'dimy sy roanjato'
-    numberToWords(348); // 'valo amby efapolo sy telonjato'
-    numberToWords(1960); // 'enimpolo sy sivinjato sy arivo'
-    numberToWords(2026); // 'enina amby roapolo sy roa arivo'
-    numberToWords(10000); // 'iray alina'
-    numberToWords(280000); // 'valo alina sy roa hetsy'
-    numberToWords(1000000); // 'iray tapitrisa'
+    spell(0); // 'aotra'
+    spell(11); // "iraika ambin'ny folo"
+    spell(21); // 'iraika amby roapolo'
+    spell(101); // 'iraika amby zato'
+    spell(205); // 'dimy sy roanjato'
+    spell(348); // 'valo amby efapolo sy telonjato'
+    spell(1960); // 'enimpolo sy sivinjato sy arivo'
+    spell(2026); // 'enina amby roapolo sy roa arivo'
+    spell(10000); // 'iray alina'
+    spell(280000); // 'valo alina sy roa hetsy'
+    spell(1000000); // 'iray tapitrisa'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
     use Mdgascar\MdgUtils\Words\NumberWords;
 
-    NumberWords::fromInt(0); // 'aotra'
-    NumberWords::fromInt(11); // "iraika ambin'ny folo"
-    NumberWords::fromInt(21); // 'iraika amby roapolo'
-    NumberWords::fromInt(101); // 'iraika amby zato'
-    NumberWords::fromInt(205); // 'dimy sy roanjato'
-    NumberWords::fromInt(348); // 'valo amby efapolo sy telonjato'
-    NumberWords::fromInt(1960); // 'enimpolo sy sivinjato sy arivo'
-    NumberWords::fromInt(2026); // 'enina amby roapolo sy roa arivo'
-    NumberWords::fromInt(10000); // 'iray alina'
-    NumberWords::fromInt(280000); // 'valo alina sy roa hetsy'
-    NumberWords::fromInt(1000000); // 'iray tapitrisa'
+    NumberWords::spell(0); // 'aotra'
+    NumberWords::spell(11); // "iraika ambin'ny folo"
+    NumberWords::spell(21); // 'iraika amby roapolo'
+    NumberWords::spell(101); // 'iraika amby zato'
+    NumberWords::spell(205); // 'dimy sy roanjato'
+    NumberWords::spell(348); // 'valo amby efapolo sy telonjato'
+    NumberWords::spell(1960); // 'enimpolo sy sivinjato sy arivo'
+    NumberWords::spell(2026); // 'enina amby roapolo sy roa arivo'
+    NumberWords::spell(10000); // 'iray alina'
+    NumberWords::spell(280000); // 'valo alina sy roa hetsy'
+    NumberWords::spell(1000000); // 'iray tapitrisa'
     ```
   </TabItem>
 </Tabs>
@@ -66,12 +66,12 @@ There is no upper limit in the rules: `lavitrisa` (10⁹), the largest group wor
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    numberToWords(1000000000); // 'iray lavitrisa'
+    spell(1000000000); // 'iray lavitrisa'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
-    NumberWords::fromInt(1000000000); // 'iray lavitrisa'
+    NumberWords::spell(1000000000); // 'iray lavitrisa'
     ```
   </TabItem>
 </Tabs>
@@ -95,16 +95,16 @@ Malagasy also has a name for every power of ten. It is not used in everyday writ
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    numberToWords(30000000); // 'telopolo tapitrisa'
-    numberToWords(30000000, { system: 'traditional' }); // 'telo safatsiroa'
+    spell(30000000); // 'telopolo tapitrisa'
+    spell(30000000, { system: 'traditional' }); // 'telo safatsiroa'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
     use Mdgascar\MdgUtils\Words\NumberSystem;
 
-    NumberWords::fromInt(30000000); // 'telopolo tapitrisa'
-    NumberWords::fromInt(30000000, NumberSystem::Traditional); // 'telo safatsiroa'
+    NumberWords::spell(30000000); // 'telopolo tapitrisa'
+    NumberWords::spell(30000000, NumberSystem::Traditional); // 'telo safatsiroa'
     ```
   </TabItem>
 </Tabs>
@@ -118,54 +118,77 @@ The whole part comes first, then `faingo` (the comma), then the digits after the
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    numberToWords(3.14); // "telo faingo efatra ambin'ny folo"
-    numberToWords(18.3); // "valo ambin'ny folo faingo telo"
-    numberToWords(0.5); // 'aotra faingo dimy'
-    numberToWords(1.05); // 'iray faingo aotra dimy'
-    numberToWords(0.008); // 'aotra faingo aotra aotra valo'
-    numberToWords(12.75); // "roa ambin'ny folo faingo dimy amby fitopolo"
-    numberToWords(1.0); // 'iray' (a whole number has no faingo)
+    spell(3.14); // "telo faingo efatra ambin'ny folo"
+    spell(18.3); // "valo ambin'ny folo faingo telo"
+    spell(0.5); // 'aotra faingo dimy'
+    spell(1.05); // 'iray faingo aotra dimy'
+    spell(0.008); // 'aotra faingo aotra aotra valo'
+    spell(12.75); // "roa ambin'ny folo faingo dimy amby fitopolo"
+    spell(1.0); // 'iray' (a whole number has no faingo)
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
-    NumberWords::fromFloat(3.14); // "telo faingo efatra ambin'ny folo"
-    NumberWords::fromFloat(18.3); // "valo ambin'ny folo faingo telo"
-    NumberWords::fromFloat(0.5); // 'aotra faingo dimy'
-    NumberWords::fromFloat(1.05); // 'iray faingo aotra dimy'
-    NumberWords::fromFloat(0.008); // 'aotra faingo aotra aotra valo'
-    NumberWords::fromFloat(12.75); // "roa ambin'ny folo faingo dimy amby fitopolo"
-    NumberWords::fromFloat(1.0); // 'iray' (a whole number has no faingo)
+    NumberWords::spell(3.14); // "telo faingo efatra ambin'ny folo"
+    NumberWords::spell(18.3); // "valo ambin'ny folo faingo telo"
+    NumberWords::spell(0.5); // 'aotra faingo dimy'
+    NumberWords::spell(1.05); // 'iray faingo aotra dimy'
+    NumberWords::spell(0.008); // 'aotra faingo aotra aotra valo'
+    NumberWords::spell(12.75); // "roa ambin'ny folo faingo dimy amby fitopolo"
+    NumberWords::spell(1.0); // 'iray' (a whole number has no faingo)
     ```
   </TabItem>
 </Tabs>
 
 <Aside>The decimals are those of the number value. `1.50` is the number `1.5`, and `0.1 + 0.2` is `0.30000000000000004` in floating point, so it reads that way.</Aside>
 
-## Numbers only
+## Exact digits
 
-The input is a number value, never text: no spaces, separators or strings. `'1 500'` is `INVALID_TYPE`. To read amounts typed by users, use the ariary module.
+A number value keeps about 15 to 17 significant digits, in JavaScript and in PHP floats alike. So a large number with decimals has already lost digits before any function sees it: `2_000_000_000_000_000.9` is stored as `2000000000000001`. Pass the digits as text to read every one of them exactly, at any size:
+
+<TryItBox module="words" input="2000000000000000.9" examples={['2000000000000000.9', '1000000000000000000.111', '1.50', '1 500']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    spell(2_000_000_000_000_000.9); // 'iray sy roa tapitrisa lavitrisa' (the float)
+    spell('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    NumberWords::spell(2_000_000_000_000_000.9); // 'iray sy roa tapitrisa lavitrisa' (the float)
+    NumberWords::spell('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy'
+    ```
+  </TabItem>
+</Tabs>
+
+Text is plain digits with an optional `.` and decimals, at most 100 characters. Spaces, separators, signs and exponents are `INVALID_FORMAT`: to read amounts typed by users, such as `Ar 1 500`, use the ariary module. Leading zeros and trailing decimal zeros are dropped, so `'1.50'` reads like `1.5`.
+
+<Aside title="PHP: declare(strict_types=1)">`NumberWords::spell()` keeps each type as it is: `spell(2.5)` is `roa faingo dimy`. Declare `strict_types=1` in your files anyway: without it, PHP quietly turns a float passed to any `int` parameter into an int, so `2.5` becomes `2` before the library sees it.</Aside>
 
 ## Errors
 
 | Input | Error code |
 | --- | --- |
-| Not a finite number (`'21'`, `NaN`, `Infinity`) | `INVALID_TYPE` |
+| Not a finite number or text (`null`, `NaN`, `Infinity`) | `INVALID_TYPE` |
+| Text that is not plain decimal (`'1 500'`, `'-1'`, `'1e5'`) | `INVALID_FORMAT` |
 | Below 0 | `OUT_OF_RANGE` |
 | Above the largest exact number of the language | `OUT_OF_RANGE` |
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
-    numberToWords(-1); // throws MdgError, error.code === 'OUT_OF_RANGE'
-    numberToWords('1 500' as unknown as number); // throws MdgError, 'INVALID_TYPE'
-    numberToWords(Number.MAX_SAFE_INTEGER + 1); // throws MdgError, 'OUT_OF_RANGE'
+    spell(-1); // throws MdgError, error.code === 'OUT_OF_RANGE'
+    spell('1 500'); // throws MdgError, 'INVALID_FORMAT'
+    spell(Number.MAX_SAFE_INTEGER + 1); // throws MdgError, 'OUT_OF_RANGE'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
-    NumberWords::fromInt(-1); // throws MdgUtilsException, ->errorCode === ErrorCode::OutOfRange
-    NumberWords::fromFloat(NAN); // throws MdgUtilsException, ErrorCode::InvalidType
+    NumberWords::spell(-1); // throws MdgUtilsException, ->errorCode === ErrorCode::OutOfRange
+    NumberWords::spell(NAN); // throws MdgUtilsException, ErrorCode::InvalidType
+    NumberWords::spell('1 500'); // throws MdgUtilsException, ErrorCode::InvalidFormat
     ```
   </TabItem>
 </Tabs>

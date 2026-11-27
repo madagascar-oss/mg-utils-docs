@@ -66,6 +66,7 @@ import InstallMethods from '../../../../components/InstallMethods.astro';
    @ariary($order->total)      {{-- Ar 1 500 --}}
    @mgPhone($order->phone)     {{-- 034 12 345 67 --}}
    @mgWords(2026)              {{-- enina amby roapolo sy roa arivo --}}
+   @mgWords(30000000, \Mdgascar\MdgUtils\Words\NumberSystem::Traditional) {{-- telo safatsiroa --}}
    @mgDate($order->created_at) {{-- 27 Novambra 2026 --}}
    ```
 

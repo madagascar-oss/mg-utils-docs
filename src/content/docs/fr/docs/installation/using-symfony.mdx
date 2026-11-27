@@ -66,11 +66,12 @@ import InstallMethods from '../../../../../components/InstallMethods.astro';
    {{ order.total|ariary }}       {# Ar 1 500 #}
    {{ order.phone|mg_phone }}     {# 034 12 345 67 #}
    {{ 2026|mg_words }}            {# enina amby roapolo sy roa arivo #}
+   {{ 30000000|mg_words('traditional') }} {# telo safatsiroa #}
    {{ order.createdAt|mg_date }}  {# 27 Novambra 2026 #}
    ```
 
-   `mg_phone` et `mg_date` acceptent un nom de format : `mg_phone('international')`,
-   `mg_date('numeric')`. Chaque filtre n’affiche rien pour `null`.
+   `mg_phone`, `mg_date` et `mg_words` acceptent un nom : `mg_phone('international')`,
+   `mg_date('numeric')`, `mg_words('traditional')` (un nom par puissance de dix). Chaque filtre n’affiche rien pour `null`.
 
 </Steps>
 
@@ -87,12 +88,6 @@ mdg_utils:
 ```
 
 Une valeur incorrecte échoue à la construction du conteneur, en nommant l’option.
-
-<Aside type="caution" title="Avant la première publication sur Packagist">
-  `mdgascar/mdg-utils-bundle` est publié sur Packagist avec sa première version. D’ici là,
-  installez-le depuis [mdg-utils-bundle](https://github.com/mdgascar/mdg-utils-bundle) avec un
-  dépôt Composer `vcs`.
-</Aside>
 
 <Aside type="tip" title="Envie d’aller plus loin ?">
   L’API complète, y compris les codes de violation et les types Doctrine, se trouve dans le

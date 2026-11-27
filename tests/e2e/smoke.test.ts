@@ -85,8 +85,26 @@ test('the landing types real calls and fills the preview', async ({ page }) => {
     timeout: 15_000,
   });
   await expect(demo.locator('[data-field="date"]')).toContainText('Alatsinainy 23 Novambra 2026');
-  await demo.getByRole('tab', { name: 'receipt.php' }).click();
-  await expect(demo.getByText('MalagasyDate::fromString', { exact: false })).toBeVisible({
-    timeout: 15_000,
-  });
+  for (const [tab, call] of [
+    ['PHP', 'MalagasyDate::fromString'],
+    ['Laravel', '@mgDate'],
+    ['Symfony', "mg_date('full')"],
+    ['React', '<dd>{formatDate'],
+    ['Angular', 'computed(() => formatDate'],
+  ] as const) {
+    await demo.getByRole('tab', { name: tab, exact: true }).click();
+    await expect(demo.getByText(call, { exact: false })).toBeVisible({ timeout: 15_000 });
+  }
+});
+
+test('the landing shows where it runs and real use cases, computed by the library', async ({
+  page,
+}) => {
+  await page.goto('');
+  await expect(page.getByRole('heading', { name: 'Works in any project' })).toBeVisible();
+  await expect(page.getByText('composer require mdgascar/mdg-utils-laravel')).toBeVisible();
+  await expect(page.getByText('composer require mdgascar/mdg-utils-bundle')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Sign-up forms' })).toBeVisible();
+  await expect(page.getByText('UNKNOWN_OPERATOR')).toBeVisible();
+  await expect(page.getByText('telo safatsiroa')).toBeVisible();
 });

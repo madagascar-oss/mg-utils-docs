@@ -9,6 +9,16 @@ import InstallMethods from '../../../../components/InstallMethods.astro';
 
 <InstallMethods current="using-npm" />
 
+## Requirements
+
+| | |
+| --- | --- |
+| Runtimes | Node.js 22.18+, Bun, Deno, every modern browser |
+| Module formats | ESM and CommonJS |
+| Types | TypeScript declarations included, no `@types` package |
+| Dependencies | None |
+| Frameworks | Any: React, Next.js, Vue, Nuxt, Angular, Svelte, Astro, Express, plain scripts |
+
 ## Installing a module with npm
 
 Each module is its own package: `@mdgascar/words`, `@mdgascar/phone`, `@mdgascar/ariary` and `@mdgascar/date`. They run in Node.js 22.18+, Deno, Bun and every modern browser.
@@ -64,6 +74,26 @@ Each module is its own package: `@mdgascar/words`, `@mdgascar/phone`, `@mdgascar
    ```
 
 </Steps>
+
+## TypeScript
+
+Every option, format and error code is a type, so the editor completes them and a typo fails to compile.
+
+```ts title="signup.ts"
+import { safeParsePhone, type PhoneNumber, type PhoneNumberFormat } from '@mdgascar/phone';
+import { spell, type SpellOptions } from '@mdgascar/words';
+import type { ErrorCode } from '@mdgascar/phone';
+
+function phoneOrError(input: string): PhoneNumber | ErrorCode {
+  const result = safeParsePhone(input);
+  return result.success ? result.data : result.error.code; // narrowed by `success`
+}
+
+const format: PhoneNumberFormat = 'international'; // 'e164' | 'international' | 'national'
+const options: SpellOptions = { system: 'traditional' }; // 'standard' | 'traditional'
+spell(30_000_000, options); // 'telo safatsiroa'
+```
+
 
 <Aside type="tip" title="Are you stuck?">
   Try every function live, in JavaScript and PHP, in the [playground](/mdg-utils-docs/play/).

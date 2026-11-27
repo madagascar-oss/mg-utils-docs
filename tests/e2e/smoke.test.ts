@@ -53,7 +53,7 @@ for (const module of ['words', 'phone', 'ariary', 'date']) {
 test('the language tab choice is shared across code blocks', async ({ page }) => {
   await page.goto('docs/ariary/');
   await page.getByRole('tab', { name: 'PHP' }).first().click();
-  await expect(page.getByText('Ariary::fromInt(1500)->toWords()').first()).toBeVisible();
+  await expect(page.getByText('Ariary::fromInt(1500)->spell()').first()).toBeVisible();
 });
 
 test('translated pages are written in their language', async ({ page }) => {

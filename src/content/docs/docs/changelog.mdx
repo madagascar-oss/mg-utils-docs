@@ -8,6 +8,13 @@ Each entry is a spec version: the rules, data and test vectors every package imp
 
 **Breaking** marks an output that changes for an input that worked before.
 
+## 0.8.0 (2026-11-27)
+
+- **Breaking**: function names now use the domain's words: `spell` (was `numberToWords`), `spellAriary` (`ariaryToWords`), `parsePhone`, `safeParsePhone`, `tryParsePhone`, `isValidPhone`, `formatPhone` (were `…PhoneNumber`), `monthName` (`getMonthName`), `weekdayName` (`getWeekdayName`). PHP: `NumberWords::spell()` takes an int, a float or text; `->spell()` replaces `->toWords()`. Outputs are unchanged.
+- `words`: Decimal text is read exactly: `spell('2000000000000000.9')` → `roa tapitrisa lavitrisa faingo sivy`, where the number has already lost its `.9`. Text that is not plain decimal is `INVALID_FORMAT`; `'12'` reads `roa ambin'ny folo` instead of `INVALID_TYPE`.
+- `words`: In the traditional system, a number of 10¹⁹ or more (text only) is written in the standard system.
+- `ariary`: `spellAriary` takes the same decimal text.
+
 ## 0.7.0 (2026-11-27)
 
 - `words`: New option `system: 'traditional'`: one name per power of ten, each with a single digit. `30 000 000` → `telo safatsiroa` instead of `telopolo tapitrisa`. 10⁷–10¹⁵ come from Assimil, and 10¹⁶–10¹⁸ are derived from its `faharoa` rule. The standard system stays the default, and its output is unchanged.

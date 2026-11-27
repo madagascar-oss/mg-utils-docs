@@ -24,12 +24,12 @@ Choose this when an app uses several modules. Bundlers keep only the functions y
 2. ### Import from one place
 
    ```ts title="invoice.ts"
-   import { ariaryToWords, formatAriary, formatDate, numberToWords } from '@mdgascar/utils';
+   import { spellAriary, formatAriary, formatDate, spell } from '@mdgascar/utils';
 
    formatAriary(1500); // 'Ar 1 500'
-   ariaryToWords(1500); // 'dimanjato sy arivo ariary'
+   spellAriary(1500); // 'dimanjato sy arivo ariary'
    formatDate('2026-11-23', 'full'); // 'Alatsinainy 23 Novambra 2026'
-   numberToWords(21); // 'iraika amby roapolo'
+   spell(21); // 'iraika amby roapolo'
    ```
 
 3. ### Catch errors from every module the same way

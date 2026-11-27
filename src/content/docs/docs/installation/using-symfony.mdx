@@ -64,13 +64,13 @@ import InstallMethods from '../../../../components/InstallMethods.astro';
    ```twig title="templates/order/show.html.twig"
    {{ order.total|ariary }}       {# Ar 1 500 #}
    {{ order.phone|mg_phone }}     {# 034 12 345 67 #}
-   {{ 2026|mg_words }}            {# enina amby roapolo sy roa arivo #}
-   {{ 30000000|mg_words('traditional') }} {# telo safatsiroa #}
+   {{ 2026|mg_spell }}            {# enina amby roapolo sy roa arivo #}
+   {{ 30000000|mg_spell('traditional') }} {# telo safatsiroa #}
    {{ order.createdAt|mg_date }}  {# 27 Novambra 2026 #}
    ```
 
-   `mg_phone`, `mg_date` and `mg_words` take a name: `mg_phone('international')`,
-   `mg_date('numeric')`, `mg_words('traditional')` (one name per power of ten). Each filter prints nothing for `null`.
+   `mg_phone`, `mg_date` and `mg_spell` take a name: `mg_phone('international')`,
+   `mg_date('numeric')`, `mg_spell('traditional')` (one name per power of ten). Each filter prints nothing for `null`.
 
 </Steps>
 

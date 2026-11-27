@@ -1,10 +1,13 @@
-import { numberToWords, type NumberSystem } from '../../../ports/js/packages/words/src/index.ts';
-import { attempt, snippet } from './shared.ts';
+import { spell, type NumberSystem } from '../../../ports/js/packages/words/src/index.ts';
+import { attempt, quote, snippet } from './shared.ts';
 import type { TryModule } from './types.ts';
 
-// Number values only, like the library: '1 500' is not a number, so it shows INVALID_TYPE.
-function toNumber(input: string): number {
-  return input.trim() === '' ? Number.NaN : Number(input);
+// The field holds text, so the widget spells it as decimal text: every digit exact, and
+// '1 500' shows INVALID_FORMAT like the library. The call shown is a plain number when a number
+// would keep every digit, and text otherwise ('2000000000000000.9').
+function argument(input: string): string {
+  const value = Number(input);
+  return input !== '' && String(value) === input ? input : quote(input);
 }
 
 // System option → PHP enum case. The first system shown is the widget's default.
@@ -17,16 +20,14 @@ const DEFAULT_SYSTEM: NumberSystem = 'standard';
 // The default system needs no argument, so the calls stay as people write them.
 function jsCall(input: string, system: NumberSystem): string {
   return system === DEFAULT_SYSTEM
-    ? `numberToWords(${input})`
-    : `numberToWords(${input}, { system: '${system}' })`;
+    ? `spell(${argument(input)})`
+    : `spell(${argument(input)}, { system: '${system}' })`;
 }
 
-// PHP has one method per type: fromFloat for decimals, fromInt for whole numbers.
+// PHP has one method for every number type: spell(int|float|string).
 function phpCall(input: string, system: NumberSystem): string {
-  const value = toNumber(input);
-  const method = Number.isFinite(value) && !Number.isInteger(value) ? 'fromFloat' : 'fromInt';
-  const argument = system === DEFAULT_SYSTEM ? '' : `, NumberSystem::${SYSTEMS[system]}`;
-  return `NumberWords::${method}(${input}${argument})`;
+  const systemArgument = system === DEFAULT_SYSTEM ? '' : `, NumberSystem::${SYSTEMS[system]}`;
+  return `NumberWords::spell(${argument(input)}${systemArgument})`;
 }
 
 export const words: TryModule = {
@@ -38,10 +39,10 @@ export const words: TryModule = {
     const system = option as NumberSystem;
     const call = jsCall(input, system);
     return {
-      ...attempt(() => numberToWords(toNumber(input), { system })),
+      ...attempt(() => spell(input, { system })),
       js: call,
       php: phpCall(input, system),
-      snippet: snippet('numberToWords', call),
+      snippet: snippet('spell', call),
     };
   },
 };

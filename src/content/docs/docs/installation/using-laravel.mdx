@@ -65,8 +65,8 @@ import InstallMethods from '../../../../components/InstallMethods.astro';
    ```blade title="resources/views/orders/show.blade.php"
    @ariary($order->total)      {{-- Ar 1 500 --}}
    @mgPhone($order->phone)     {{-- 034 12 345 67 --}}
-   @mgWords(2026)              {{-- enina amby roapolo sy roa arivo --}}
-   @mgWords(30000000, \Mdgascar\MdgUtils\Words\NumberSystem::Traditional) {{-- telo safatsiroa --}}
+   @mgSpell(2026)              {{-- enina amby roapolo sy roa arivo --}}
+   @mgSpell(30000000, \Mdgascar\MdgUtils\Words\NumberSystem::Traditional) {{-- telo safatsiroa --}}
    @mgDate($order->created_at) {{-- 27 Novambra 2026 --}}
    ```
 

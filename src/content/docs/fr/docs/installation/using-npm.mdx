@@ -10,6 +10,16 @@ import InstallMethods from '../../../../../components/InstallMethods.astro';
 
 <InstallMethods current="using-npm" />
 
+## Prérequis
+
+| | |
+| --- | --- |
+| Environnements | Node.js 22.18+, Bun, Deno, tous les navigateurs modernes |
+| Formats de module | ESM et CommonJS |
+| Types | Déclarations TypeScript incluses, sans paquet `@types` |
+| Dépendances | Aucune |
+| Frameworks | Tous : React, Next.js, Vue, Nuxt, Angular, Svelte, Astro, Express, scripts simples |
+
 ## Installer un module avec npm
 
 Chaque module est un paquet distinct : `@mdgascar/words`, `@mdgascar/phone`, `@mdgascar/ariary` et `@mdgascar/date`. Ils fonctionnent avec Node.js 22.18+, Deno, Bun et tous les navigateurs modernes.
@@ -65,6 +75,26 @@ Chaque module est un paquet distinct : `@mdgascar/words`, `@mdgascar/phone`, `@m
    ```
 
 </Steps>
+
+## TypeScript
+
+Chaque option, format et code d’erreur est un type : l’éditeur les complète, et une faute de frappe ne compile pas.
+
+```ts title="signup.ts"
+import { safeParsePhone, type PhoneNumber, type PhoneNumberFormat } from '@mdgascar/phone';
+import { spell, type SpellOptions } from '@mdgascar/words';
+import type { ErrorCode } from '@mdgascar/phone';
+
+function phoneOrError(input: string): PhoneNumber | ErrorCode {
+  const result = safeParsePhone(input);
+  return result.success ? result.data : result.error.code; // narrowed by `success`
+}
+
+const format: PhoneNumberFormat = 'international'; // 'e164' | 'international' | 'national'
+const options: SpellOptions = { system: 'traditional' }; // 'standard' | 'traditional'
+spell(30_000_000, options); // 'telo safatsiroa'
+```
+
 
 <Aside type="tip" title="Vous êtes bloqué ?">
   Essayez chaque fonction en direct, en JavaScript et en PHP, dans le [bac à sable](/mdg-utils-docs/fr/play/).

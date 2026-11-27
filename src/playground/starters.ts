@@ -71,10 +71,10 @@ use Mdgascar\\MdgUtils\\Ariary\\SymbolPosition;
 
 echo Ariary::fromInt(1500)->format(), "\\n";
 echo Ariary::fromInt(1500)->format(Grouping::Dot, SymbolPosition::After), "\\n";
-echo Ariary::parse('1.500 Ar')->amount, "\\n";
+echo Ariary::parse('1.500 Ar')->amount(), "\\n";
 echo Ariary::fromInt(1500)->spell(), "\\n";
 echo Ariary::fromFloat(1500.5)->format(), "\\n";
-echo Ariary::parse('1 500,50 Ar')->amount, "\\n";
+echo Ariary::parse('1 500,50 Ar')->amount(), "\\n";
 echo Ariary::fromFloat(1500.5)->spell(), "\\n";
 `,
   date: `<?php

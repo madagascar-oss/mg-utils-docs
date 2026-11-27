@@ -27,8 +27,8 @@ interface ModuleReadme {
 
 function parseReadme(markdown: string): ModuleReadme {
   const [head = '', ...parts] = markdown.split(/^## /m);
-  const titleLine = /^# .+? — (.+)$/m.exec(head);
-  if (titleLine?.[1] === undefined) throw new Error('Module README has no "# name — Title" line.');
+  const titleLine = /^# .+?(?: —|:) (.+)$/m.exec(head);
+  if (titleLine?.[1] === undefined) throw new Error('Module README has no "# name: Title" line.');
   const intro = head.replace(/^# .+$/m, '').trim();
   const sections = parts.map((part) => {
     const newline = part.indexOf('\n');

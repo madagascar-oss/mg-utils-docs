@@ -8,6 +8,19 @@ Each entry is a spec version: the rules, data and test vectors every package imp
 
 **Breaking** marks an output that changes for an input that worked before.
 
+## 0.9.0 (2026-11-27)
+
+- `words`: **Breaking**: a count before a group word is one phrase joined by `amby` (Wikipedia, dictionary). `201 000 000` → `iraika amby roanjato tapitrisa` (it shared `iray sy roanjato tapitrisa` with 200 000 001), `280 000 000` → `valopolo amby roanjato tapitrisa`. Numbers below 1000 keep `sy` from 200 (`348` → `valo amby efapolo sy telonjato`, Peace Corps lessons).
+- `words`: New `spellOrdinal`: `3` → `fahatelo`, `4` → `fahefatra`, `1` → `voalohany`.
+- `words`: New `parseWords`, `safeParseWords`, `tryParseWords`: words back into the number. Phrases two numbers share (only from one million billion up) are `AMBIGUOUS`.
+- `ariary`: **Breaking**: nothing is rounded. Reading or converting an amount a number cannot hold is `PRECISION_LOSS` (was `OUT_OF_RANGE`, or a silently rounded value); `{ as: 'text' }` gives the exact digits. Every function that takes an amount also takes decimal text. Reading takes up to 329 characters, so every formatted amount reads back.
+- `ariary`: `1,500` is 1.5 Ar: a recorded decision, no longer under review.
+- `phone`: **Breaking**: `036` (Yas) and fixed lines (`020`, `022`) are valid instead of `UNKNOWN_OPERATOR`. A parsed number has `type` (`mobile` or `fixed`) and `area`, the town of a geographic number.
+- `date`: New `parseDate`, `safeParseDate`, `tryParseDate`: every style back into `{ year, month, day }`.
+- New error codes `PRECISION_LOSS` and `AMBIGUOUS`.
+
+Known bugs fixed in 0.9.0: two numbers with the same words (`words`), silent rounding when reading or converting (`ariary`), formatted amounts too long to read back (`ariary`), and `036` and fixed lines rejected (`phone`). Still open: a few phrases from one million billion up name two numbers (the reader answers `AMBIGUOUS`), and `5 Mey 12` reads as two dates because `Mey` is both the name and the abbreviation of May (`parseDate` answers `AMBIGUOUS` unless you pass the style). The full list is in the [spec README](https://github.com/mdgascar/mdg-utils-spec#known-bugs).
+
 ## 0.8.0 (2026-11-27)
 
 - **Breaking**: function names now use the domain's words: `spell` (was `numberToWords`), `spellAriary` (`ariaryToWords`), `parsePhone`, `safeParsePhone`, `tryParsePhone`, `isValidPhone`, `formatPhone` (were `…PhoneNumber`), `monthName` (`getMonthName`), `weekdayName` (`getWeekdayName`). PHP: `NumberWords::spell()` takes an int, a float or text; `->spell()` replaces `->toWords()`. Outputs are unchanged.

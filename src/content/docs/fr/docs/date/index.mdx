@@ -51,6 +51,29 @@ import TryItBox from '../../../../../components/TryItBox.astro';
   </TabItem>
 </Tabs>
 
+## Lire une date
+
+`parseDate` relit chaque style écrit par `formatDate`. La casse et les espaces en trop ne comptent pas, et le jour et le mois peuvent n'avoir qu'un chiffre.
+
+<TryItBox module="date" variant="readDate" examples={['23 Novambra 2026', 'Alatsinainy 23 Novambra 2026', '23/11/2026', '5/7/2026', '2026-11-23']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { parseDate } from '@mdgascar/date';
+
+    parseDate('23 Novambra 2026'); // { year: 2026, month: 11, day: 23 }
+    parseDate('23/11/2026'); // { year: 2026, month: 11, day: 23 }
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    MalagasyDate::parse('23 Novambra 2026')->month; // 11
+    MalagasyDate::parse('23/11/2026')->day; // 23
+    ```
+  </TabItem>
+</Tabs>
+
 ## Noms des mois et des jours
 
 Les jours utilisent la numérotation ISO : lundi vaut 1, dimanche 7.

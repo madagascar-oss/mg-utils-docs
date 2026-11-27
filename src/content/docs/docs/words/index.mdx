@@ -57,20 +57,78 @@ Malagasy reads numbers from the smallest part up. The smaller part joins 10 with
   </TabItem>
 </Tabs>
 
+## Ordinals
+
+`spellOrdinal` writes the rank: `faha` before the number in words, `fah` before a vowel, and `voalohany` for 1.
+
+<TryItBox module="words" variant="ordinal" examples={['1', '2', '3', '4', '10', '11', '21', '100']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { spellOrdinal } from '@mdgascar/words';
+
+    spellOrdinal(1); // 'voalohany'
+    spellOrdinal(2); // 'faharoa'
+    spellOrdinal(3); // 'fahatelo'
+    spellOrdinal(4); // 'fahefatra'
+    spellOrdinal(11); // "fahiraika ambin'ny folo"
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    NumberWords::spellOrdinal(1); // 'voalohany'
+    NumberWords::spellOrdinal(2); // 'faharoa'
+    NumberWords::spellOrdinal(3); // 'fahatelo'
+    NumberWords::spellOrdinal(4); // 'fahefatra'
+    NumberWords::spellOrdinal(11); // "fahiraika ambin'ny folo"
+    ```
+  </TabItem>
+</Tabs>
+
+## Reading words back
+
+`parseWords` turns the words back into the number. Case and extra spaces do not matter. `safeParseWords` returns the error instead of throwing, and `tryParseWords` returns `undefined` (PHP: `safeParse`, `tryParse`).
+
+<TryItBox module="words" variant="readWords" examples={['roa arivo', 'iraika amby roapolo', 'valo amby efapolo sy telonjato', 'telo faingo dimy']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { parseWords } from '@mdgascar/words';
+
+    parseWords('roa arivo'); // 2000
+    parseWords('Iraika amby roapolo'); // 21
+    parseWords('telo faingo dimy'); // 3.5
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    NumberWords::parse('roa arivo')->value(); // 2000
+    NumberWords::parse('Iraika amby roapolo')->value(); // 21
+    NumberWords::parse('telo faingo dimy')->value(); // 3.5
+    ```
+  </TabItem>
+</Tabs>
+
+<Aside>The reader never rounds. A number too big for the language throws `PRECISION_LOSS`; ask for `{ as: 'text' }` (PHP: `->digits`) to get every digit as text.</Aside>
+
 ## Large numbers
 
-There is no upper limit in the rules: `lavitrisa` (10⁹), the largest group word, takes a count of any size, written with the same rules. Each language stops only where its numbers stop being exact: `Number.MAX_SAFE_INTEGER` in JavaScript, `PHP_INT_MAX` in PHP.
+There is no upper limit in the rules: `lavitrisa` (10⁹), the largest group word, takes a count of any size. A count before a group word is one phrase joined by `amby`. Each language stops only where its numbers stop being exact: `Number.MAX_SAFE_INTEGER` in JavaScript, `PHP_INT_MAX` in PHP.
 
 <TryItBox module="words" input="1000000000" examples={['1000000', '1000000000', '2000000000']} />
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
+    spell(280000000); // 'valopolo amby roanjato tapitrisa'
     spell(1000000000); // 'iray lavitrisa'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
+    NumberWords::spell(280000000); // 'valopolo amby roanjato tapitrisa'
     NumberWords::spell(1000000000); // 'iray lavitrisa'
     ```
   </TabItem>
@@ -90,7 +148,7 @@ Malagasy also has a name for every power of ten. It is not used in everyday writ
 
 \* Derived from the source's rule: `<name>faharoa` ("the second") is that name × 10⁷.
 
-<TryItBox module="words" input="30000000" option="traditional" examples={['30000000', '45000000', '12345678901', '1000000000000000']} />
+<TryItBox module="words" input="30000000" option="traditional" examples={['30000000', '45000000']} />
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
@@ -113,57 +171,24 @@ Malagasy also has a name for every power of ten. It is not used in everyday writ
 
 The whole part comes first, then `faingo` (the comma), then the digits after the point read as a whole number. Each zero right after the point is `aotra`.
 
-<TryItBox module="words" input="3.14" examples={['3.14', '18.3', '0.5', '1.05', '0.008', '12.75', '1234.5678']} />
+<TryItBox module="words" input="3.14" examples={['3.14', '0.5', '2.5', '12.75']} />
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
     spell(3.14); // "telo faingo efatra ambin'ny folo"
-    spell(18.3); // "valo ambin'ny folo faingo telo"
     spell(0.5); // 'aotra faingo dimy'
-    spell(1.05); // 'iray faingo aotra dimy'
-    spell(0.008); // 'aotra faingo aotra aotra valo'
     spell(12.75); // "roa ambin'ny folo faingo dimy amby fitopolo"
-    spell(1.0); // 'iray' (a whole number has no faingo)
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
     NumberWords::spell(3.14); // "telo faingo efatra ambin'ny folo"
-    NumberWords::spell(18.3); // "valo ambin'ny folo faingo telo"
     NumberWords::spell(0.5); // 'aotra faingo dimy'
-    NumberWords::spell(1.05); // 'iray faingo aotra dimy'
-    NumberWords::spell(0.008); // 'aotra faingo aotra aotra valo'
     NumberWords::spell(12.75); // "roa ambin'ny folo faingo dimy amby fitopolo"
-    NumberWords::spell(1.0); // 'iray' (a whole number has no faingo)
     ```
   </TabItem>
 </Tabs>
-
-<Aside>The decimals are those of the number value. `1.50` is the number `1.5`, and `0.1 + 0.2` is `0.30000000000000004` in floating point, so it reads that way.</Aside>
-
-## Exact digits
-
-A number value keeps about 15 to 17 significant digits, in JavaScript and in PHP floats alike. So a large number with decimals has already lost digits before any function sees it: `2_000_000_000_000_000.9` is stored as `2000000000000001`. Pass the digits as text to read every one of them exactly, at any size:
-
-<TryItBox module="words" input="2000000000000000.9" examples={['2000000000000000.9', '1000000000000000000.111', '1.50', '1 500']} />
-
-<Tabs syncKey="language">
-  <TabItem label="JavaScript">
-    ```ts
-    spell(2_000_000_000_000_000.9); // 'iray sy roa tapitrisa lavitrisa' (the float)
-    spell('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy'
-    ```
-  </TabItem>
-  <TabItem label="PHP">
-    ```php
-    NumberWords::spell(2_000_000_000_000_000.9); // 'iray sy roa tapitrisa lavitrisa' (the float)
-    NumberWords::spell('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy'
-    ```
-  </TabItem>
-</Tabs>
-
-Text is plain digits with an optional `.` and decimals, at most 100 characters. Spaces, separators, signs and exponents are `INVALID_FORMAT`: to read amounts typed by users, such as `Ar 1 500`, use the ariary module. Leading zeros and trailing decimal zeros are dropped, so `'1.50'` reads like `1.5`.
 
 <Aside title="PHP: declare(strict_types=1)">`NumberWords::spell()` keeps each type as it is: `spell(2.5)` is `roa faingo dimy`. Declare `strict_types=1` in your files anyway: without it, PHP quietly turns a float passed to any `int` parameter into an int, so `2.5` becomes `2` before the library sees it.</Aside>
 
@@ -175,6 +200,8 @@ Text is plain digits with an optional `.` and decimals, at most 100 characters. 
 | Text that is not plain decimal (`'1 500'`, `'-1'`, `'1e5'`) | `INVALID_FORMAT` |
 | Below 0 | `OUT_OF_RANGE` |
 | Above the largest exact number of the language | `OUT_OF_RANGE` |
+| `parseWords`: words that `spell` does not write | `INVALID_FORMAT` |
+| `parseWords`: a number too big for the language | `PRECISION_LOSS` |
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
@@ -193,9 +220,9 @@ Text is plain digits with an optional `.` and decimals, at most 100 characters. 
   </TabItem>
 </Tabs>
 
-## Not supported yet
+## Not supported
 
-Negative numbers wait for a source or a Malagasy language expert. See [Waiting for a source or an expert](/mdg-utils-docs/docs/words/rules/#waiting-for-a-source-or-an-expert).
+Negative numbers are not written in words: no source spells one.
 
 ## Rules and sources
 

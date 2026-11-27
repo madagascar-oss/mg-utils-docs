@@ -58,20 +58,78 @@ Le malgache lit les nombres de la plus petite unité à la plus grande. La parti
   </TabItem>
 </Tabs>
 
+## Ordinaux
+
+`spellOrdinal` écrit le rang : `faha` devant le nombre en lettres, `fah` devant une voyelle, et `voalohany` pour 1.
+
+<TryItBox module="words" variant="ordinal" examples={['1', '2', '3', '4', '10', '11', '21', '100']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { spellOrdinal } from '@mdgascar/words';
+
+    spellOrdinal(1); // 'voalohany'
+    spellOrdinal(2); // 'faharoa'
+    spellOrdinal(3); // 'fahatelo'
+    spellOrdinal(4); // 'fahefatra'
+    spellOrdinal(11); // "fahiraika ambin'ny folo"
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    NumberWords::spellOrdinal(1); // 'voalohany'
+    NumberWords::spellOrdinal(2); // 'faharoa'
+    NumberWords::spellOrdinal(3); // 'fahatelo'
+    NumberWords::spellOrdinal(4); // 'fahefatra'
+    NumberWords::spellOrdinal(11); // "fahiraika ambin'ny folo"
+    ```
+  </TabItem>
+</Tabs>
+
+## Relire des lettres
+
+`parseWords` retrouve le nombre à partir des lettres. La casse et les espaces en trop ne comptent pas. `safeParseWords` renvoie l'erreur au lieu de la lever, et `tryParseWords` renvoie `undefined` (PHP : `safeParse`, `tryParse`).
+
+<TryItBox module="words" variant="readWords" examples={['roa arivo', 'iraika amby roapolo', 'valo amby efapolo sy telonjato', 'telo faingo dimy']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    import { parseWords } from '@mdgascar/words';
+
+    parseWords('roa arivo'); // 2000
+    parseWords('Iraika amby roapolo'); // 21
+    parseWords('telo faingo dimy'); // 3.5
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    NumberWords::parse('roa arivo')->value(); // 2000
+    NumberWords::parse('Iraika amby roapolo')->value(); // 21
+    NumberWords::parse('telo faingo dimy')->value(); // 3.5
+    ```
+  </TabItem>
+</Tabs>
+
+<Aside>La lecture n'arrondit jamais. Un nombre trop grand pour le langage lève `PRECISION_LOSS` ; demandez `{ as: 'text' }` (PHP : `->digits`) pour obtenir chaque chiffre en texte.</Aside>
+
 ## Grands nombres
 
-Les règles n’ont pas de limite haute : `lavitrisa` (10⁹), le plus grand mot de groupe, prend un multiplicateur de toute taille, écrit avec les mêmes règles. Chaque langage s’arrête seulement là où ses nombres cessent d’être exacts : `Number.MAX_SAFE_INTEGER` en JavaScript, `PHP_INT_MAX` en PHP.
+Les règles n’ont pas de limite haute : `lavitrisa` (10⁹), le plus grand mot de groupe, prend un multiplicateur de toute taille. Un multiplicateur devant un mot de groupe forme une seule expression, reliée par `amby`. Chaque langage s’arrête seulement là où ses nombres cessent d’être exacts : `Number.MAX_SAFE_INTEGER` en JavaScript, `PHP_INT_MAX` en PHP.
 
 <TryItBox module="words" input="1000000000" examples={['1000000', '1000000000', '2000000000']} />
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
+    spell(280000000); // 'valopolo amby roanjato tapitrisa'
     spell(1000000000); // 'iray lavitrisa'
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
+    NumberWords::spell(280000000); // 'valopolo amby roanjato tapitrisa'
     NumberWords::spell(1000000000); // 'iray lavitrisa'
     ```
   </TabItem>
@@ -91,7 +149,7 @@ Le malgache a aussi un nom pour chaque puissance de dix. Il ne sert pas dans l�
 
 \* Déduits de la règle de la source : `<nom>faharoa` (« le deuxième ») vaut ce nom × 10⁷.
 
-<TryItBox module="words" input="30000000" option="traditional" examples={['30000000', '45000000', '12345678901', '1000000000000000']} />
+<TryItBox module="words" input="30000000" option="traditional" examples={['30000000', '45000000']} />
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
@@ -114,57 +172,24 @@ Le malgache a aussi un nom pour chaque puissance de dix. Il ne sert pas dans l�
 
 La partie entière vient d’abord, puis `faingo` (la virgule), puis les chiffres après la virgule lus comme un nombre entier. Chaque zéro juste après la virgule se dit `aotra`.
 
-<TryItBox module="words" input="3.14" examples={['3.14', '18.3', '0.5', '1.05', '0.008', '12.75', '1234.5678']} />
+<TryItBox module="words" input="3.14" examples={['3.14', '0.5', '2.5', '12.75']} />
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
     ```ts
     spell(3.14); // "telo faingo efatra ambin'ny folo"
-    spell(18.3); // "valo ambin'ny folo faingo telo"
     spell(0.5); // 'aotra faingo dimy'
-    spell(1.05); // 'iray faingo aotra dimy'
-    spell(0.008); // 'aotra faingo aotra aotra valo'
     spell(12.75); // "roa ambin'ny folo faingo dimy amby fitopolo"
-    spell(1.0); // 'iray' (a whole number has no faingo)
     ```
   </TabItem>
   <TabItem label="PHP">
     ```php
     NumberWords::spell(3.14); // "telo faingo efatra ambin'ny folo"
-    NumberWords::spell(18.3); // "valo ambin'ny folo faingo telo"
     NumberWords::spell(0.5); // 'aotra faingo dimy'
-    NumberWords::spell(1.05); // 'iray faingo aotra dimy'
-    NumberWords::spell(0.008); // 'aotra faingo aotra aotra valo'
     NumberWords::spell(12.75); // "roa ambin'ny folo faingo dimy amby fitopolo"
-    NumberWords::spell(1.0); // 'iray' (a whole number has no faingo)
     ```
   </TabItem>
 </Tabs>
-
-<Aside>Les décimales sont celles de la valeur numérique. `1.50` est le nombre `1.5`, et `0.1 + 0.2` vaut `0.30000000000000004` en virgule flottante : il se lit donc ainsi.</Aside>
-
-## Chiffres exacts
-
-Une valeur numérique garde environ 15 à 17 chiffres significatifs, en JavaScript comme pour les flottants PHP. Un grand nombre à décimales a donc déjà perdu des chiffres avant qu’une fonction le voie : `2_000_000_000_000_000.9` est stocké comme `2000000000000001`. Passez les chiffres en texte pour les lire tous exactement, quelle que soit la taille :
-
-<TryItBox module="words" input="2000000000000000.9" examples={['2000000000000000.9', '1000000000000000000.111', '1.50', '1 500']} />
-
-<Tabs syncKey="language">
-  <TabItem label="JavaScript">
-    ```ts
-    spell(2_000_000_000_000_000.9); // 'iray sy roa tapitrisa lavitrisa' (the float)
-    spell('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy'
-    ```
-  </TabItem>
-  <TabItem label="PHP">
-    ```php
-    NumberWords::spell(2_000_000_000_000_000.9); // 'iray sy roa tapitrisa lavitrisa' (the float)
-    NumberWords::spell('2000000000000000.9'); // 'roa tapitrisa lavitrisa faingo sivy'
-    ```
-  </TabItem>
-</Tabs>
-
-Le texte est fait de chiffres, avec en option un `.` et des décimales, 100 caractères au plus. Espaces, séparateurs, signes et exposants donnent `INVALID_FORMAT` : pour lire des montants saisis comme `Ar 1 500`, utilisez le module ariary. Les zéros de tête et les zéros décimaux de fin sont ignorés : `'1.50'` se lit comme `1.5`.
 
 <Aside title="PHP : declare(strict_types=1)">`NumberWords::spell()` garde chaque type tel quel : `spell(2.5)` donne `roa faingo dimy`. Déclarez tout de même `strict_types=1` dans vos fichiers : sans cela, PHP transforme sans prévenir un flottant passé à un paramètre `int` en entier, et `2.5` devient `2` avant que la bibliothèque le voie.</Aside>
 
@@ -176,6 +201,8 @@ Le texte est fait de chiffres, avec en option un `.` et des décimales, 100 cara
 | Texte qui n’est pas décimal simple (`'1 500'`, `'-1'`, `'1e5'`) | `INVALID_FORMAT` |
 | Inférieur à 0 | `OUT_OF_RANGE` |
 | Au-delà du plus grand nombre exact du langage | `OUT_OF_RANGE` |
+| `parseWords` : des lettres que `spell` n’écrit pas | `INVALID_FORMAT` |
+| `parseWords` : un nombre trop grand pour le langage | `PRECISION_LOSS` |
 
 <Tabs syncKey="language">
   <TabItem label="JavaScript">
@@ -194,9 +221,9 @@ Le texte est fait de chiffres, avec en option un `.` et des décimales, 100 cara
   </TabItem>
 </Tabs>
 
-## Pas encore pris en charge
+## Non pris en charge
 
-Les nombres négatifs attendent une source ou l’avis d’un expert de la langue malgache. Voir [En attente d’une source ou d’un expert](/mdg-utils-docs/fr/docs/words/rules/#waiting-for-a-source-or-an-expert).
+Les nombres négatifs ne sont pas écrits en lettres : aucune source n'en épelle un.
 
 ## Règles et sources
 

@@ -12,8 +12,10 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 | ------------------ | -------------------------------------------------------------- |
 | `INVALID_TYPE`     | The input has the wrong type, e.g. a number where text is expected |
 | `OUT_OF_RANGE`     | The value is outside what the module supports                  |
-| `INVALID_FORMAT`   | Text that cannot be read, e.g. `1,500` as an amount            |
-| `UNKNOWN_OPERATOR` | A mobile prefix not assigned to any Malagasy operator          |
+| `INVALID_FORMAT`   | Text that cannot be read, e.g. `1.5` as an amount (a dot is not a decimal point by default) |
+| `UNKNOWN_OPERATOR` | A phone prefix not assigned to any Malagasy operator           |
+| `PRECISION_LOSS`   | The text is exact, but a number cannot hold it: ask for the exact digits as text |
+| `AMBIGUOUS`        | The text reads as two values, so none is picked                |
 
 The codes are defined once in the spec, so a browser and a PHP server reject the same input with the same code.
 

@@ -12,6 +12,8 @@ import { words } from './words.ts';
 interface Props {
   readonly module: ModuleId;
   readonly initialInput?: string | undefined;
+  /** Starting option; the module's first option when omitted. */
+  readonly initialOption?: string | undefined;
   readonly examples: readonly string[];
   readonly playHref: string;
   readonly labels: {
@@ -28,10 +30,17 @@ const MODULES: Record<ModuleId, TryModule> = { words, phone, ariary, date };
 const fieldClass =
   'rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm dark:border-gray-700';
 
-export default function TryIt({ module, initialInput, examples, playHref, labels }: Props) {
+export default function TryIt({
+  module,
+  initialInput,
+  initialOption,
+  examples,
+  playHref,
+  labels,
+}: Props) {
   const definition = MODULES[module];
   const [input, setInput] = useState(initialInput ?? definition.initialInput);
-  const [option, setOption] = useState(definition.options[0] ?? '');
+  const [option, setOption] = useState(initialOption ?? definition.options[0] ?? '');
   const outcome = useMemo(() => definition.compute(input, option), [definition, input, option]);
   const playLink = `${playHref}${toHash({ language: 'js', module, code: outcome.snippet })}`;
 

@@ -8,6 +8,11 @@ Each entry is a spec version: the rules, data and test vectors every package imp
 
 **Breaking** marks an output that changes for an input that worked before.
 
+## 0.7.0 (2026-11-27)
+
+- `words`: New option `system: 'traditional'`: one name per power of ten, each with a single digit. `30 000 000` → `telo safatsiroa` instead of `telopolo tapitrisa`. 10⁷–10¹⁵ come from Assimil, and 10¹⁶–10¹⁸ are derived from its `faharoa` rule. The standard system stays the default, and its output is unchanged.
+- `ariary`: `ariaryToWords` takes the same `system` option.
+
 ## 0.6.0 (2026-11-26)
 
 - `phone`: New prefix `035` for Airtel Madagascar, on sale since 22 June 2026: `035 12 345 67` → operator `airtel` instead of `UNKNOWN_OPERATOR`.

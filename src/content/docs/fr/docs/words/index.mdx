@@ -77,6 +77,39 @@ Les règles n’ont pas de limite haute : `lavitrisa` (10⁹), le plus grand mot
   </TabItem>
 </Tabs>
 
+## Système traditionnel
+
+Le malgache a aussi un nom pour chaque puissance de dix. Il ne sert pas dans l’écriture courante, mais les manuels d’apprentissage le donnent. Passez `system: 'traditional'` pour l’utiliser : chaque nom prend un seul chiffre, de 1 à 9, du plus petit au plus grand, reliés par `sy`. Sous 10 000, les deux systèmes écrivent les mêmes mots, et les décimales suivent le système choisi.
+
+| Puissance | Nom | Puissance | Nom | Puissance | Nom |
+| --- | --- | --- | --- | --- | --- |
+| 10⁴ | `alina` | 10⁹ | `lavitrisa` | 10¹⁴ | `safatsiroafaharoa` |
+| 10⁵ | `hetsy` | 10¹⁰ | `alinkisa` | 10¹⁵ | `tsitamboisafaharoa` |
+| 10⁶ | `tapitrisa` | 10¹¹ | `tsipesimpesenina` | 10¹⁶ | `lavitrisafaharoa`\* |
+| 10⁷ | `safatsiroa` | 10¹² | `tsitokotsiforohana` | 10¹⁷ | `alinkisafaharoa`\* |
+| 10⁸ | `tsitamboisa` | 10¹³ | `tsihitanoanoa` | 10¹⁸ | `tsipesimpeseninafaharoa`\* |
+
+\* Déduits de la règle de la source : `<nom>faharoa` (« le deuxième ») vaut ce nom × 10⁷.
+
+<TryItBox module="words" input="30000000" option="traditional" examples={['30000000', '45000000', '12345678901', '1000000000000000']} />
+
+<Tabs syncKey="language">
+  <TabItem label="JavaScript">
+    ```ts
+    numberToWords(30000000); // 'telopolo tapitrisa'
+    numberToWords(30000000, { system: 'traditional' }); // 'telo safatsiroa'
+    ```
+  </TabItem>
+  <TabItem label="PHP">
+    ```php
+    use Mdgascar\MdgUtils\Words\NumberSystem;
+
+    NumberWords::fromInt(30000000); // 'telopolo tapitrisa'
+    NumberWords::fromInt(30000000, NumberSystem::Traditional); // 'telo safatsiroa'
+    ```
+  </TabItem>
+</Tabs>
+
 ## Décimales
 
 La partie entière vient d’abord, puis `faingo` (la virgule), puis les chiffres après la virgule lus comme un nombre entier. Chaque zéro juste après la virgule se dit `aotra`.
@@ -140,7 +173,7 @@ L’entrée est une valeur numérique, jamais du texte : ni espaces, ni séparat
 
 ## Pas encore pris en charge
 
-Les nombres négatifs, et les anciens noms de 10⁷ et au-delà (`safatsiroa`, `tsitamboisa`…), attendent une source ou l’avis d’un expert de la langue malgache. Voir [En attente d’une source ou d’un expert](/mdg-utils-docs/fr/docs/words/rules/#waiting-for-a-source-or-an-expert).
+Les nombres négatifs attendent une source ou l’avis d’un expert de la langue malgache. Voir [En attente d’une source ou d’un expert](/mdg-utils-docs/fr/docs/words/rules/#waiting-for-a-source-or-an-expert).
 
 ## Règles et sources
 

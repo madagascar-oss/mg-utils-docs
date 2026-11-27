@@ -9,6 +9,11 @@ Chaque entrée est une version de la spécification : les règles, les données 
 
 **Rupture** signale un résultat qui change pour une entrée qui fonctionnait déjà.
 
+## 0.7.0 (2026-11-27)
+
+- `words`: Nouvelle option `system: 'traditional'` : un nom par puissance de dix, chacun avec un seul chiffre. `30 000 000` → `telo safatsiroa` au lieu de `telopolo tapitrisa`. 10⁷–10¹⁵ viennent d’Assimil, et 10¹⁶–10¹⁸ sont déduits de sa règle `faharoa`. Le système standard reste celui par défaut, et ses résultats ne changent pas.
+- `ariary`: `ariaryToWords` accepte la même option `system`.
+
 ## 0.6.0 (2026-11-26)
 
 - `phone`: Nouveau préfixe `035` pour Airtel Madagascar, en vente depuis le 22 juin 2026 : `035 12 345 67` → opérateur `airtel` au lieu de `UNKNOWN_OPERATOR`.

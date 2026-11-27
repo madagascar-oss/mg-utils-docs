@@ -4,64 +4,85 @@ description: Every public class and method of mdgascar/mdg-utils, by module. All
 kicker: Reference
 ---
 
-## Words
+Everything is under the `Mdgascar\MdgUtils` namespace. Errors throw `MdgUtilsException`; read `$exception->errorCode` (an `ErrorCode`), the same code in every language.
 
-| Method                              | Returns  | Throws                        |
-| ----------------------------------- | -------- | ----------------------------- |
-| `Words\NumberWords::fromInt(int $n)` | `string` | `OUT_OF_RANGE`                |
+## Number words
+
+| Method                                                              | Returns                        | Error codes                             |
+| ------------------------------------------------------------------- | ------------------------------ | --------------------------------------- |
+| `Words\NumberWords::spell(int\|float\|string $n, NumberSystem)`     | `string`                       | `OUT_OF_RANGE`, `INVALID_FORMAT`        |
+| `Words\NumberWords::spellOrdinal(int\|string $n, NumberSystem)`     | `string`                       | `OUT_OF_RANGE`, `INVALID_FORMAT`        |
+| `Words\NumberWords::parse(string $words)`                           | `ExactNumber`                  | `INVALID_FORMAT`, `AMBIGUOUS`           |
+| `Words\NumberWords::safeParse(mixed $words)`                        | `SafeParseResult<ExactNumber>` | never                                   |
+| `Words\NumberWords::tryParse(mixed $words)`                         | `?ExactNumber`                 | never                                   |
+| `ExactNumber->value()`                                              | `int\|float`                   | `PRECISION_LOSS`                        |
+| `ExactNumber->digits`                                               | `string`                       | never                                   |
+
+Enum: `Words\NumberSystem` (`Standard`, `Traditional`).
 
 ## Phone
 
-| Method                                                    | Returns                         | Throws                               |
+| Method                                                    | Returns                         | Error codes                          |
 | --------------------------------------------------------- | ------------------------------- | ------------------------------------ |
 | `Phone\PhoneNumber::parse(string $input)`                 | `PhoneNumber`                   | `INVALID_FORMAT`, `UNKNOWN_OPERATOR` |
 | `Phone\PhoneNumber::safeParse(mixed $input)`              | `SafeParseResult<PhoneNumber>`  | never                                |
-| `Phone\PhoneNumber::tryParse(mixed $input)`              | `?PhoneNumber`                  | never                                |
+| `Phone\PhoneNumber::tryParse(mixed $input)`               | `?PhoneNumber`                  | never                                |
 | `Phone\PhoneNumber::isValid(mixed $input)`                | `bool`                          | never                                |
 | `$phone->format(PhoneNumberFormat $format)`               | `string`                        | never                                |
-| `$phone->e164`, `$phone->nationalNumber`, `$phone->operator` | `string`, `string`, `Operator` | —                                    |
-| `Phone\Operator::displayName()`                           | `string`                        | never                                |
+| `$phone->e164`, `$phone->nationalNumber`                  | `string`                        | never                                |
+| `$phone->operator`                                        | `Operator`                      | never                                |
+| `$phone->type`                                            | `PhoneLineType`                 | never                                |
+| `$phone->area`                                            | `?PhoneArea` (`name`, `province`) | never                              |
 
-Enums: `PhoneNumberFormat` (`E164`, `International`, `National`), `Operator` (`Orange`, `Airtel`, `Yas`, `Blueline`).
+Enums: `PhoneNumberFormat` (`E164`, `International`, `National`), `Operator` (`displayName()`), `PhoneLineType` (`Mobile`, `Fixed`).
 
 ## Ariary
 
-| Method                                                                 | Returns                    | Throws                           |
-| ---------------------------------------------------------------------- | -------------------------- | -------------------------------- |
-| `Ariary\Ariary::fromInt(int $amount)`                                  | `Ariary`                   | `OUT_OF_RANGE`                   |
-| `Ariary\Ariary::parse(string $text)`                                   | `Ariary`                   | `INVALID_FORMAT`, `OUT_OF_RANGE` |
-| `Ariary\Ariary::safeParse(mixed $text)`                                | `SafeParseResult<Ariary>`  | never                            |
-| `Ariary\Ariary::tryParse(mixed $text)`                                | `?Ariary`                  | never                            |
-| `Ariary\Ariary::fromFmg(int $francs)`                                  | `Ariary`                   | `OUT_OF_RANGE`                   |
-| `Ariary\Ariary::formatFmg(int $francs, Grouping, SymbolPosition)`     | `string`                   | `OUT_OF_RANGE`                   |
-| `$amount->format(Grouping $grouping, SymbolPosition $position)`       | `string`                   | never                            |
-| `$amount->toWords()`                                                   | `string`                   | never                            |
-| `$amount->toFmg()`                                                     | `int`                      | never                            |
-| `$amount->amount`                                                      | `int`                      | —                                |
+| Method                                                                 | Returns                    | Error codes                       |
+| ---------------------------------------------------------------------- | -------------------------- | --------------------------------- |
+| `Ariary\Ariary::fromInt(int $amount)`                                  | `Ariary`                   | `OUT_OF_RANGE`                    |
+| `Ariary\Ariary::fromFloat(float $amount)`                              | `Ariary`                   | `OUT_OF_RANGE`, `INVALID_TYPE`    |
+| `Ariary\Ariary::fromText(string $amount)`                              | `Ariary`                   | `INVALID_FORMAT`                  |
+| `Ariary\Ariary::parse(string $text, ?Grouping, DecimalSeparator)`      | `Ariary`                   | `INVALID_FORMAT`, `INVALID_TYPE`  |
+| `Ariary\Ariary::safeParse(mixed $text, …)`                             | `SafeParseResult<Ariary>`  | never                             |
+| `Ariary\Ariary::tryParse(mixed $text, …)`                              | `?Ariary`                  | never                             |
+| `Ariary\Ariary::fromFmg(int\|float\|string $francs)`                   | `Ariary`                   | `OUT_OF_RANGE`, `INVALID_FORMAT`  |
+| `Ariary\Ariary::formatFmg(int\|float\|string $francs, …)`              | `string`                   | `OUT_OF_RANGE`, `INVALID_FORMAT`  |
+| `$amount->format(Grouping, SymbolPosition, DecimalSeparator)`          | `string`                   | `INVALID_TYPE`                    |
+| `$amount->spell(NumberSystem)`                                         | `string`                   | never                             |
+| `$amount->amount()`                                                    | `int\|float`               | `PRECISION_LOSS`                  |
+| `$amount->digits`                                                      | `string`                   | never                             |
+| `$amount->toFmg()`                                                     | `int\|float`               | `PRECISION_LOSS`                  |
+| `$amount->toFmgDigits()`                                               | `string`                   | never                             |
 
-Enums: `Grouping` (`Space`, `Dot`; `Grouping::DEFAULT` is `Space`), `SymbolPosition` (`Before`, `After`).
+Enums: `Grouping` (`Space`, `Dot`, `Comma`), `DecimalSeparator` (`Comma`, `Dot`), `SymbolPosition` (`Before`, `After`).
 
 ## Date
 
-| Method                                                          | Returns        | Throws                         |
-| --------------------------------------------------------------- | -------------- | ------------------------------ |
-| `Date\MalagasyDate::fromString(string $text)`                   | `MalagasyDate` | `INVALID_FORMAT`, `OUT_OF_RANGE` |
-| `Date\MalagasyDate::fromParts(int $year, int $month, int $day)` | `MalagasyDate` | `OUT_OF_RANGE`                 |
-| `Date\MalagasyDate::fromDateTime(DateTimeInterface $date)`      | `MalagasyDate` | `OUT_OF_RANGE`                 |
-| `Date\MalagasyDate::monthName(int $month, NameWidth $width)`    | `string`       | `OUT_OF_RANGE`                 |
-| `Date\MalagasyDate::weekdayName(int $isoWeekday, NameWidth $width)` | `string`   | `OUT_OF_RANGE`                 |
-| `$date->format(DateStyle $style)`                              | `string`       | never                          |
-| `$date->isoWeekday()`                                           | `int` (1–7)    | never                          |
+| Method                                                       | Returns                        | Error codes                                     |
+| ------------------------------------------------------------ | ------------------------------ | ----------------------------------------------- |
+| `Date\MalagasyDate::fromString(string $isoDate)`             | `MalagasyDate`                 | `INVALID_FORMAT`, `OUT_OF_RANGE`                |
+| `Date\MalagasyDate::fromParts(int $year, int $month, int $day)` | `MalagasyDate`              | `OUT_OF_RANGE`                                  |
+| `Date\MalagasyDate::fromDateTime(DateTimeInterface $date)`   | `MalagasyDate`                 | `OUT_OF_RANGE`                                  |
+| `Date\MalagasyDate::parse(string $text, ?DateStyle)`         | `MalagasyDate`                 | `INVALID_FORMAT`, `OUT_OF_RANGE`, `AMBIGUOUS`   |
+| `Date\MalagasyDate::safeParse(mixed $text, ?DateStyle)`      | `SafeParseResult<MalagasyDate>` | never                                          |
+| `Date\MalagasyDate::tryParse(mixed $text, ?DateStyle)`       | `?MalagasyDate`                | never                                           |
+| `$date->format(DateStyle $style)`                            | `string`                       | never                                           |
+| `Date\MalagasyDate::monthName(int $month, NameWidth)`        | `string`                       | `OUT_OF_RANGE`                                  |
+| `Date\MalagasyDate::weekdayName(int $isoWeekday, NameWidth)` | `string`                       | `OUT_OF_RANGE`                                  |
 
-Enums: `DateStyle` (`Long`, `Full`, `Medium`, `Short`, `Numeric`; `DateStyle::DEFAULT` is `Long`), `NameWidth` (`Wide`, `Abbreviated`).
+Enums: `DateStyle` (`Long`, `Full`, `Medium`, `Short`, `Numeric`), `NameWidth` (`Wide`, `Abbreviated`).
+
+`$date->isoWeekday()` returns the ISO weekday (Monday 1, Sunday 7).
 
 ## Shared
 
-| Class                       | Purpose                                                          |
-| --------------------------- | ---------------------------------------------------------------- |
-| `MdgUtilsException`          | Thrown on bad input; `->errorCode` is an `ErrorCode`             |
-| `ErrorCode`                 | `InvalidType`, `OutOfRange`, `InvalidFormat`, `UnknownOperator`  |
-| `SafeParseResult`           | `->success`, `->data`, `->error` from every `safeParse()`        |
-| `Spec::VERSION`             | The spec version this package implements                         |
+| Class               | Purpose                                                                                       |
+| ------------------- | --------------------------------------------------------------------------------------------- |
+| `MdgUtilsException` | Thrown on bad input; `->errorCode` is an `ErrorCode`                                          |
+| `ErrorCode`         | `InvalidType`, `OutOfRange`, `InvalidFormat`, `UnknownOperator`, `PrecisionLoss`, `Ambiguous` |
+| `SafeParseResult`   | `->success`, `->data`, `->error` from every `safeParse()`                                     |
+| `ExactNumber`       | A number read from text: `->digits`, and `value()` when an int or float holds it exactly      |
+| `Spec::VERSION`     | The spec version this package implements                                                      |
 
 Wrong argument types raise PHP's own `TypeError`; the spec reports them as `INVALID_TYPE`.

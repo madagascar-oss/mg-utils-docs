@@ -9,6 +9,19 @@ Chaque entrée est une version de la spécification : les règles, les données 
 
 **Rupture** signale un résultat qui change pour une entrée qui fonctionnait déjà.
 
+## 0.9.0 (2026-11-27)
+
+- `words` : **Rupture** : un multiplicateur devant un mot de groupe forme une seule expression reliée par `amby` (Wikipédia, dictionnaire). `201 000 000` → `iraika amby roanjato tapitrisa` (il partageait `iray sy roanjato tapitrisa` avec 200 000 001), `280 000 000` → `valopolo amby roanjato tapitrisa`. Sous 1000, `sy` reste à partir de 200 (`348` → `valo amby efapolo sy telonjato`, leçons du Peace Corps).
+- `words` : Nouveau `spellOrdinal` : `3` → `fahatelo`, `4` → `fahefatra`, `1` → `voalohany`.
+- `words` : Nouveaux `parseWords`, `safeParseWords`, `tryParseWords` : des lettres au nombre. Les expressions communes à deux nombres (seulement à partir d'un million de milliards) donnent `AMBIGUOUS`.
+- `ariary` : **Rupture** : rien n'est arrondi. Lire ou convertir un montant qu'un nombre ne peut pas contenir donne `PRECISION_LOSS` (avant : `OUT_OF_RANGE`, ou une valeur arrondie sans prévenir) ; `{ as: 'text' }` donne les chiffres exacts. Toute fonction qui prend un montant accepte aussi du texte décimal. La lecture prend jusqu'à 329 caractères, donc tout montant formaté se relit.
+- `ariary` : `1,500` vaut 1,5 Ar : une décision enregistrée, plus en révision.
+- `phone` : **Rupture** : `036` (Yas) et les lignes fixes (`020`, `022`) sont valides au lieu de `UNKNOWN_OPERATOR`. Un numéro lu a un `type` (`mobile` ou `fixed`) et une `area`, la ville d'un numéro géographique.
+- `date` : Nouveaux `parseDate`, `safeParseDate`, `tryParseDate` : chaque style relu en `{ year, month, day }`.
+- Nouveaux codes d'erreur `PRECISION_LOSS` et `AMBIGUOUS`.
+
+Bogues connus corrigés en 0.9.0 : deux nombres avec les mêmes lettres (`words`), arrondi silencieux à la lecture ou à la conversion (`ariary`), montants formatés trop longs pour être relus (`ariary`), `036` et lignes fixes refusés (`phone`). Encore ouverts : quelques expressions à partir d'un million de milliards nomment deux nombres (la lecture répond `AMBIGUOUS`), et `5 Mey 12` se lit comme deux dates car `Mey` est à la fois le nom et l'abréviation de mai (`parseDate` répond `AMBIGUOUS` sauf si vous donnez le style). La liste complète est dans le [README de la spec](https://github.com/mdgascar/mdg-utils-spec#known-bugs).
+
 ## 0.8.0 (2026-11-27)
 
 - **Rupture** : les noms de fonctions reprennent les mots du domaine : `spell` (ex-`numberToWords`), `spellAriary` (`ariaryToWords`), `parsePhone`, `safeParsePhone`, `tryParsePhone`, `isValidPhone`, `formatPhone` (ex-`…PhoneNumber`), `monthName` (`getMonthName`), `weekdayName` (`getWeekdayName`). PHP : `NumberWords::spell()` accepte un entier, un flottant ou du texte ; `->spell()` remplace `->toWords()`. Les résultats ne changent pas.

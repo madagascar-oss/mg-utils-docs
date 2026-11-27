@@ -6,11 +6,17 @@ import type { ModuleId } from '../../playground/types.ts';
 import { ariary } from './ariary.ts';
 import { date } from './date.ts';
 import { phone } from './phone.ts';
+import { ordinal, readDate, readWords } from './readers.ts';
 import type { TryModule } from './types.ts';
 import { words } from './words.ts';
 
+/** A widget for another call of the module than its main one. */
+export type TryVariant = 'ordinal' | 'readWords' | 'readDate';
+
 interface Props {
   readonly module: ModuleId;
+  /** Another call of the module; its main call when omitted. */
+  readonly variant?: TryVariant | undefined;
   readonly initialInput?: string | undefined;
   /** Starting option; the module's first option when omitted. */
   readonly initialOption?: string | undefined;
@@ -26,19 +32,21 @@ interface Props {
 }
 
 const MODULES: Record<ModuleId, TryModule> = { words, phone, ariary, date };
+const VARIANTS: Record<TryVariant, TryModule> = { ordinal, readWords, readDate };
 
 const fieldClass =
   'rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm dark:border-gray-700';
 
 export default function TryIt({
   module,
+  variant,
   initialInput,
   initialOption,
   examples,
   playHref,
   labels,
 }: Props) {
-  const definition = MODULES[module];
+  const definition = variant === undefined ? MODULES[module] : VARIANTS[variant];
   const [input, setInput] = useState(initialInput ?? definition.initialInput);
   const [option, setOption] = useState(initialOption ?? definition.options[0] ?? '');
   const outcome = useMemo(() => definition.compute(input, option), [definition, input, option]);

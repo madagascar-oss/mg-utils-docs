@@ -57,7 +57,7 @@ import InstallMethods from '../../../../components/InstallMethods.astro';
    ```php
    $order = Order::create(['phone' => '034 12 345 67', 'total' => 'Ar 1 500']);
    $order->phone->operator; // Operator::Yas
-   $order->total->amount;   // 1500
+   $order->total->amount();   // 1500
    ```
 
 4. ### Print values in Blade

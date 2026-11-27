@@ -39,6 +39,22 @@ export const sidebar: Sidebar = [
     ],
   },
   {
+    label: 'Guides',
+    translations: { fr: 'Guides' },
+    items: [
+      {
+        label: 'Frameworks',
+        translations: { fr: 'Frameworks' },
+        link: '/docs/guides/frameworks/',
+      },
+      {
+        label: 'Use cases',
+        translations: { fr: 'Cas d’usage' },
+        link: '/docs/guides/use-cases/',
+      },
+    ],
+  },
+  {
     label: 'Modules',
     translations: { fr: 'Modules' },
     items: modules.map((module) => ({

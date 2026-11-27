@@ -1,21 +1,17 @@
 ---
-// Landing page: a compact headline, then an editor that types the same receipt in the reader's
-// stack (TypeScript, React, Vue, Angular, Svelte, Node, PHP, Laravel, Symfony) while a preview
-// fills in, then where it runs and what it is for. The page renders complete without JavaScript
-// (and with reduced motion); the script only replays it as typing. Every result shown is
-// computed at build time by the library (demo.ts).
+// Landing page: headline, then an editor that types a receipt in TypeScript or PHP while a
+// preview fills in, then where it runs and the modules. Framework examples and use cases live in
+// the docs Guides. The page renders complete without JavaScript (and with reduced motion); the
+// script only replays it as typing. Every result shown is computed at build time (demo.ts).
 import { localePath, t, type Locale, type UiKey } from '../../i18n/ui.ts';
 import {
   fields,
   installs,
+  landingSamples,
   modules,
   operatorName,
-  samples,
-  useCases,
   type FieldId,
   type Line,
-  type SampleGroup,
-  type UseCaseId,
 } from './demo.ts';
 
 interface Props {
@@ -24,29 +20,18 @@ interface Props {
 
 const { locale } = Astro.props;
 const s = (key: UiKey) => t(locale, key);
+const samples = landingSamples;
 const DEFAULT_SAMPLE = samples[0];
 const rows: { id: FieldId; label: UiKey }[] = [
   { id: 'words', label: 'home.field.words' },
   { id: 'phone', label: 'home.field.phone' },
   { id: 'date', label: 'home.field.date' },
 ];
-const groups: { id: SampleGroup; label: UiKey }[] = [
-  { id: 'js', label: 'home.group.js' },
-  { id: 'php', label: 'home.group.php' },
-];
 const moduleLabel = {
   words: s('play.module.words'),
   phone: s('play.module.phone'),
   ariary: s('play.module.ariary'),
   date: s('play.module.date'),
-};
-const caseText: Record<UseCaseId, { title: UiKey; when: UiKey }> = {
-  signup: { title: 'home.case.signup', when: 'home.case.signup.when' },
-  cheque: { title: 'home.case.cheque', when: 'home.case.cheque.when' },
-  form: { title: 'home.case.form', when: 'home.case.form.when' },
-  francs: { title: 'home.case.francs', when: 'home.case.francs.when' },
-  traditional: { title: 'home.case.traditional', when: 'home.case.traditional.when' },
-  calendar: { title: 'home.case.calendar', when: 'home.case.calendar.when' },
 };
 const jsStacks = [
   'React',
@@ -103,35 +88,24 @@ const doc = (path: string) => localePath(locale, `/docs/${path}/`);
     data-samples={JSON.stringify(sampleData)}
   >
     <div class="mg-editor">
-      <div class="mg-editor-bar" role="tablist" aria-label={s('home.stack')}>
-        {groups.map((group) => (
-          <div class="mg-tab-group">
-            <span class="mg-tab-group-label">{s(group.label)}</span>
-            {samples
-              .filter((sample) => sample.group === group.id)
-              .map((sample) => (
-                <button
-                  type="button"
-                  role="tab"
-                  data-sample={sample.id}
-                  data-file={sample.file}
-                  aria-selected={sample.id === DEFAULT_SAMPLE.id ? 'true' : 'false'}
-                >
-                  {sample.label}
-                </button>
-              ))}
-          </div>
-        ))}
-      </div>
-      <div class="mg-file-bar">
+      <div class="mg-editor-bar">
         <span class="mg-dots" aria-hidden="true">
           <i></i>
           <i></i>
           <i></i>
         </span>
-        <span class="mg-file" data-file-name>
-          {DEFAULT_SAMPLE.file}
-        </span>
+        <div role="tablist" aria-label={s('play.language')}>
+          {samples.map((sample) => (
+            <button
+              type="button"
+              role="tab"
+              data-sample={sample.id}
+              aria-selected={sample.id === DEFAULT_SAMPLE.id ? 'true' : 'false'}
+            >
+              {sample.file}
+            </button>
+          ))}
+        </div>
         <button type="button" class="mg-replay" data-replay>
           {s('home.replay')}
         </button>
@@ -195,6 +169,7 @@ const doc = (path: string) => localePath(locale, `/docs/${path}/`);
         <p class="mg-links">
           <a href={doc('installation/using-npm')}>npm</a>
           <a href={doc('installation/using-utils-bundle')}>{s('home.js.docs')}</a>
+          <a href={doc('guides/frameworks')}>{s('home.frameworks')}</a>
         </p>
       </article>
       <article class="mg-platform">
@@ -217,26 +192,9 @@ const doc = (path: string) => localePath(locale, `/docs/${path}/`);
           <a href={doc('installation/using-composer')}>Composer</a>
           <a href={doc('installation/using-laravel')}>Laravel: {s('home.php.laravel')}</a>
           <a href={doc('installation/using-symfony')}>Symfony: {s('home.php.symfony')}</a>
+          <a href={doc('guides/frameworks') + '#php'}>{s('home.frameworks')}</a>
         </p>
       </article>
-    </div>
-  </section>
-
-  <section class="mg-section" aria-labelledby="mg-cases">
-    <h2 id="mg-cases">{s('home.cases')}</h2>
-    <div class="mg-cases">
-      {useCases.map((useCase) => (
-        <article class="mg-case">
-          <h3>{s(caseText[useCase.id].title)}</h3>
-          <p>{s(caseText[useCase.id].when)}</p>
-          <pre><code>{useCase.code}</code></pre>
-          <ul class="mg-results">
-            {useCase.results.map((result) => (
-              <li>{result}</li>
-            ))}
-          </ul>
-        </article>
-      ))}
     </div>
   </section>
 
@@ -289,7 +247,6 @@ const doc = (path: string) => localePath(locale, `/docs/${path}/`);
     const sources = JSON.parse(demo.dataset.samples ?? '{}') as Record<string, Line[]>;
     const tabs = [...demo.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
     const outputs = [...demo.querySelectorAll<HTMLElement>('[data-field]')];
-    const fileName = demo.querySelector<HTMLElement>('[data-file-name]');
     let sample =
       tabs.find((tab) => tab.getAttribute('aria-selected') === 'true')?.dataset.sample ?? '';
     let run = 0;
@@ -337,7 +294,6 @@ const doc = (path: string) => localePath(locale, `/docs/${path}/`);
       tab.addEventListener('click', () => {
         sample = tab.dataset.sample ?? sample;
         for (const other of tabs) other.setAttribute('aria-selected', String(other === tab));
-        if (fileName) fileName.textContent = tab.dataset.file ?? '';
         void play();
       });
     }
@@ -383,24 +339,24 @@ const doc = (path: string) => localePath(locale, `/docs/${path}/`);
     padding-bottom: 4rem;
   }
 
-  /* Hero: compact, so the demo is visible without scrolling. */
+  /* Hero */
   .mg-hero {
-    padding-block: 1.5rem 1.25rem;
+    padding-block: 3rem 2.5rem;
   }
 
   .mg-hero h1 {
-    font-size: clamp(1.9rem, 3.6vw, 2.75rem);
-    line-height: 1.1;
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    line-height: 1.08;
     font-weight: 700;
     letter-spacing: -0.03em;
     color: var(--sl-color-white);
   }
 
   .mg-hero-lead {
-    max-width: 46rem;
-    margin-top: 0.75rem;
-    font-size: var(--sl-text-base);
-    line-height: 1.6;
+    max-width: 44rem;
+    margin-top: 1.25rem;
+    font-size: var(--sl-text-lg);
+    line-height: 1.65;
     color: var(--sl-color-gray-2);
   }
 
@@ -408,8 +364,8 @@ const doc = (path: string) => localePath(locale, `/docs/${path}/`);
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.6rem;
-    margin-top: 1.1rem;
+    gap: 0.75rem;
+    margin-top: 2rem;
   }
 
   .mg-btn {
@@ -485,7 +441,7 @@ const doc = (path: string) => localePath(locale, `/docs/${path}/`);
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
   }
 
   @media (min-width: 64rem) {
@@ -506,33 +462,22 @@ const doc = (path: string) => localePath(locale, `/docs/${path}/`);
 
   .mg-editor-bar {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.25rem;
-    padding: 0.6rem 0.75rem;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0.9rem;
     border-bottom: 1px solid var(--mg-editor-line);
   }
 
-  .mg-tab-group {
+  .mg-editor-bar [role='tablist'] {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.2rem;
-  }
-
-  .mg-tab-group-label {
-    margin-inline-end: 0.35rem;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #6e7681;
+    gap: 0.25rem;
   }
 
   .mg-editor button {
     border: 0;
     border-radius: 0.4rem;
     padding: 0.25rem 0.55rem;
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: var(--sl-text-xs);
     cursor: pointer;
     color: #8b949e;
@@ -549,14 +494,6 @@ const doc = (path: string) => localePath(locale, `/docs/${path}/`);
     box-shadow: inset 0 -2px 0 var(--color-accent-500);
   }
 
-  .mg-file-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.4rem 0.9rem;
-    border-bottom: 1px solid var(--mg-editor-line);
-  }
-
   .mg-dots {
     display: flex;
     gap: 0.4rem;
@@ -569,21 +506,16 @@ const doc = (path: string) => localePath(locale, `/docs/${path}/`);
     background: #30363d;
   }
 
-  .mg-file {
-    font-family: var(--font-mono);
-    font-size: var(--sl-text-xs);
-    color: #8b949e;
-  }
-
   .mg-replay {
     margin-inline-start: auto;
+    font-family: var(--font-sans) !important;
   }
 
   .mg-code {
     max-width: 100%;
     margin: 0;
     padding: 1rem 1.25rem 1.25rem;
-    min-height: 21rem;
+    min-height: 19rem;
     overflow-x: auto;
     font-family: var(--font-mono);
     font-size: 0.8125rem;
@@ -846,66 +778,6 @@ const doc = (path: string) => localePath(locale, `/docs/${path}/`);
   .mg-links a {
     color: var(--sl-color-accent-high);
     font-weight: 600;
-  }
-
-  /* Use cases */
-  .mg-cases {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(21rem, 100%), 1fr));
-    gap: 1rem;
-    margin-top: 1.25rem;
-  }
-
-  .mg-case {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    border-radius: 1rem;
-    padding: 1.25rem;
-    box-shadow: inset 0 0 0 1px var(--sl-color-gray-5);
-  }
-
-  .mg-case > p {
-    font-size: var(--sl-text-sm);
-    color: var(--sl-color-gray-2);
-  }
-
-  .mg-case pre {
-    margin: 0;
-    border-radius: 0.6rem;
-    padding: 0.75rem 0.9rem;
-    overflow-x: auto;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    line-height: 1.6;
-    color: #e6edf3;
-    background: var(--mg-editor-bg);
-  }
-
-  .mg-case pre code {
-    background: none;
-    padding: 0;
-    white-space: pre;
-  }
-
-  .mg-results {
-    display: grid;
-    gap: 0.3rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .mg-results li {
-    margin: 0;
-    font-size: var(--sl-text-sm);
-    color: var(--sl-color-accent-high);
-    overflow-wrap: anywhere;
-  }
-
-  .mg-results li::before {
-    content: '→ ';
-    color: var(--sl-color-gray-3);
   }
 
   /* Modules */

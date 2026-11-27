@@ -1,0 +1,78 @@
+---
+title: Use mdg-utils with your framework
+description: The same payment receipt in TypeScript, React, Vue, Angular, Svelte, Node, Bun and Deno, plain PHP, Laravel and Symfony.
+kicker: Guides
+---
+
+import { Aside, LinkCard } from '@astrojs/starlight/components';
+import FrameworkCode from '../../../../components/guides/FrameworkCode.astro';
+
+The functions are plain, dependency-free calls, so they work the same in every framework: no plugin, provider or setup step. Each example below writes the same receipt: `Ar 150 000`, the amount in words, the payer's number in international format and the date in Malagasy.
+
+## JavaScript and TypeScript
+
+Install `@mdgascar/utils` for every module, or only the packages you use (`@mdgascar/ariary`, `@mdgascar/phone`, `@mdgascar/words`, `@mdgascar/date`). They run in Node.js 22.18+, Bun, Deno and every modern browser, as ESM or CommonJS, with TypeScript types included.
+
+### TypeScript
+
+Plain functions, typed options and results. `satisfies` checks the object without widening it.
+
+<FrameworkCode id="ts" />
+
+### React
+
+Call the functions while rendering: they are pure and fast, so there is nothing to memoize. Works the same in Next.js, Remix and React Native.
+
+<FrameworkCode id="react" />
+
+### Vue
+
+Use them straight in the template, with `<script setup lang="ts">`. Works the same in Nuxt.
+
+<FrameworkCode id="vue" />
+
+### Angular
+
+Wrap the calls in `computed()` signals on a standalone component, or in a pure pipe if you prefer templates.
+
+<FrameworkCode id="angular" />
+
+### Svelte
+
+Call them in markup with Svelte 5 runes. Works the same in SvelteKit.
+
+<FrameworkCode id="svelte" />
+
+### Node, Bun and Deno
+
+On the server, return the values from any handler. This `fetch` export runs as is in Bun and Deno, and in Node behind any adapter (Hono, Express…).
+
+<FrameworkCode id="node" />
+
+## PHP
+
+PHP 8.3 or later. The core package works in any Composer project; Laravel and Symfony get dedicated packages for validation, templates and database types.
+
+### Plain PHP
+
+`composer require mdgascar/mdg-utils`, then value objects and enums. Works the same in WordPress, Slim, Laminas or any script.
+
+<FrameworkCode id="php" />
+
+### Laravel
+
+`composer require mdgascar/mdg-utils-laravel` adds Blade directives, Eloquent casts (`AsAriary`, `AsPhoneNumber`) and the `mg_phone` / `mg_ariary` validation rules. Laravel 12 and 13.
+
+<FrameworkCode id="laravel" />
+
+<LinkCard title="Laravel guide" href="/mdg-utils-docs/docs/installation/using-laravel/" />
+
+### Symfony
+
+`composer require mdgascar/mdg-utils-bundle` adds Twig filters, Doctrine types (`mg_ariary`, `mg_phone`) and the `#[MalagasyPhone]` / `#[AriaryAmount]` constraints. Symfony 7.4 LTS and 8.
+
+<FrameworkCode id="symfony" />
+
+<LinkCard title="Symfony guide" href="/mdg-utils-docs/docs/installation/using-symfony/" />
+
+<Aside type="tip">Every example gives the same result, because every language follows one shared spec. Try any of them live in the [playground](/mdg-utils-docs/play/).</Aside>

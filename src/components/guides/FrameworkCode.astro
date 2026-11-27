@@ -1,0 +1,15 @@
+---
+// One framework's receipt example on the Frameworks page: the same source the landing demo types,
+// highlighted for its language, with its file name.
+import { Code } from '@astrojs/starlight/components';
+import { sampleById } from '../landing/demo.ts';
+
+interface Props {
+  /** A sample id from demo.ts: ts, react, vue, angular, svelte, node, php, laravel, symfony. */
+  id: string;
+}
+
+const sample = sampleById(Astro.props.id);
+---
+
+<Code code={sample.source} lang={sample.lang} title={sample.file} />

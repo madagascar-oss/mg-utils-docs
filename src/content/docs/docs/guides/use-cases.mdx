@@ -1,0 +1,45 @@
+---
+title: Use cases
+description: When to reach for each function, with real screens in mind; every result shown is computed by the library.
+kicker: Guides
+---
+
+import UseCase from '../../../../components/guides/UseCase.astro';
+
+Each case shows the TypeScript to write and, in the comments, what the library returns for it. The results are computed when this page is built, by the same code you install. The PHP calls have the same names on value objects (`PhoneNumber::safeParse()`, `Ariary::spellText()`, …).
+
+## Sign-up forms
+
+Check a +261 number as it is typed, show the reason when it is refused, and store it in E.164 with its operator.
+
+<UseCase id="signup" />
+
+## Cheques and contracts
+
+Write any amount in words, every digit exact. Pass the amount as text: a number that large has already lost its decimals.
+
+<UseCase id="cheque" />
+
+## Amounts typed by people
+
+Read an amount written the Malagasy way (`Ar 1.500,50`), then show it the way your screen needs.
+
+<UseCase id="form" />
+
+## Old prices in francs
+
+Show and convert old Malagasy francs (FMG) to ariary, exactly in decimal.
+
+<UseCase id="francs" />
+
+## Traditional counting
+
+One name per power of ten, for texts that ask for the traditional system.
+
+<UseCase id="traditional" />
+
+## Dates and calendars
+
+Malagasy month and weekday names, in every date style.
+
+<UseCase id="calendar" />
